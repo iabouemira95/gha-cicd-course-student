@@ -6,6 +6,12 @@ on:
   # Students start this workflow manually from the Actions tab.
   workflow_dispatch:
 
+env:
+  # Keep common image values in one place so the build steps stay readable.
+  IMAGE_NAME: tiny-health-app
+  IMAGE_TAR: tiny-health-app.tar
+  ARTIFACT_NAME: tiny-health-app-image
+
 jobs:
   build-package:
     # Use a fresh GitHub-hosted runner for the build.
@@ -26,18 +32,31 @@ jobs:
         # Build only after the verification step passes.
         run: python -m unittest discover -s tests -v
 
-      - name: Build Docker image
-        # Create the packaged application image.
-        run: docker build -t tiny-health-app:latest .
+      - name: Set image tag
+        # Create one simple tag so the image is easy to identify in this run.
+        id: image-tag
+        run: |
+          IMAGE_TAG="run-${GITHUB_RUN_NUMBER}"
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build Docker image with docker build
+        # Create the packaged application image with:
+        # - one traceable tag for this run
+        # - one latest tag for easy reference
+        run: |
+          docker build \
+            -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
+            -t "${IMAGE_NAME}:latest" \
+            .
 
       - name: Save Docker image as artifact file
         # Convert the image into a file that can be uploaded and reused later.
-        run: docker save tiny-health-app:latest -o tiny-health-app.tar
+        run: docker save "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" -o "${IMAGE_TAR}"
 
       - name: Upload build artifact
         # Store the packaged output so a later workflow can use the exact same package.
         uses: actions/upload-artifact@v4
         with:
-          name: tiny-health-app-image
-          path: tiny-health-app.tar
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.IMAGE_TAR }}
           retention-days: 7

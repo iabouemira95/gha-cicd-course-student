@@ -1,13 +1,12 @@
-# This is a read-only teaching example.
+# This is a manual-only teaching example.
 # It shows how the same CI/CD story can extend to Azure Container Registry and AKS.
-# It is not part of the core beginner labs.
-name: Azure ACR and AKS Example
+# It is visible in the Actions tab, but it is not part of the core beginner labs.
+# Do not run it unless the required Azure and registry secrets are configured.
+name: 06 Azure ACR and AKS Example
 
 on:
-  # Keep the trigger simple in this teaching example.
-  push:
-    branches:
-      - main
+  # Keep this example visible without triggering it automatically during class.
+  workflow_dispatch:
 
 env:
   # These are example placeholders only.
@@ -52,6 +51,10 @@ jobs:
           IMAGE_TAG="run-${GITHUB_RUN_NUMBER}"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
+      - name: Set up Docker Buildx
+        # buildx is a common way to build and push images in one step.
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to ACR
         # In a real project, these values would come from GitHub secrets.
         uses: docker/login-action@v3
@@ -60,13 +63,17 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and push image
+      - name: Build and push image with Docker Buildx
         # In this cloud-shaped version, the packaged output is pushed to ACR.
+        # Two tags are pushed:
+        # - one traceable run tag
+        # - one latest tag for easy reference
         run: |
-          docker build \
-            -t "${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
+          docker buildx build \
+            --push \
+            --tag "${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
+            --tag "${ACR_LOGIN_SERVER}/${IMAGE_NAME}:latest" \
             .
-          docker push "${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
 
   deploy-to-aks:
     # Delivery uses the same image that was already pushed to ACR.

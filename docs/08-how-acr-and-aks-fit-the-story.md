@@ -29,6 +29,47 @@ The delivery side becomes a little more realistic:
 - the deployment system uses that pushed image
 - the cluster updates the running app
 
+## Two Common Build Command Shapes
+
+In this project, it helps to recognize two very common patterns.
+
+### 1. Build and tag with `docker build`
+
+This is the simpler shape used in the runnable course workflows:
+
+```bash
+docker build \
+  -t "tiny-health-app:run-123" \
+  -t "tiny-health-app:latest" \
+  .
+```
+
+This shape teaches:
+
+- build the image
+- add one or more tags
+- keep the image inside the workflow runner
+- save it as a GitHub artifact if needed
+
+### 2. Build, tag, and push with `docker buildx build --push`
+
+This is a common cloud-shaped version:
+
+```bash
+docker buildx build \
+  --push \
+  --tag "example.azurecr.io/tiny-health-app:run-123" \
+  --tag "example.azurecr.io/tiny-health-app:latest" \
+  .
+```
+
+This shape teaches:
+
+- build the image
+- tag it clearly
+- push it to a registry such as ACR
+- let a deployment system pull or use that same image later
+
 ## What ACR Means Here
 
 ACR is Azure Container Registry.
@@ -61,11 +102,13 @@ The beginner idea is enough:
 - the image is pushed to ACR
 - AKS is updated to use that image
 
-## Read-Only Example Workflow
+## Manual-Only Example Workflow
 
-Open this file to see a sanitized example:
+Open this workflow file to see a sanitized example:
 
-- [azure-acr-aks-example.yml](examples/azure-acr-aks-example.yml)
+- [06-azure-acr-aks-example.yml](../.github/workflows/06-azure-acr-aks-example.yml)
+
+It is visible in the `Actions` tab, but it does not trigger automatically.
 
 ## How to Read the Example Workflow
 
@@ -136,6 +179,10 @@ This page is not trying to teach:
 - production secrets management in depth
 
 The main value is seeing how the course story grows into a more realistic delivery pipeline.
+
+Even though the workflow file is visible in the repository, it is still an example workflow.
+
+It is not part of the core beginner path.
 
 ## Short Beginner Summary
 

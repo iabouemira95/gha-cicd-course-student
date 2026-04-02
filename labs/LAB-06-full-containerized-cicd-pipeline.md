@@ -41,6 +41,7 @@ Before you run anything, look for these parts:
 - `jobs` splits the work into clear stages
 - `needs` makes the job order explicit
 - `actions/upload-artifact` and `actions/download-artifact` move the built package between jobs
+- Docker tags help the workflow refer to one built image clearly
 
 This is the main YAML idea in this lab:
 
@@ -63,13 +64,54 @@ Then find the `needs` lines.
 Before you run anything, try to explain the order:
 
 1. tests run
-2. the image is built
+2. the image is built and tagged
 3. the image is saved as an artifact
 4. the same built image is delivered
 
 If you can say that, you already understand the main idea.
 
-## Step 4: Make One Safe Change
+## Step 4: Read the Two Build Styles
+
+In this course, you will now see two common container build shapes.
+
+### Version 1: plain `docker build`
+
+This is the version used in the runnable course workflows:
+
+```bash
+docker build \
+  -t "tiny-health-app:run-123" \
+  -t "tiny-health-app:latest" \
+  .
+```
+
+This is good for learning:
+
+- build the image
+- add tags
+- save it as an artifact
+
+### Version 2: `docker buildx build --push`
+
+This is a common cloud-shaped version:
+
+```bash
+docker buildx build \
+  --push \
+  --tag "example.azurecr.io/tiny-health-app:run-123" \
+  --tag "example.azurecr.io/tiny-health-app:latest" \
+  .
+```
+
+This is good for showing:
+
+- build the image
+- tag it
+- push it to a registry such as ACR
+
+For this course, we run Version 1 and we only read Version 2 as an example.
+
+## Step 5: Make One Safe Change
 
 Open `app/app.py`.
 
@@ -83,13 +125,13 @@ Example:
 print("Tiny health server is ready on http://0.0.0.0:8000")
 ```
 
-## Step 5: Commit the Change
+## Step 6: Commit the Change
 
 Commit the change in GitHub with a simple message like:
 
 `Update startup message for full containerized workflow`
 
-## Step 6: Watch the Full Workflow Run
+## Step 7: Watch the Full Workflow Run
 
 Open the `Actions` tab.
 
@@ -97,7 +139,7 @@ Open `05 Full Containerized CI/CD Workflow`.
 
 Open the newest run.
 
-## Step 7: Follow the Jobs in Order
+## Step 8: Follow the Jobs in Order
 
 Check these jobs:
 
@@ -111,6 +153,7 @@ Confirm that:
 
 - the Docker image was built
 - a simple image tag was created
+- the image was tagged more than once
 - the image artifact was uploaded
 
 ### `deploy-simulated`
@@ -121,6 +164,23 @@ Confirm that:
 - the container started
 - the smoke test passed
 
+## Step 9: Read the Cloud-Shaped Example
+
+Open this manual-only example workflow:
+
+- [06-azure-acr-aks-example.yml](../.github/workflows/06-azure-acr-aks-example.yml)
+
+Look for these steps:
+
+- `Set up Docker Buildx`
+- `Log in to ACR`
+- `Build and push image with Docker Buildx`
+- `Deploy image to AKS`
+
+You are not required to run this workflow in class.
+
+You are using it to see how the same story grows in a more realistic pipeline.
+
 ## What You Should Notice
 
 Even though this workflow is larger, the story is still the same:
@@ -128,6 +188,7 @@ Even though this workflow is larger, the story is still the same:
 - code change
 - automated verification
 - container build
+- image tagging
 - artifact handoff
 - delivery of the same package
 
@@ -143,7 +204,7 @@ In a more realistic cloud pipeline, the next steps often look like this:
 That means:
 
 - the beginner course uses a GitHub artifact to carry the package forward
-- the cloud-shaped example uses ACR to carry the container image forward
+- the cloud-shaped example uses ACR to carry the tagged container image forward
 - AKS then runs that same pushed image
 
 For this course, we stop before that point to keep the lab stable and beginner-friendly.
@@ -151,7 +212,7 @@ For this course, we stop before that point to keep the lab stable and beginner-f
 If you want to see that shape, read:
 
 - [How ACR and AKS Fit the Story](../docs/08-how-acr-and-aks-fit-the-story.md)
-- [azure-acr-aks-example.yml](../docs/examples/azure-acr-aks-example.yml)
+- [06-azure-acr-aks-example.yml](../.github/workflows/06-azure-acr-aks-example.yml)
 
 ## If You Get Stuck
 
@@ -175,6 +236,7 @@ You are done when:
 - the workflow passes
 - you can point to `verify`, `build-container`, and `deploy-simulated`
 - you can explain why the deploy job used the built image artifact
+- you can explain the difference between `docker build` and `docker buildx build --push`
 - you can explain why `needs` makes the workflow order clear
 
 ## Reflection
@@ -184,4 +246,5 @@ After the lab, try to answer these questions:
 - What made this workflow feel more production-like?
 - Which parts were still the same as the smaller beginner workflows?
 - Why is a simple image tag useful?
+- Why might a real team push a tagged image to ACR?
 - Why is it better to deploy the built image than to rebuild again later?

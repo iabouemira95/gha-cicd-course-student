@@ -36,6 +36,8 @@ That means the example is inspired by real patterns without becoming an enterpri
 
 If you want to see how the same story often grows into a cloud-shaped flow with ACR and AKS, use [How ACR and AKS Fit the Story](08-how-acr-and-aks-fit-the-story.md).
 
+That page also points to a manual-only example workflow in `.github/workflows`.
+
 ## The Story in One Workflow
 
 The workflow still follows the same course story:

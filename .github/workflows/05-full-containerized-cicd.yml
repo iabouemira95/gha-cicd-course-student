@@ -57,8 +57,9 @@ jobs:
           IMAGE_TAG="run-${GITHUB_RUN_NUMBER}"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
-      - name: Build Docker image
-        # This is the containerization step of the pipeline.
+      - name: Build Docker image with docker build
+        # This workflow uses plain docker build first because it is easier to read.
+        # We add a traceable tag and a latest tag to the same image.
         run: |
           docker build \
             -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \

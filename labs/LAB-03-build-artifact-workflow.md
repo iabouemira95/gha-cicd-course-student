@@ -28,7 +28,8 @@ This workflow keeps the CI check and adds packaging:
 
 - `workflow_dispatch` lets you run it manually
 - `Run tests` verifies the code before packaging
-- `Build Docker image` creates the package
+- `Set image tag` creates one simple tag for this workflow run
+- `Build Docker image with docker build` creates the package
 - `Save Docker image as artifact file` turns the image into a saved file
 - `Upload build artifact` stores that file for later use
 
@@ -39,10 +40,32 @@ Read the file once before running it.
 You should be able to find:
 
 - the test step
+- the image tag step
 - the Docker build step
 - the artifact upload step
 
-## Step 2: Run the Workflow Manually
+## Step 2: Read the Main Docker Command
+
+The core packaging command in this lab is:
+
+```bash
+docker build \
+  -t "tiny-health-app:run-123" \
+  -t "tiny-health-app:latest" \
+  .
+```
+
+What this means:
+
+- `docker build` builds an image from the `Dockerfile`
+- `-t` adds a tag to the image
+- `run-123` stands for one traceable tag for one build
+- `latest` is a second easy-to-read tag
+- `.` means "build using the current folder"
+
+For this course, this is the first and simplest build shape to learn.
+
+## Step 3: Run the Workflow Manually
 
 Open the `Actions` tab.
 
@@ -50,7 +73,7 @@ Open `03 Build Artifact Workflow`.
 
 Use `Run workflow` to start the workflow manually.
 
-## Step 3: Open the Workflow Run
+## Step 4: Open the Workflow Run
 
 Open the new run and watch the steps.
 
@@ -59,11 +82,12 @@ You should see steps like:
 - `Check out repository`
 - `Set up Python`
 - `Run tests`
-- `Build Docker image`
+- `Set image tag`
+- `Build Docker image with docker build`
 - `Save Docker image as artifact file`
 - `Upload build artifact`
 
-## Step 4: Find the Artifact
+## Step 5: Find the Artifact
 
 On the workflow run page, look for the artifact section.
 
@@ -75,12 +99,12 @@ You do not need to inspect the file contents for this lab.
 
 The important point is that the workflow produced a packaged output and saved it.
 
-## Step 5: Explain the Story in Your Own Words
+## Step 6: Explain the Story in Your Own Words
 
 Try to describe the workflow like this:
 
 1. the workflow checks the app
-2. the workflow packages the app
+2. the workflow builds and tags the package
 3. the workflow saves the package for later use
 
 ## What You Should Notice
@@ -88,6 +112,10 @@ Try to describe the workflow like this:
 This workflow is important because it creates a reusable output.
 
 That output can be used later in deployment instead of rebuilding from scratch again.
+
+You should also notice that tagging starts to answer a useful real-world question:
+
+"Which exact image did this run create?"
 
 ## If the Workflow Fails
 
@@ -113,5 +141,6 @@ You are done when:
 After the lab, try to answer these questions:
 
 - Why is a build artifact useful?
+- Why are image tags useful?
 - Why is an image different from a container?
 - Why is saving the packaged output better than relying only on source code?
