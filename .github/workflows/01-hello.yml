@@ -12,10 +12,11 @@ on:
   workflow_dispatch:
       
 jobs:
-  run-after-merge:
-    if: github.event.pull_request.merged == true
+  say-hello:
+    # GitHub provides a fresh runner for the job.
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run after merge
-        run: echo "PR was merged 🚀"
+      - name: Say hello
+        # This single step is enough to show a full workflow run.
+        run: echo "Hello from GitHub Actions , This is Abdalla"
