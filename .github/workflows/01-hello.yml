@@ -12,8 +12,10 @@ on:
 
 jobs:
   on-merge:
+
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    
     steps:
       - name: Run on merge
         run: echo "The PR was successfully merged!this is saif"
