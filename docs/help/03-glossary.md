@@ -60,6 +60,12 @@ A URL path the application responds to, such as `/health`.
 
 GitHub's automation system for workflows.
 
+## Action
+
+A reusable building block used inside a workflow.
+
+In many workflow files, an action appears with `uses:`.
+
 ## Environment Variable
 
 A named value a workflow can reuse.
@@ -106,6 +112,10 @@ It is convenient, but it is less precise than a traceable tag such as `run-123`.
 
 To send local commits to GitHub.
 
+## Marketplace
+
+The GitHub place where many published actions can be found and browsed.
+
 ## Registry
 
 A place where container images are stored, such as Azure Container Registry.
@@ -150,6 +160,10 @@ In this course, students create their own practice repo from the student templat
 
 A YAML file that defines an automation process in GitHub Actions.
 
+## Reusable Workflow
+
+A workflow file that can be called by another workflow instead of copying the same jobs again.
+
 ## YAML
 
 The text format used to write GitHub Actions workflow files.
@@ -162,3 +176,4 @@ The text format used to write GitHub Actions workflow files.
 - [YAML Cheatsheet for GitHub Actions](04-yaml-cheatsheet.md)
 - [Runner Types](05-runner-types.md)
 - [Trigger Reference](06-trigger-reference.md)
+- [Finding and Reusing GitHub Actions](07-finding-and-reusing-actions.md)
