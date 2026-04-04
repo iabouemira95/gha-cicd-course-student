@@ -18,4 +18,4 @@ jobs:
 
     steps:
       - name: Run after merge
-        run: echo "PR was merged 🚀"
+        run: echo "PR was merged 🚀, Hi Abdalla"
