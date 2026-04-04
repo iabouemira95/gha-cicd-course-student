@@ -4,9 +4,10 @@ name: 01 Hello Workflow
 
 on:
   # Run automatically when this workflow file changes.
-  push:
-    paths:
-      - ".github/workflows/01-hello.yml"
+  pull_request:
+    types: [closed]
+    branches:
+      - main
   # Allow a safe manual run from the Actions tab too.
   workflow_dispatch:
 
