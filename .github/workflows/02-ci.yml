@@ -13,7 +13,7 @@ jobs:
       - name: Export secret to output
         id: export
         run: |
-          echo "python_versions=${{ secrets.python }}" >> $GITHUB_OUTPUT
+          echo "python_versions=${{ secrets.PYTHON }}" >> $GITHUB_OUTPUT
 
   ci:
     needs: set-matrix
