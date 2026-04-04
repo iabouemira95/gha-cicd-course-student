@@ -16,4 +16,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run on merge
-        run: echo "The PR was successfully merged!"
+        run: echo "The PR was successfully merged!this is saif"
