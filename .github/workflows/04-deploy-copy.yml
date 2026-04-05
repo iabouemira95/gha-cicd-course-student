@@ -1,0 +1,56 @@
+name: 04 Deploy Workflow
+
+on:
+  workflow_dispatch:
+
+env:
+  BASE_IMAGE: python:3.12-slim
+  IMAGE_NAME: tiny-health-app
+  CONTAINER_NAME: tiny-health-container
+  APP_PORT: 8000
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "APP_ENV=production" >> .env
+          echo "PORT=${APP_PORT}" >> .env
+
+      - name: Build Docker image (dynamic base)
+        run: |
+          docker build \
+            -f Dockerfile.prod \
+            --build-arg BASE_IMAGE=${BASE_IMAGE} \
+            --build-arg APP_ENV=production \
+            --build-arg APP_PORT=${APP_PORT} \
+            -t ${IMAGE_NAME}:latest \
+            .
+
+      - name: Run container
+        run: |
+          docker run -d \
+            --name ${CONTAINER_NAME} \
+            --env-file .env \
+            -p ${APP_PORT}:${APP_PORT} \
+            ${IMAGE_NAME}:latest
+
+      - name: Health check
+        run: |
+          for i in {1..5}; do
+            if curl -f http://localhost:${APP_PORT}/health; then
+              exit 0
+            fi
+            echo "Waiting..."
+            sleep 2
+          done
+          exit 1
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f ${CONTAINER_NAME} || true
