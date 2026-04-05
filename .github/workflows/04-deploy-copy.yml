@@ -1,4 +1,4 @@
-name: 04 Deploy Workflow
+name: 04 Deploy Workflow Copy
 
 on:
   workflow_dispatch:
