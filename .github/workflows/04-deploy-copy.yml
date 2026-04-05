@@ -40,16 +40,19 @@ jobs:
             -p ${APP_PORT}:${APP_PORT} \
             ${IMAGE_NAME}:latest
 
-      - name: Health check
+      - name: Smoke test deployed app
+        # Retry a few times because app startup can take a moment.
         run: |
-          for i in {1..5}; do
-            if curl -f http://localhost:${APP_PORT}/health; then
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent http://127.0.0.1:8000/health; then
               exit 0
             fi
-            echo "Waiting..."
+            echo "Waiting for app to become ready..."
             sleep 2
           done
+          echo "App did not become ready in time."
           exit 1
+
 
       - name: Cleanup
         if: always()
