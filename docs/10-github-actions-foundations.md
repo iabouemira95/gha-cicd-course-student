@@ -98,7 +98,7 @@ Simple rule:
 - job-level `env` is only for one job
 - `vars` comes from `Settings -> Secrets and variables -> Actions -> Variables`
 
-Use this short reading rule:
+Quick comparison:
 
 - `env` = value written in the YAML file
 - `vars` = value stored in GitHub settings

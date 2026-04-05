@@ -87,10 +87,9 @@ Open these files during Day 2:
 2. [Exercise 06: CI Then Build Artifact With `needs`](exercises/EX-06-ci-then-build-artifact-with-needs.md)
 3. [Artifacts, Images, and Containers](docs/02-artifacts-images-and-containers.md)
 4. [Lab 03: Build Artifact Workflow](labs/LAB-03-build-artifact-workflow.md)
-5. [Exercise 05: Build Artifact with Buildx](exercises/EX-05-build-artifact-with-buildx.md)
-6. [Simulated Deployment](docs/03-simulated-deployment.md)
-7. [Lab 04: Deploy Workflow](labs/LAB-04-deploy-workflow.md)
-8. [Lab 05: Full CI/CD Flow](labs/LAB-05-full-cicd-flow.md)
+5. [Simulated Deployment](docs/03-simulated-deployment.md)
+6. [Lab 04: Deploy Workflow](labs/LAB-04-deploy-workflow.md)
+7. [Lab 05: Full CI/CD Flow](labs/LAB-05-full-cicd-flow.md)
 
 `EX-06` is the Day 2 bridge challenge.
 
@@ -98,10 +97,12 @@ Use it right after the recap to connect Day 1 CI ideas to Day 2 packaging ideas.
 
 Other Day 2 challenge work should come only after the related core lab is complete.
 
-After `LAB-04`, your instructor may also choose one small follow-up challenge:
+Optional Day 2 challenges:
 
+- [EX-05: Build Artifact with Buildx](exercises/EX-05-build-artifact-with-buildx.md)
 - [EX-07: Deploy and Inspect the Deployment](exercises/EX-07-deploy-inspect-the-deployment.md)
 - [EX-08: Build and Run With GitHub Variables](exercises/EX-08-build-and-run-with-github-variables.md)
+- [EX-09: Full Flow Failure and Recovery](exercises/EX-09-full-flow-failure-and-recovery.md)
 
 ## Optional Next Steps
 

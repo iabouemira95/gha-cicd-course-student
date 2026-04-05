@@ -87,6 +87,12 @@ Still in the `Actions` tab, open `03 Build Artifact Workflow`.
 
 Use `Run workflow` to start it manually.
 
+In this beginner course, that manual start is a teaching choice.
+
+It keeps Day 2 packaging easier to follow.
+
+In larger real pipelines, packaging is often triggered automatically after verification.
+
 Wait for it to pass.
 
 ## Step 6: Watch the Deploy Workflow
@@ -148,3 +154,13 @@ After the lab, try to answer these questions:
 - What did the build workflow add?
 - Why did deploy use the saved artifact instead of rebuilding?
 - Which part of GitHub Actions now feels more familiar than it did on Day 1?
+
+## Challenge After Lab 05
+
+If your instructor wants one final capstone challenge at the end of Day 2, continue with:
+
+- [EX-09: Full Flow Failure and Recovery](../exercises/EX-09-full-flow-failure-and-recovery.md)
+
+This challenge keeps the same core workflows and asks one important question:
+
+What should happen to the full story when verification fails, and what should happen after the fix?

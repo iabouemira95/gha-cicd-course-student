@@ -53,3 +53,7 @@ After [LAB-04: Deploy Workflow](../labs/LAB-04-deploy-workflow.md):
 
 1. [EX-07: Deploy and Inspect the Deployment](EX-07-deploy-inspect-the-deployment.md)
 2. [EX-08: Build and Run With GitHub Variables](EX-08-build-and-run-with-github-variables.md)
+
+At the end of Day 2, after [LAB-05: Full CI/CD Flow](../labs/LAB-05-full-cicd-flow.md):
+
+1. [EX-09: Full Flow Failure and Recovery](EX-09-full-flow-failure-and-recovery.md)

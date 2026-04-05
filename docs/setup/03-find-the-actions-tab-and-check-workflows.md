@@ -38,6 +38,8 @@ If you also see workflows with names that start with `EXERCISE` or `OPTIONAL`, d
 
 Those are extra challenge or example workflows and are not part of the core starting path.
 
+## Open Only These Workflows at the Start
+
 At the start of the course, open only these workflow names:
 
 - `01 Hello Workflow`

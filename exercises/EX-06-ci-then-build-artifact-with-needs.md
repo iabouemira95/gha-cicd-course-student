@@ -13,6 +13,16 @@ The rule is simple:
 
 the packaging job must wait until the CI job succeeds.
 
+## How to Use This Challenge
+
+This is a guided Day 2 bridge challenge.
+
+Use it with your instructor right after the recap.
+
+The goal is to connect Day 1 CI ideas to Day 2 packaging ideas.
+
+It is not meant to replace `LAB-03`.
+
 ## Related Core Lab
 
 Use this after:

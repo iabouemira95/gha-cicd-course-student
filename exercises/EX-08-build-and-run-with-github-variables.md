@@ -40,7 +40,11 @@ Finish `LAB-04` first, then use this challenge to practice one small configurati
 
 ## Before You Run the Workflow
 
-Make sure these GitHub Actions variables exist in your repository:
+Create normal repository variables for this exercise.
+
+Do not use secrets.
+
+Do not use GitHub environments for this exercise.
 
 Go to:
 

@@ -34,7 +34,7 @@ Examples from this course:
 uses: actions/checkout@v6
 uses: actions/setup-python@v6
 uses: actions/upload-artifact@v4
-uses: actions/download-artifact@v8
+uses: actions/download-artifact@v4
 ```
 
 These are reusable actions.

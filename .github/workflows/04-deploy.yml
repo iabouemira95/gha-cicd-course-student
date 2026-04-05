@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Download build artifact
         # Download the exact artifact produced by the build run.
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: tiny-health-app-image
           github-token: ${{ github.token }}
