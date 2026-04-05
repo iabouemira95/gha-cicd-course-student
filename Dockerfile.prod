@@ -14,6 +14,4 @@ ENV PORT=$APP_PORT
 
 COPY . .
 
-RUN pip install -r requirements.txt
-
 CMD ["python", "app.py"]
