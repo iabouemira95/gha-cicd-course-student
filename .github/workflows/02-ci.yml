@@ -1,4 +1,4 @@
-name: CI with Matrix and Build
+name: 02 CI with Matrix and Build
 
 on:
   workflow_dispatch:
