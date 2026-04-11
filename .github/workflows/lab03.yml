@@ -4,8 +4,7 @@ name: 03 Build Artifact Workflow
 
 on:
   # Students start this workflow manually from the Actions tab.
-  workflow_dispatch:
-
+  push:
 env:
   # Keep common image values in one place so the build steps stay readable.
   IMAGE_NAME: tiny-health-app
