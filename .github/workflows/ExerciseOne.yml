@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Hello from Ado & Khaled
-        run: echo "Hello from GitHub Actions and from Ado & Khaled"
+        run: echo "Hello from GitHub Actions and from Ado & Khaled."
