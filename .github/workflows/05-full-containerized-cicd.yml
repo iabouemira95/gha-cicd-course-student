@@ -17,7 +17,6 @@ jobs:
   verify:
     # Verification stays first because CI should prove the change is safe.
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -37,6 +36,9 @@ jobs:
     outputs:
       image_tag: ${{ steps.image-tag.outputs.image_tag }}
 
+    strategy:
+      matrix:
+        python-version: [3.11, 3.12]
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -56,6 +58,8 @@ jobs:
           docker build \
             -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
             -t "${IMAGE_NAME}:latest" \
+            --build-arg BASE_IMAGE=${{ matrix.python-version }}-slim \
+            -f Dockerfile.arg-base \
             .
 
       - name: Save Docker image as artifact file
