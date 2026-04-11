@@ -13,7 +13,7 @@ env:
   ARTIFACT_NAME: tiny-health-app-image
 
 jobs:
-  build-package:
+  setup-package:
     # Use a fresh GitHub-hosted runner for the build.
     runs-on: ubuntu-latest
 
@@ -32,31 +32,53 @@ jobs:
         # Build only after the verification step passes.
         run: python -m unittest discover -s tests -v
 
-      - name: Set image tag
+jobs:
+  build-package:
+    # Use a fresh GitHub-hosted runner for the build.
+    needs:  setup-package
+
+    runs-on: ubuntu-latest
+
+    strategy: 
+      matrix:
+        python-version:[3.11,3.12]
+
+    steps:
+       - name: Check out repository
+        # Get the repository files onto the runner.
+         uses: actions/checkout@v6
+
+       -  name: Set up Python
+        # Prepare Python so the workflow can run the tests first.
+          uses: actions/setup-python@v6
+          with:
+          python-version: ${{matrix.python-version}}
+          
+       - name: Set image tag
         # Use today's UTC date plus the GitHub run ID.
         # This keeps the tag easy to explain and still unique for the run.
-        id: image-tag
-        run: |
+         id: image-tag
+         run: |
           TODAY="$(date -u +%Y-%m-%d)"
           IMAGE_TAG="${TODAY}-${GITHUB_RUN_ID}"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
-      - name: Build Docker image with docker build
+       - name: Build Docker image with docker build
         # Create the packaged application image with one traceable tag.
         # The deploy workflow will run this exact same tag later.
-        run: |
+         run: |
           docker build \
             -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
             .
 
-      - name: Save Docker image as artifact file
+       - name: Save Docker image as artifact file
         # Convert that exact tagged image into a file that can be reused later.
-        run: docker save "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" -o "${IMAGE_TAR}"
+         run: docker save "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" -o "${IMAGE_TAR}"
 
-      - name: Upload build artifact
+       - name: Upload build artifact
         # Store the packaged output so a later workflow can use the exact same package.
-        uses: actions/upload-artifact@v4
-        with:
+         uses: actions/upload-artifact@v4
+         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.IMAGE_TAR }}
           retention-days: 7
