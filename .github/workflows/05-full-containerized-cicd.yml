@@ -3,7 +3,6 @@
 name: 90 OPTIONAL Full Containerized CI/CD Workflow
 
 on:
-  push:
   # Keep this optional example manual-only so it does not distract from the core labs.
   workflow_dispatch:
 
