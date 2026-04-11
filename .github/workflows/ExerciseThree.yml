@@ -1,6 +1,6 @@
 # This is the first real CI workflow in the course.
 # It verifies a change by running tests on a fresh runner.
-name: 02 CI Workflow
+name: 03 CI Workflow
 
 on:
   # Run automatically when app code, tests, or this workflow file changes.
@@ -8,7 +8,7 @@ on:
     paths:
       - "app/**"
       - "tests/**"
-      - ".github/workflows/02-ci.yml"
+      - ".github/workflows/ExerciseThree.yml"
   # Allow a safe manual run before students trigger it with a code change.
   workflow_dispatch:
 
