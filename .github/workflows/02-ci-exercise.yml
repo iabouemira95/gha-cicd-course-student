@@ -1,0 +1,28 @@
+name: CI Exercise Workflow
+on:
+  push:
+    paths:
+      - "app/**"
+      - "tests/**"
+      - ".github/workflows/02-ci-exercise.yml"
+  schedule: 
+    - cron: "0 0 * * 0" # Run every Sunday at midnight  
+  workflow_dispatch: 
+jobs:
+    run-tests:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Check out repository
+          uses: actions/checkout@v6
+        - name: Show pulled code
+          run: ls -R
+        - name: Set up Python
+          uses: actions/setup-python@v6
+          with:
+            python-version: "3.12"
+        - name: Show Python version
+          run: python --version
+        - name: Start time
+          run: date          
+        - name: Run tests
+          run: python -m unittest discover -s tests -v
