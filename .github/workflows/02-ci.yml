@@ -29,5 +29,5 @@ jobs:
           python-version: "3.12"
 
       - name: Run tests
-        # This is the key verification step in the CI workflow.
+        # This is the key verification step in the CI Workflow.
         run: python -m unittest discover -s tests -v
