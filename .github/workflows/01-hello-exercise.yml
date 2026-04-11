@@ -1,0 +1,20 @@
+name: 01 Hello Exercise Workflow
+
+on:
+  # Run when a pull request is merged.
+  pull_request:
+    types:
+    - closed
+  # Allow a safe manual run from the Actions tab too.
+  workflow_dispatch:
+
+jobs:
+  say-hello:
+    # GitHub provides a fresh runner for the job.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say hello
+        # This single step is enough to show a full workflow run.
+        run: echo "Hello from GitHub Actions, by basel"
+        # one more run to go
