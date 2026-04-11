@@ -1,0 +1,28 @@
+name: 01 Hello Exercise
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed        # fires when a PR is closed (merged OR just closed)
+  workflow_dispatch:  # allows manual triggering from the Actions tab
+
+jobs:
+  pr-merged:
+    name: PR was merged
+    # Only run this job when the PR was actually merged
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello on merge
+        run: echo "Hello from GitHub Actions , Nour"
+
+  pr-closed-without-merge:
+    name: PR was closed without merging
+    # Only run this job when the PR was closed but NOT merged
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello on close
+        run: echo "Hello from GitHub Actions , Nour"
