@@ -1,0 +1,32 @@
+name: Exercise CI Workflow Matrix
+on:
+  push:
+    paths:
+      - "app/**"
+      - "tests/**"
+      - ".github/workflows/02-ci-matrix-exercise.yml"
+  schedule: 
+    - cron: "0 12 * * 6" # Every Saturday at 12:00 PM
+  workflow_dispatch: 
+jobs:
+    run-tests:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+                python-version: ["3.11, 3.12"]
+        steps:
+        - name: Check out repository
+          uses: actions/checkout@v6
+        - name: Show pulled code
+          run: ls -R
+        - name: Set up Python
+          uses: actions/setup-python@v6
+          with:
+            python-version: ${{ matrix.python-version }}
+        - name: Show Python version
+          run: python --version
+        - name: Start time
+          run: date          
+        - name: Run tests
+          run: python -m unittest discover -s tests -v
