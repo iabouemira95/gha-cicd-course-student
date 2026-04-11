@@ -14,9 +14,5 @@ jobs:
     
     steps:
       - name: Greet the Team
-<<<<<<< HEAD
-        run: echo "The Pull Request was successfully merged into main!"
-        
-=======
+      
         run: echo "The Pull Request was successfully merged into main (test PR close). !"
->>>>>>> dbc612d4130b80ec13f02eb1b3481a465269342d
