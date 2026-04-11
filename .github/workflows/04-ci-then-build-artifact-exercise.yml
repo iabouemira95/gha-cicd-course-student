@@ -1,6 +1,6 @@
 # This workflow packages the verified app.
 # It is manual on purpose so Day 1 stays focused on CI.
-name: 04 CI then Build Artifact Workflow
+name: 04 CI then Build Artifact Workflow Exercise
 
 on:
   # Students start this workflow manually from the Actions tab.
