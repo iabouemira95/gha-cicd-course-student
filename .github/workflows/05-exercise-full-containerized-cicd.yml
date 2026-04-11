@@ -57,7 +57,8 @@ jobs:
         # This workflow uses plain docker build first because it is easier to read.
         # We add a traceable tag and a latest tag to the same image.
         run: |
-          docker build \
+          docker build-arg \
+              BASE_IMAGE="python:${{ matrix.python-version }}-slim" \
             -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}-${{ matrix.python-version }}" \
             -t "${IMAGE_NAME}:latest" \
             .
@@ -69,7 +70,7 @@ jobs:
       - name: Upload image artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
+          name: ${{ matrix.python-version }}-${{ env.ARTIFACT_NAME }}
           path: ${{ matrix.python-version }}-${{ env.IMAGE_TAR }}
           retention-days: 7
 
@@ -86,7 +87,7 @@ jobs:
       - name: Download image artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
+          name: ${{ matrix.python-version }}-${{ env.ARTIFACT_NAME }}
           path: downloaded-image
 
       - name: Load Docker image
