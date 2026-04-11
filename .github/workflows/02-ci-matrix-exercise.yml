@@ -6,7 +6,7 @@ on:
       - "tests/**"
       - ".github/workflows/02-ci-matrix-exercise.yml"
   schedule: 
-    - cron: "0 12 * * 6" # Every Saturday at 12:00 PM
+    - cron: "0 12 * * 6"
   workflow_dispatch: 
 jobs:
     run-tests:
