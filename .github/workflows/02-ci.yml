@@ -28,9 +28,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run tests
-        # This is the key verification step in the CI Workflow.
-        run: python -m unittest discover -s tests -v
+
       - name: Verify Python version
         run: python --version
 
@@ -38,3 +36,5 @@ jobs:
         run: |
           echo "Checking app directory..."
           ls -la app || echo "app folder not found"
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
