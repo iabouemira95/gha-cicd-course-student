@@ -1,0 +1,16 @@
+name: 01Exercise
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello from Ado & Khaled
+        run: echo "Hello from GitHub Actions and from Ado & Khaled"
