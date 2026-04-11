@@ -12,6 +12,9 @@ on:
   # Allow a safe manual run before students trigger it with a code change.
   workflow_dispatch:
 
+  schedule:
+    - cron: "0 12 * * *"
+
 jobs:
   run-tests:
     # The runner is the temporary machine that executes the steps below.
