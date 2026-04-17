@@ -1,0 +1,22 @@
+name: 01-EX
+
+on:
+    pull_request:
+        types: [ "closed" ]
+        branches: [ "main" ]    
+
+    workflow_dispatch:
+
+
+jobs:
+    say-hello:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: check if PR is merged
+              if: github.event.pull_request.merged == true
+              run: echo "PR was merged into main! - v2"   
+
+            - name: check if PR is merged
+              if: github.event.pull_request.merged == false
+              run: echo "PR was not merged into main!"                
