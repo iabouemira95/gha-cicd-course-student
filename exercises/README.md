@@ -8,20 +8,21 @@ Use them to build the next step yourself.
 
 Labs introduce the base workflow idea.
 
-Exercises extend that lab in one clear direction.
+Exercises extend that same workflow in one clear direction.
 
 ## Simple Rules
 
 - do the lab first
 - then do the exercise
 - do not rebuild the same lab task again
-- use the exercise to change or extend one idea from the lab
-- create the exercise workflow file yourself when the page asks for one
-- solution workflows live only in the instructor repo
+- use the exercise to change or extend one idea from the lab workflow you already know
+- most exercises modify an existing workflow file instead of creating a new one
+- `EX-11` is the later exception where you create workflow `08`
+- solution snapshots live only in the instructor repo
 
 `EX-09` is the one exception.
 
-It reuses the core course workflows instead of adding a new exercise workflow file.
+It reuses the core course workflows instead of focusing on one file only.
 
 ## Day 1
 
@@ -37,13 +38,16 @@ After [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md):
 
 ## Day 2
 
-After the Day 2 opening bridge:
+Day 2 numbering is historical.
 
-1. [EX-06: CI Then Build Artifact With `needs`](EX-06-ci-then-build-artifact-with-needs.md)
+Follow the order shown here.
+
+`EX-05` and `EX-06` both extend the build workflow from `LAB-03`.
 
 After [LAB-03: Build Artifact Workflow](../labs/LAB-03-build-artifact-workflow.md):
 
 1. [EX-05: Build Artifact with Buildx](EX-05-build-artifact-with-buildx.md)
+2. [EX-06: CI Then Build Artifact With `needs`](EX-06-ci-then-build-artifact-with-needs.md)
 
 After [LAB-04: Deploy Workflow](../labs/LAB-04-deploy-workflow.md):
 

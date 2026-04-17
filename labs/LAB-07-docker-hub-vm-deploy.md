@@ -161,7 +161,7 @@ This lab is still part of the same story:
 The important difference is:
 
 - `LAB-07` checks readiness
-- `EX-11` builds the real deploy workflow
+- `EX-11` builds the real deploy workflow by combining ideas you already know from `02-ci.yml`, `03-build-artifact.yml`, and `04-deploy.yml`
 
 ## If You Get Stuck
 

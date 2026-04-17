@@ -166,7 +166,7 @@ After this lab, continue with:
 
 `EX-09` keeps the same core workflows and focuses only on failure and recovery.
 
-`EX-10` keeps the same full story and changes it into a PR-based team workflow.
+`EX-10` keeps the same full story and changes it into a PR-based team workflow by extending `.github/workflows/02-ci.yml` and `.github/workflows/03-build-artifact.yml` while reusing `.github/workflows/04-deploy.yml`.
 
 ## Assessment Preparation Link
 

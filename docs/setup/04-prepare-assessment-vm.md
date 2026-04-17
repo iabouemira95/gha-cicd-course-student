@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This page explains the Ubuntu VM setup step for the later assessment path.
+This page is the quick gateway into the later Ubuntu VM assessment path.
 
 Use it only when your instructor asks you to prepare the VM-based deployment path.
 
@@ -27,6 +27,12 @@ Do not use this page:
 The script lives here:
 
 `scripts/install-assessment-deps.sh`
+
+This page gives you the first commands and the timing for that script.
+
+If you want the fuller VM checklist and deeper reference notes, use:
+
+- [Prepare the Ubuntu VM](../assessment/02-prepare-ubuntu-vm.md)
 
 It prepares or checks the common tools needed for the assessment VM:
 
@@ -94,6 +100,8 @@ Use that flag only if:
 - your VM uses `ufw`
 - you understand that you are changing local firewall rules on the VM
 
+If you are unsure, skip that flag and keep the default safe behavior.
+
 ## What Success Looks Like
 
 At the end of the script, the important checks should show `PASS`:
@@ -109,6 +117,10 @@ This result may show `WARN` the first time:
 - Docker user access
 
 That usually means the user was just added to the Docker group.
+
+If you want the fuller meaning of each check, use:
+
+- [Prepare the Ubuntu VM](../assessment/02-prepare-ubuntu-vm.md)
 
 ## Common Warnings
 
@@ -147,6 +159,6 @@ If your VM lives behind cloud networking rules, security groups, or NSGs, you mu
 
 After this page, continue with:
 
-1. [Final Assessment Support Overview](../assessment/README.md)
+1. [Prepare the Ubuntu VM](../assessment/02-prepare-ubuntu-vm.md)
 2. [Configure Docker Hub, SSH, and GitHub Secrets](../assessment/03-configure-secrets-and-ssh.md)
 3. [LAB-07: Final Assessment Setup and Validation Prep](../../labs/LAB-07-docker-hub-vm-deploy.md)

@@ -141,6 +141,8 @@ These exercises extend the same CI story in three different ways:
 - `EX-03` adds matrix
 - `EX-04` adds advanced secrets and matrix patterns
 
+They all keep working in `.github/workflows/02-ci.yml`.
+
 ## Assessment Preparation Link
 
 Later, the final assessment still starts with this same idea:

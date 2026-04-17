@@ -24,5 +24,5 @@
   <rect x="90" y="520" width="1000" height="150" rx="18" fill="#fff8c5" stroke="#d4a72c"/>
   <text x="120" y="565" fill="#24292f" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">Quick reading rule</text>
   <text x="120" y="603" fill="#24292f" font-family="Arial, Helvetica, sans-serif" font-size="22">Start of course: open only 01, 02, 03, and 04.</text>
-  <text x="120" y="635" fill="#24292f" font-family="Arial, Helvetica, sans-serif" font-size="22">Exercises later ask you to create new workflow files yourself.</text>
+  <text x="120" y="635" fill="#24292f" font-family="Arial, Helvetica, sans-serif" font-size="22">Most exercises later keep modifying these same workflow files.</text>
 </svg>

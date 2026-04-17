@@ -19,11 +19,21 @@ This final exercise builds on `LAB-05`, `EX-10`, and `LAB-07`.
 
 It is the final integration task, not a repeat of those earlier steps.
 
-## Build
-
-Create this workflow file yourself:
+## Workflow To Create
 
 - `.github/workflows/08-final-deployment-assessment.yml`
+
+This is the later exception where you create a new workflow file.
+
+That new file is still derived from earlier lab workflows:
+
+- take the verify idea from `.github/workflows/02-ci.yml`
+- take the image-tag and packaging idea from `.github/workflows/03-build-artifact.yml`
+- take the delivery-and-validation idea from `.github/workflows/04-deploy.yml`
+
+## Build
+
+Create `.github/workflows/08-final-deployment-assessment.yml`.
 
 Reference solution: instructor repo only.
 

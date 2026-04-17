@@ -138,7 +138,9 @@ After this lab, continue with:
 
 - [EX-07: Deploy and Inspect the Deployment](../exercises/EX-07-deploy-inspect-the-deployment.md)
 
-`EX-07` keeps the same deploy path and adds deeper inspection after startup.
+`EX-07` keeps working in `.github/workflows/04-deploy.yml`.
+
+It adds deeper inspection after startup without changing the main deploy story.
 
 ## Assessment Preparation Link
 

@@ -2,7 +2,11 @@
 
 ## Purpose
 
-This page helps you prepare one Ubuntu VM for the final assessment.
+This page is the fuller operational reference for one Ubuntu VM used in the final assessment.
+
+If you want the quick setup gateway first, start with:
+
+- [Prepare the Assessment VM](../setup/04-prepare-assessment-vm.md)
 
 ## Before You Start
 
@@ -12,6 +16,16 @@ Use this page only after you already know the standardized assessment model:
 - GitHub Actions reaches that VM over SSH
 - the deployed app must answer on port `8000`
 - Docker Hub carries the image and the VM must support Docker
+
+This page goes deeper than the setup gateway page.
+
+Use it when you want:
+
+- the fuller VM checklist
+- the dependency expectations
+- Docker user and relogin notes
+- firewall and cloud-network reminders
+- quick recovery guidance
 
 ## What the VM Must Support
 
@@ -33,6 +47,10 @@ This repository includes:
 Use `scripts/install-assessment-deps.sh` as the main script.
 
 Use `scripts/assessment/prepare-ubuntu-vm.sh` only as a thin shortcut wrapper if you want the older shorter command.
+
+If you only want the short first-step commands, return to:
+
+- [Prepare the Assessment VM](../setup/04-prepare-assessment-vm.md)
 
 The main script installs or checks the common VM dependencies used in this path:
 
@@ -109,11 +127,22 @@ Make sure:
 - your cloud security rule or VM network rule allows `8000`
 - the VM is reachable from the public internet, because GitHub-hosted runners must reach it too
 
+This script can detect local firewall state, but it cannot open cloud rules for you.
+
 ## Why This Matters
 
 The workflow can only deploy successfully if the VM is ready first.
 
 This preparation step removes the most common remote-deployment blockers before the workflow runs.
+
+## Quick Recovery Notes
+
+If the VM still fails readiness checks after the script:
+
+- confirm Docker service is active with `sudo systemctl status docker`
+- confirm the target user has Docker access after signing in again
+- confirm port `8000` is free on the VM
+- confirm your cloud or VM network rules still allow ports `22` and `8000`
 
 When this page is done, continue with:
 

@@ -103,7 +103,7 @@ That can happen because the repository also contains later optional example work
 
 Exercise workflow solutions are not preloaded in the student repo anymore.
 
-You will only see an exercise workflow after you create it yourself during the matching exercise.
+Most exercises now modify a workflow file that already exists from the lab.
 
 For the main course, focus on:
 

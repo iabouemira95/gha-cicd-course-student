@@ -40,8 +40,6 @@ For the core path, focus on these workflows:
 
 At the start of the course, focus on the four core workflows first.
 
-Later in the course, some exercises will ask you to create new workflow files yourself.
-
 Use this simple rule:
 
 - core beginner path = workflows `01` to `04` and Labs `01` to `05`
@@ -49,15 +47,19 @@ Use this simple rule:
 - `LAB-05` does not correspond to workflow `05`
 - later guided extension = `LAB-07` and `EX-11` when your instructor starts the Ubuntu VM assessment path
 - optional examples = workflow examples `05`, `06`, `LAB-06`, and the cloud-oriented extra reading
+- most exercises modify the workflow file from the lab you just finished
+- `EX-11` is the later exception where you create workflow `08`
 
 Use this quick rule in the `Actions` tab:
 
 - main path = the lab or exercise page your instructor is teaching now
 - core workflows = `01`, `02`, `03`, `04`
-- exercise workflows = create them yourself only when the matching exercise page asks you to do that
+- most exercises = keep modifying the lab workflow file you already know
 - final assessment prep workflow = `07`
 - final assessment workflow = create `08` yourself later when the final assessment page asks you to
 - optional next-step examples = workflows `05`, `06`, and later example pages
+
+Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-11`.
 
 ## Before Class
 
@@ -111,10 +113,10 @@ What do we deliver after the code is verified?
 Open these files during Day 2:
 
 1. [Day 2 Opening Bridge](docs/day-2-opening-bridge.md)
-2. [Exercise 06: CI Then Build Artifact With `needs`](exercises/EX-06-ci-then-build-artifact-with-needs.md)
-3. [Artifacts, Images, and Containers](docs/02-artifacts-images-and-containers.md)
-4. [Lab 03: Build Artifact Workflow](labs/LAB-03-build-artifact-workflow.md)
-5. [Exercise 05: Build Artifact with Buildx](exercises/EX-05-build-artifact-with-buildx.md)
+2. [Artifacts, Images, and Containers](docs/02-artifacts-images-and-containers.md)
+3. [Lab 03: Build Artifact Workflow](labs/LAB-03-build-artifact-workflow.md)
+4. [Exercise 05: Build Artifact with Buildx](exercises/EX-05-build-artifact-with-buildx.md)
+5. [Exercise 06: CI Then Build Artifact With `needs`](exercises/EX-06-ci-then-build-artifact-with-needs.md)
 6. [Simulated Deployment](docs/03-simulated-deployment.md)
 7. [Lab 04: Deploy Workflow](labs/LAB-04-deploy-workflow.md)
 8. [Exercise 07: Deploy and Inspect the Deployment](exercises/EX-07-deploy-inspect-the-deployment.md)
@@ -124,9 +126,9 @@ Open these files during Day 2:
 12. [Final Recap](docs/04-final-recap.md)
 13. [Labs Guide](labs/README.md)
 
-`EX-06` is the guided Day 2 bridge.
+`EX-05` and `EX-06` both extend `.github/workflows/03-build-artifact.yml`.
 
-The later Day 2 exercises continue the same course story after each related lab.
+Do `EX-05` first, then use `EX-06` to strengthen that same build workflow with a clearer multi-job shape.
 
 `LAB-05` is the integration lab that reuses workflows `02`, `03`, and `04`.
 
@@ -157,6 +159,8 @@ Open these files in order:
 `EX-11` is the build-it-yourself part.
 
 You create the final assessment workflow file yourself, and the prepared solution lives only in the instructor repo.
+
+Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-11`.
 
 ## Assessment Prep
 

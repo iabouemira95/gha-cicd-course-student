@@ -138,3 +138,7 @@ After the lab, try to answer these questions:
 After this lab, continue with:
 
 - [EX-01: Hello Trigger and PR Merge](../exercises/EX-01-hello-trigger-and-pr-merge.md)
+
+`EX-01` keeps working in `.github/workflows/01-hello.yml`.
+
+The challenge is to change the trigger story, not to start a second hello workflow.

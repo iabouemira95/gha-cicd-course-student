@@ -70,8 +70,11 @@ If you want a quick reminder about image tags, use [Artifacts, Images, and Conta
 After this lab, continue with:
 
 - [EX-05: Build Artifact with Buildx](../exercises/EX-05-build-artifact-with-buildx.md)
+- [EX-06: CI Then Build Artifact With `needs`](../exercises/EX-06-ci-then-build-artifact-with-needs.md)
 
-`EX-05` keeps the same packaging story and asks you to rebuild it with Buildx-based actions.
+`EX-05` keeps the same packaging story and asks you to rebuild `.github/workflows/03-build-artifact.yml` with Buildx-based actions.
+
+Then `EX-06` strengthens that same workflow again by splitting verify and package into clearer jobs with `needs`.
 
 Use that exercise when you want to compare:
 
