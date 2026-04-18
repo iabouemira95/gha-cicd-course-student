@@ -2,11 +2,11 @@ name: Combined CI and Build Workflow
 
 on:
 
-  pull_request:
-    branches: [ "main" ]
+#  pull_request:
+ #   branches: [ "main" ]
 
-  push:
-   branches: [ "main" ]
+  #push:
+   #branches: [ "main" ]
   workflow_dispatch:
 
 env:
