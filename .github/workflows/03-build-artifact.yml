@@ -2,9 +2,11 @@
 # It is manual on purpose so Day 1 stays focused on CI.
 name: 03 Build Artifact Workflow
 
+
 on:
-  push:
+  pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened]
   # Students start this workflow manually from the Actions tab.
   workflow_dispatch:
 
