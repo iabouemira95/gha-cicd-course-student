@@ -5,13 +5,13 @@ name: Deploy Workflow
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 env:
-  IMAGE_NAME: tiny-health-app
-  IMAGE_TAR: tiny-health-app.tar
-  ARTIFACT_NAME: tiny-health-app-image
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
+  ECR_REPOSITORY: github-action-course/my-app-repo
+  IMAGE_TAG: latest
 
 permissions:
   # Read access is enough because this workflow only downloads artifacts and reads repo data.
@@ -24,39 +24,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.ARTIFACT_NAME }}
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          # This variable will now work perfectly
-          run-id: ${{ github.event.workflow_run.id }}
-          path: downloaded-artifact
+      # Log in to ECR (AWS now knows who you are!)
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Show downloaded files
-        # Quick visibility step so students can see what arrived from the build.
-        run: ls -R downloaded-artifact
+      - name: Pull image from ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
-      - name: Load Docker image
-        # Turn the saved artifact file back into a Docker image.
-        run: docker load --input "downloaded-artifact/${IMAGE_TAR}"
-
-      - name: Recreate image tag from build run
-        # Rebuild the same date-plus-run-id tag the build workflow created.
-        id: image-tag
+        # Pull the exact same tagged image that the build workflow created.
         run: |
-          BUILD_DATE="$(echo "${{ github.event.workflow_run.created_at }}" | cut -dT -f1)"
-          IMAGE_TAG="${BUILD_DATE}-${{ github.event.workflow_run.id }}"
-          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+          docker pull "$ECR_REGISTRY/${ECR_REPOSITORY}:$IMAGE_TAG"
 
       - name: Start container
         # Start the exact same tagged image that the build workflow created.
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker run -d \
             --name "${CONTAINER_NAME}" \
             -p "${APP_PORT}:8000" \
-            "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
+            "$ECR_REGISTRY/${ECR_REPOSITORY}:${IMAGE_TAG}"
 
       - name: Smoke test deployed app
         # Retry a few times because app startup can take a moment.
