@@ -1,10 +1,11 @@
 name: 04 Deploy Workflow
 
 on:
-  workflow_run:
-    # Make sure this name matches the **actual name** of your build workflow
-    workflows: ["03 Build and Push to ECR"]
-    types: [completed]
+  workflow_dispatch:                    # Manual trigger – you can also keep workflow_run if needed
+  # Optional: trigger after build workflow succeeds (uncomment if desired)
+  # workflow_run:
+  #   workflows: ["03 Build and Push to ECR"]
+  #   types: [completed]
 
 env:
   # ---- ECR CONFIGURATION ----
@@ -13,21 +14,22 @@ env:
   AWS_ROLE_ARN: arn:aws:iam::134563994214:role/ECRrole
 
   # ---- APP CONFIGURATION ----
-  IMAGE_NAME: tiny-health-app
+  IMAGE_NAME: tiny-health-app          # kept for reference, but we'll use full ECR URI
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
 
 permissions:
-  id-token: write          # required for OIDC authentication
-  contents: read           # to read the repository (if needed)
+  id-token: write       # required for OIDC authentication with AWS
+  contents: read        # to read repository info (if needed)
 
 jobs:
   deploy-package:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    # If you switch back to workflow_run, add this condition:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      # 1. Authenticate to AWS using OIDC (same as in the build workflow)
+      # 1. Authenticate to AWS using OIDC
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -39,12 +41,16 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # 3. Recreate the exact image tag that was used in the build workflow
-      - name: Recreate image tag from build run
+      # 3. Determine image tag
+      #    - For workflow_dispatch: you can accept a tag as input
+      #    - For workflow_run: reconstruct from the build run as before
+      - name: Set image tag
         id: image-tag
         run: |
-          BUILD_DATE="$(echo "${{ github.event.workflow_run.created_at }}" | cut -dT -f1)"
-          IMAGE_TAG="${BUILD_DATE}-${{ github.event.workflow_run.id }}"
+          # If you use workflow_dispatch, you might want to pass the tag manually.
+          # Here we assume you have a way to know the tag (e.g., from a previous build).
+          # For demo, we use a fixed tag "latest" – replace with your logic.
+          IMAGE_TAG="latest"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
       # 4. Pull the Docker image from ECR
@@ -54,7 +60,7 @@ jobs:
         run: |
           docker pull $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ steps.image-tag.outputs.image_tag }}
 
-      # 5. Start the container (using the pulled image)
+      # 5. Start container
       - name: Start container
         run: |
           docker run -d \
@@ -62,7 +68,7 @@ jobs:
             -p "${APP_PORT}:8000" \
             "${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image-tag.outputs.image_tag }}"
 
-      # 6. Smoke test the deployed app
+      # 6. Smoke test deployed app
       - name: Smoke test deployed app
         run: |
           for attempt in 1 2 3 4 5; do
@@ -75,7 +81,7 @@ jobs:
           echo "App did not become ready in time."
           exit 1
 
-      # 7. Clean up (always runs, even on failure)
+      # 7. Stop container (cleanup)
       - name: Stop container
         if: always()
         run: docker rm -f "${CONTAINER_NAME}" || true
