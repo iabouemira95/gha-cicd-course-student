@@ -6,6 +6,8 @@ This page shows how the same CI/CD story can extend to a cloud-shaped workflow.
 
 This is an example page, not a core beginner lab.
 
+It is also not the standardized assessment path for this course.
+
 Do not run the Azure example workflow unless your instructor explicitly asks you to.
 
 ## Why This Page Exists

@@ -98,4 +98,5 @@ The simple delivery story is enough.
 
 - [LAB-03: Build Artifact Workflow](../labs/LAB-03-build-artifact-workflow.md)
 - [LAB-04: Deploy Workflow](../labs/LAB-04-deploy-workflow.md)
+- [Final Assessment Support](assessment/README.md)
 - [Troubleshooting](help/02-troubleshooting.md)

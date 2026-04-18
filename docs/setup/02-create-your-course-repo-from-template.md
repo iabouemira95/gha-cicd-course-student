@@ -58,13 +58,9 @@ If you do not see that button, ask your instructor to confirm that the course re
 
 ## What the Template Button Looks Like
 
-Add a screenshot here in a future course update so students can match the GitHub page more quickly.
+Use this reference view to match the page quickly:
 
-Placeholder screenshot target:
-
-`docs/images/setup-template-button.png`
-
-If you do not see that button, ask your instructor to confirm that the course repository is marked as a template repository.
+![Reference view of the GitHub template button](../images/setup-template-button.svg)
 
 ## Step 3: Choose Your New Repository Settings
 

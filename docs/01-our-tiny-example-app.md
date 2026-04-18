@@ -8,15 +8,27 @@ We keep it small on purpose so you can focus on CI/CD, not on application comple
 
 ## What the App Does
 
-The app has one simple endpoint:
+The app stays tiny, but it now gives us three useful endpoints:
 
 - `/health`
+- `/version`
+- `/status`
 
-When the app is running and you open `/health`, it returns a small JSON response:
+`/health` stays the smallest signal:
 
 ```json
 {"status": "ok"}
 ```
+
+`/version` is useful later when we want to see which build reached a deployment target.
+
+`/status` is useful later when we want to see simple runtime details such as:
+
+- commit SHA
+- deployment timestamp
+- hostname
+- environment
+- image tag
 
 That is enough for us to practice:
 
@@ -24,6 +36,7 @@ That is enough for us to practice:
 2. testing code
 3. packaging the app
 4. delivering the same package
+5. proving what was deployed later
 
 ## Why This App Is Small
 
@@ -55,11 +68,17 @@ From the repository root, run:
 python3 app/app.py
 ```
 
-Then open this address in your browser:
+Then open one of these addresses in your browser:
 
 `http://127.0.0.1:8000/health`
 
-You should see:
+or
+
+`http://127.0.0.1:8000/status`
+
+You should see JSON output.
+
+For `/health`, it should look like this:
 
 ```json
 {"status": "ok"}
@@ -88,6 +107,7 @@ Later in the course, we will use this same tiny app for:
 - a build workflow
 - a deploy workflow
 - one full CI/CD flow lab
+- one final deployment assessment
 
 The app stays almost the same.
 

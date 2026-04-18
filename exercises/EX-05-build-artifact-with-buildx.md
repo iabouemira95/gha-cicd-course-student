@@ -4,23 +4,24 @@
 
 - [LAB-03: Build Artifact Workflow](../labs/LAB-03-build-artifact-workflow.md)
 
+## Workflow To Modify
+
+- `.github/workflows/03-build-artifact.yml`
+
 ## Goal
 
 Keep the same packaging story from Lab 03, but use reusable Docker actions instead of raw Docker commands where possible.
 
-## Build
+This exercise keeps the same packaging goal from `LAB-03` and changes only the build implementation style.
 
-Create this workflow file yourself:
+## Challenge
 
-`.github/workflows/03-build-artifact-exercise.yml`
-
-Reference solution: instructor repo only.
+Modify `.github/workflows/03-build-artifact.yml`.
 
 If you need syntax help, use [Finding and Reusing GitHub Actions](../docs/help/07-finding-and-reusing-actions.md).
 
 ## Requirements
 
-- Create a packaging workflow in `.github/workflows/03-build-artifact-exercise.yml`.
 - Keep the same overall story from Lab 03.
 - Run the tests before packaging.
 - Use Buildx-based reusable actions instead of the raw Docker command path.
@@ -32,5 +33,6 @@ If you need syntax help, use [Finding and Reusing GitHub Actions](../docs/help/0
 - The workflow still shows tests first, then packaging.
 - The workflow produces a tar file as the packaged output.
 - The tar file is uploaded as the artifact.
+- The change still lives inside `.github/workflows/03-build-artifact.yml`.
 - You can explain what stayed the same from Lab 03.
 - You can explain what reusable actions replaced.

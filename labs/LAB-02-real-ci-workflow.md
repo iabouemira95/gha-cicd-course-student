@@ -135,13 +135,21 @@ After the lab is complete, continue with these exercises in order:
 2. [EX-03: CI Matrix](../exercises/EX-03-ci-matrix.md)
 3. [EX-04: CI Secrets and Matrix Patterns](../exercises/EX-04-ci-secrets-and-matrix.md)
 
-These exercises extend the same CI story.
+These exercises extend the same CI story in three different ways:
 
-They are useful for:
+- `EX-02` adds visibility and schedule
+- `EX-03` adds matrix
+- `EX-04` adds advanced secrets and matrix patterns
 
-- reading more workflow structure
-- comparing trigger choices
-- seeing how one job can repeat across versions
-- understanding where secrets fit in a workflow
+They all keep working in `.github/workflows/02-ci.yml`.
 
-They are the normal follow-up after Lab 02.
+## Assessment Preparation Link
+
+Later, the final assessment still starts with this same idea:
+
+- verify the change first
+- trust tests before packaging or deployment
+
+If you want to see how the final assessment builds on this lab, use:
+
+- [How the Current Labs Prepare You](../docs/assessment/04-how-current-labs-prepare-you.md)

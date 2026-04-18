@@ -34,7 +34,7 @@ If you do not see any workflow runs yet, that is okay.
 
 The first lab will create the first run.
 
-You may also see later optional example workflows.
+You may also see later optional example workflows and one later final assessment prep workflow.
 
 That is normal.
 
@@ -51,13 +51,21 @@ At the start of the course, open only these workflow names:
 
 ## What the Actions Page Looks Like
 
-Add a screenshot here in a future course update so students can match the page quickly.
+Use this reference view to match the page quickly:
 
-Placeholder screenshot target:
+![Reference view of the Actions page](../images/actions-page-core-workflows.svg)
 
-`docs/images/actions-page-core-workflows.png`
+In this view:
 
-On that future screenshot, visually mark the four core workflows and remind students that exercises later in the course are built by creating new workflow files yourself.
+- `01`, `02`, `03`, and `04` are the workflows to open first
+- `05` and `06` are optional next-step examples
+- `07` is the later final assessment prep workflow
+
+The final assessment prep workflow is preloaded later in the course.
+
+The final assessment workflow itself is not preloaded in the student repo.
+
+You create that later yourself if your instructor uses the final assessment.
 
 ## Step 4: If GitHub Asks You to Enable Workflows
 

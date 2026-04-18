@@ -68,13 +68,11 @@ Do not change many files at once before you understand the failure.
 
 ## Example of a Failed Step
 
-Add a screenshot here in a future course update showing one failed workflow run.
+Use this reference view:
 
-Placeholder screenshot target:
+![Reference view of a failed workflow step](../images/actions-failed-step-example.svg)
 
-`docs/images/actions-failed-step-example.png`
-
-When that screenshot is added, label these three things:
+Notice these three things:
 
 - workflow name
 - failed step

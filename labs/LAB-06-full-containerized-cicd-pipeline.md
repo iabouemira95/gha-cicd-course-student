@@ -258,3 +258,21 @@ After the lab, try to answer these questions:
 - Why is a date-plus-run-id image tag useful?
 - Why might a real team push a tagged image to ACR?
 - Why is it better to deploy the built image than to rebuild again later?
+
+## Assessment Preparation Link
+
+This optional lab is a useful preview for the final assessment because it already shows:
+
+- one fuller workflow
+- explicit job order with `needs`
+- a container image as the deployable package
+
+The final assessment keeps that same direction, but standardizes on:
+
+- Docker Hub
+- one Ubuntu VM
+- SSH deployment
+
+Use this page if you want to continue:
+
+- [Final Assessment Support](../docs/assessment/README.md)

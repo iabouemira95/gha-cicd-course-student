@@ -17,6 +17,8 @@ The earlier labs taught the pieces one by one.
 
 This lab connects them into one GitHub Actions experience.
 
+It intentionally reuses the earlier core workflow files instead of adding a new lab workflow.
+
 ## Files for This Lab
 
 Open these files in your repository:
@@ -162,10 +164,22 @@ After this lab, continue with:
 - [EX-09: Full Flow Failure and Recovery](../exercises/EX-09-full-flow-failure-and-recovery.md)
 - [EX-10: PR-Based CI/CD with Branch Protection](../exercises/EX-10-pr-based-ci-cd-with-branch-protection.md)
 
-`EX-09` keeps the same core workflows and asks one important question:
+`EX-09` keeps the same core workflows and focuses only on failure and recovery.
 
-What should happen to the full story when verification fails, and what should happen after the fix?
+`EX-10` keeps the same full story and changes it into a PR-based team workflow by extending `.github/workflows/02-ci.yml` and `.github/workflows/03-build-artifact.yml` while reusing `.github/workflows/04-deploy.yml`.
 
-`EX-10` adds one final team workflow question:
+## Assessment Preparation Link
 
-How should CI, CD, pull requests, and branch protection work together before and after code reaches `main`?
+The final assessment reuses this same full story:
+
+- code
+- verify
+- package
+- deliver
+
+The difference is that delivery moves from a GitHub-hosted simulation to a real Ubuntu VM reached over SSH.
+
+Use these pages when you are ready:
+
+- [Final Assessment Support](../docs/assessment/README.md)
+- [EX-11: Final Deployment Assessment](../exercises/EX-11-final-deployment-assessment.md)

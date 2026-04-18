@@ -1,10 +1,37 @@
 import json
+import os
+import socket
 from http.server import BaseHTTPRequestHandler, HTTPServer
+
+
+def get_runtime_metadata():
+    return {
+        "environment": os.getenv("APP_ENV", "local"),
+        "app_version": os.getenv("APP_VERSION", "dev"),
+        "commit_sha": os.getenv("COMMIT_SHA", "unknown"),
+        "deployed_at": os.getenv("DEPLOYED_AT", "unknown"),
+        "image_tag": os.getenv("IMAGE_TAG", "unknown"),
+        "deployment_mode": os.getenv("DEPLOY_MODE", "local-direct"),
+        "hostname": socket.gethostname(),
+    }
 
 
 def route_request(path):
     if path == "/health":
         return 200, {"status": "ok"}
+
+    if path == "/version":
+        metadata = get_runtime_metadata()
+        return 200, {
+            "app_version": metadata["app_version"],
+            "commit_sha": metadata["commit_sha"],
+            "image_tag": metadata["image_tag"],
+        }
+
+    if path == "/status":
+        payload = {"status": "ok"}
+        payload.update(get_runtime_metadata())
+        return 200, payload
 
     return 404, {"error": "not found"}
 
