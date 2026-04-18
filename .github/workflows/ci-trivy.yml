@@ -1,4 +1,3 @@
-# This workflow verifies the code, and upon merge, builds and pushes to AWS ECR.
 name: CI and ECR Push Workflow
 
 on:
@@ -33,6 +32,15 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Run Trivy FS scan (Filesystem)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -51,19 +59,26 @@ jobs:
           IMAGE_TAG="${TODAY}-${GITHUB_RUN_ID}"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build Docker image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           DYNAMIC_TAG: ${{ steps.image-tag.outputs.image_tag }}
         run: |
-          IMAGE_URI_DYNAMIC="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$DYNAMIC_TAG"
-          IMAGE_URI_LATEST="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:latest_1"
-          
-          echo "==== Building Docker Image with multiple tags ===="
-          docker build -t $IMAGE_URI_DYNAMIC -t $IMAGE_URI_LATEST .
-          
-          echo "==== Pushing Dynamic Tag to ECR ===="
-          docker push $IMAGE_URI_DYNAMIC
-          
-          echo "==== Pushing Latest Tag to ECR ===="
-          docker push $IMAGE_URI_LATEST
+          IMAGE_URI_DYNAMIC="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:${DYNAMIC_TAG}"
+          IMAGE_URI_LATEST="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:latest"
+          docker build -t "$IMAGE_URI_DYNAMIC" -t "$IMAGE_URI_LATEST" .
+          echo "IMAGE_URI_DYNAMIC=$IMAGE_URI_DYNAMIC" >> $GITHUB_ENV
+          echo "IMAGE_URI_LATEST=$IMAGE_URI_LATEST" >> $GITHUB_ENV
+
+      - name: Run Trivy Image scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.IMAGE_URI_DYNAMIC }}
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Push image to Amazon ECR
+        run: |
+          docker push ${{ env.IMAGE_URI_DYNAMIC }}
+          docker push ${{ env.IMAGE_URI_LATEST }}
