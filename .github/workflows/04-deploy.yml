@@ -63,13 +63,21 @@ jobs:
             -p "${APP_PORT}:8000" \
             "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
 
-      - name: Smoke test deployed app
-        # Retry a few times because app startup can take a moment.
+      - name: Post-startup check
+        # عرض الحاويات الشغالة (Acceptance Criteria 3)
+        run: docker ps
+
+      - name: Smoke test and show health response
         run: |
           for attempt in 1 2 3 4 5; do
-            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health"; then
+            # محاولة جلب الـ Response body (Acceptance Criteria 4)
+            RESPONSE=$(curl --silent --fail "http://127.0.0.1:${APP_PORT}/health" || true)
+            
+            if [ -n "$RESPONSE" ]; then
+              echo "Health Check Response Body: $RESPONSE"
               exit 0
             fi
+            
             echo "Waiting for app to become ready..."
             sleep 2
           done
