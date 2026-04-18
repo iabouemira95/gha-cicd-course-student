@@ -12,6 +12,7 @@ env:
   ECR_REPOSITORY: my-app
   # The ARN of the role you created in AWS
   AWS_ROLE_ARN: arn:aws:iam::134563994214:role/ECRrole
+  #comment to run
 
 jobs:
   build-package:
