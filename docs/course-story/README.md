@@ -79,7 +79,7 @@ Day 1 also builds the language needed for the labs:
 - GitHub standard practices and a simple branching strategy
 - workflow structure and trigger choices
 - jobs, steps, actions, and environment variables
-- where `matrix`, `needs`, and `secrets` fit as challenge or next-step ideas
+- where `matrix`, `needs`, and `secrets` fit as later exercise or next-step ideas
 
 Day 2 answers:
 

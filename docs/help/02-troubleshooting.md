@@ -15,6 +15,8 @@ Use this order when you feel stuck:
 3. use [How to Read Actions Logs](01-how-to-read-actions-logs.md)
 4. return here for the matching recovery section
 
+If you want the full help index first, open [Help Guide](README.md).
+
 ## I Cannot Find the `Actions` Tab
 
 Try these checks:
@@ -97,11 +99,11 @@ Check these things:
 
 ## I See Extra Workflows in the `Actions` Tab
 
-That can happen because the repository also contains later optional example workflows.
+That can happen because the repository also contains later optional example workflows and one later final assessment prep workflow.
 
 Exercise workflow solutions are not preloaded in the student repo anymore.
 
-You will only see an exercise workflow after you create it yourself during the matching exercise.
+Most exercises now modify a workflow file that already exists from the lab.
 
 For the main course, focus on:
 
@@ -111,6 +113,39 @@ For the main course, focus on:
 - `04 Deploy Workflow`
 
 If you are in the main course labs, focus on the four core workflows first and ignore later optional examples unless your instructor tells you to use them.
+
+The final assessment prep workflow is preloaded later in the course.
+
+The final assessment workflow itself is not preloaded in the student repo.
+
+You create it yourself later only if your instructor starts the final assessment.
+
+## The LAB-07 Readiness Workflow Failed
+
+Start with these checks:
+
+1. confirm all required GitHub secrets exist
+2. confirm SSH login works from your own machine first
+3. confirm the VM is reachable on port `8000`
+4. confirm Docker is installed on the VM
+5. open the first failed step before changing more setup items
+
+This workflow is only a setup check.
+
+It should not build or deploy the final solution.
+
+If it fails, also use:
+
+- [Final Assessment Support Overview](../assessment/README.md)
+- [Prepare the Ubuntu VM](../assessment/02-prepare-ubuntu-vm.md)
+- [Configure Docker Hub, SSH, and GitHub Secrets](../assessment/03-configure-secrets-and-ssh.md)
+- [LAB-07: Final Assessment Setup and Validation Prep](../labs/LAB-07-docker-hub-vm-deploy.md)
+
+## The EX-11 Final Assessment Workflow Failed
+
+If you are already in the assessed exercise, start with the same checks above and then continue with:
+
+- [EX-11: Final Deployment Assessment](../exercises/EX-11-final-deployment-assessment.md)
 
 ## I Accidentally Ran an Optional Workflow
 

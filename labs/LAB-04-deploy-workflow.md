@@ -137,8 +137,19 @@ After the lab, try to answer these questions:
 After this lab, continue with:
 
 - [EX-07: Deploy and Inspect the Deployment](../exercises/EX-07-deploy-inspect-the-deployment.md)
-- [EX-08: Build and Run With GitHub Variables](../exercises/EX-08-build-and-run-with-github-variables.md)
 
-These exercises are focused concept drills.
+`EX-07` keeps working in `.github/workflows/04-deploy.yml`.
 
-They extend the main lab story of deploying the saved artifact from an earlier workflow.
+It adds deeper inspection after startup without changing the main deploy story.
+
+## Assessment Preparation Link
+
+Later, the final assessment keeps the same delivery ideas, but moves them to a real Ubuntu VM:
+
+- deploy the already-built image
+- run a small smoke test
+- prove the running app is the right one
+
+If you want to see that mapping clearly, use:
+
+- [How the Current Labs Prepare You](../docs/assessment/04-how-current-labs-prepare-you.md)

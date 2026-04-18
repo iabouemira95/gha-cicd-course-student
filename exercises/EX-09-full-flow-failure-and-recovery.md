@@ -10,6 +10,8 @@ Break the full story on purpose, then recover it.
 
 This exercise proves that the pipeline should stop at `verify` when the change is not safe.
 
+This exercise reuses the same core workflows from `LAB-05` instead of creating a new workflow file.
+
 ## Files to Reuse
 
 This exercise uses the core course files:

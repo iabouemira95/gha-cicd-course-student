@@ -2,39 +2,38 @@
 
 ## Use This After
 
-- [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md)
-- the Day 2 opening bridge
+- [LAB-03: Build Artifact Workflow](../labs/LAB-03-build-artifact-workflow.md)
+- preferably [EX-05: Build Artifact with Buildx](EX-05-build-artifact-with-buildx.md)
 
-Then continue to [LAB-03: Build Artifact Workflow](../labs/LAB-03-build-artifact-workflow.md).
+## Workflow To Modify
+
+- `.github/workflows/03-build-artifact.yml`
 
 ## Goal
 
-Build one manual workflow with two jobs:
+Strengthen the build workflow so it shows two clear phases:
 
-1. CI runs first
+1. verify runs first
 2. packaging runs second
 
 The build job must wait for CI by using `needs`.
 
+This exercise keeps the same packaging story from `LAB-03`, but makes the workflow structure more explicit.
+
 ## Guided Note
 
-This is the guided Day 2 bridge exercise.
+This is the stronger build-workflow exercise for Day 2.
 
-Use it with your instructor.
+## Challenge
 
-## Build
+Continue modifying `.github/workflows/03-build-artifact.yml`.
 
-Create this workflow file yourself:
-
-`.github/workflows/04-ci-then-build-artifact-exercise.yml`
-
-Reference solution: instructor repo only.
+If you already completed `EX-05`, keep the Buildx version and extend that same file.
 
 ## Requirements
 
-- Create a manual workflow in `.github/workflows/04-ci-then-build-artifact-exercise.yml`.
-- The workflow should have one CI job and one packaging job.
-- The CI job should reuse the same verification idea from Lab 02.
+- The workflow should have one verification job and one packaging job.
+- The verification job should reuse the same test idea from Lab 03.
 - The packaging job should wait for CI by using `needs`.
 - The packaging job should use a fixed matrix for Python `3.11` and `3.12`.
 - Each package should use the matching Python base image.
@@ -42,8 +41,9 @@ Reference solution: instructor repo only.
 
 ## Acceptance Criteria
 
-- The Actions view shows CI first and packaging second.
+- The Actions view shows verification first and packaging second.
 - Packaging does not start before CI succeeds.
 - After CI passes, packaging fans out into one run per Python version.
 - The artifact names are unique.
+- The changes still live inside `.github/workflows/03-build-artifact.yml`.
 - You can explain what `needs` changed in the workflow behavior.
