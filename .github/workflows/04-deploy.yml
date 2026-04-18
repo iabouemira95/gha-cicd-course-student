@@ -1,11 +1,7 @@
 name: 04 Deploy Workflow
 
 on:
-  workflow_dispatch:                    # Manual trigger – you can also keep workflow_run if needed
-  # Optional: trigger after build workflow succeeds (uncomment if desired)
-  # workflow_run:
-  #   workflows: ["03 Build and Push to ECR"]
-  #   types: [completed]
+  workflow_dispatch:   # manual trigger only
 
 env:
   # ---- ECR CONFIGURATION ----
@@ -14,19 +10,16 @@ env:
   AWS_ROLE_ARN: arn:aws:iam::134563994214:role/ECRrole
 
   # ---- APP CONFIGURATION ----
-  IMAGE_NAME: tiny-health-app          # kept for reference, but we'll use full ECR URI
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
 
 permissions:
-  id-token: write       # required for OIDC authentication with AWS
-  contents: read        # to read repository info (if needed)
+  id-token: write
+  contents: read
 
 jobs:
   deploy-package:
     runs-on: ubuntu-latest
-    # If you switch back to workflow_run, add this condition:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       # 1. Authenticate to AWS using OIDC
@@ -41,16 +34,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # 3. Determine image tag
-      #    - For workflow_dispatch: you can accept a tag as input
-      #    - For workflow_run: reconstruct from the build run as before
+      # 3. Set the specific image tag (from your build)
       - name: Set image tag
         id: image-tag
         run: |
-          # If you use workflow_dispatch, you might want to pass the tag manually.
-          # Here we assume you have a way to know the tag (e.g., from a previous build).
-          # For demo, we use a fixed tag "latest" – replace with your logic.
-          IMAGE_TAG="latest"
+          IMAGE_TAG="2026-04-18-24603859530"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
       # 4. Pull the Docker image from ECR
