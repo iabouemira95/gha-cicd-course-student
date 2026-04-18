@@ -7,6 +7,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# 🚨 REQUIRED: This grants the workflow permission to request the OIDC token
+permissions:
+  id-token: write
+  contents: read
+
 env:
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
