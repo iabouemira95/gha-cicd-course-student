@@ -1,19 +1,18 @@
 # This is the first real CI workflow in the course.
 # It verifies a change by running tests on a fresh runner.
 name: 02 CI Workflow
-
+# Hafd:dadassdsa
 on:
-  # Run automatically when app code, tests, or this workflow file changes.
-  push:
-    paths:
-      - "app/**"
-      - "tests/**"
-      - ".github/workflows/02-ci.yml"
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  
+
   # Allow a safe manual run before students trigger it with a code change.
   workflow_dispatch:
 
 jobs:
-  run-tests:
+  verify:
     # The runner is the temporary machine that executes the steps below.
     runs-on: ubuntu-latest
 
