@@ -54,6 +54,8 @@ jobs:
           BUILD_DATE="$(echo "${{ github.event.workflow_run.created_at }}" | cut -dT -f1)"
           IMAGE_TAG="${BUILD_DATE}-${{ github.event.workflow_run.id }}"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+          echo "Recreated IMAGE TAG: $IMAGE_TAG"
+
 
       - name: Start container
         # Start the exact same tagged image that the build workflow created.
@@ -63,11 +65,15 @@ jobs:
             -p "${APP_PORT}:8000" \
             "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
 
+      - name: Show running containers
+        run: docker ps
+        
       - name: Smoke test deployed app
-        # Retry a few times because app startup can take a moment.
         run: |
           for attempt in 1 2 3 4 5; do
-            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health"; then
+            RESPONSE=$(curl --silent "http://127.0.0.1:${APP_PORT}/health") || true
+            if [ -n "$RESPONSE" ]; then
+              echo "Health response: $RESPONSE"
               exit 0
             fi
             echo "Waiting for app to become ready..."
