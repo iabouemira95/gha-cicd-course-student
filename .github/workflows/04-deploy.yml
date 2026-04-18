@@ -1,70 +1,62 @@
-# This workflow completes the story by delivering the saved package.
-# It starts after the build workflow finishes successfully.
 name: 04 Deploy Workflow
 
 on:
-  workflow_run:
-    # Listen for the build workflow by name.
-    workflows: ["03 Build Artifact Workflow"]
-    # Start when the build workflow has completed.
-    types: [completed]
+  workflow_dispatch:   # manual trigger only
 
 env:
-  IMAGE_NAME: tiny-health-app
-  IMAGE_TAR: tiny-health-app.tar
-  ARTIFACT_NAME: tiny-health-app-image
+  # ---- ECR CONFIGURATION ----
+  AWS_REGION: eu-north-1
+  ECR_REPOSITORY: my-app
+  AWS_ROLE_ARN: arn:aws:iam::134563994214:role/ECRrole
+
+  # ---- APP CONFIGURATION ----
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
 
 permissions:
-  # Read access is enough because this workflow only downloads artifacts and reads repo data.
-  actions: read
+  id-token: write
   contents: read
 
 jobs:
   deploy-package:
-    # Continue only when the build workflow succeeded.
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    # Use a fresh runner for the deployment simulation.
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download build artifact
-        # Download the exact artifact produced by the build run.
-        uses: actions/download-artifact@v4
+      # 1. Authenticate to AWS using OIDC
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
-          path: downloaded-artifact
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Show downloaded files
-        # Quick visibility step so students can see what arrived from the build.
-        run: ls -R downloaded-artifact
+      # 2. Log in to Amazon ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Load Docker image
-        # Turn the saved artifact file back into a Docker image.
-        run: docker load --input "downloaded-artifact/${IMAGE_TAR}"
-
-      - name: Recreate image tag from build run
-        # Rebuild the same date-plus-run-id tag the build workflow created.
+      - name: Set image tag
         id: image-tag
         run: |
-          BUILD_DATE="$(echo "${{ github.event.workflow_run.created_at }}" | cut -dT -f1)"
-          IMAGE_TAG="${BUILD_DATE}-${{ github.event.workflow_run.id }}"
+          IMAGE_TAG="2026-04-18-24603859530"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
+      # 4. Pull the Docker image from ECR
+      - name: Pull image from Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker pull $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ steps.image-tag.outputs.image_tag }}
+
+      # 5. Start container
       - name: Start container
-        # Start the exact same tagged image that the build workflow created.
         run: |
           docker run -d \
             --name "${CONTAINER_NAME}" \
             -p "${APP_PORT}:8000" \
-            "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
+            "${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image-tag.outputs.image_tag }}"
 
+      # 6. Smoke test deployed app
       - name: Smoke test deployed app
-        # Retry a few times because app startup can take a moment.
         run: |
           for attempt in 1 2 3 4 5; do
             if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health"; then
@@ -76,7 +68,7 @@ jobs:
           echo "App did not become ready in time."
           exit 1
 
+      # 7. Stop container (cleanup)
       - name: Stop container
         if: always()
-        # Clean up even if an earlier step fails.
         run: docker rm -f "${CONTAINER_NAME}" || true
