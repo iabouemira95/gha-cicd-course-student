@@ -53,6 +53,12 @@ jobs:
         run: |
           BUILD_DATE="$(echo "${{ github.event.workflow_run.created_at }}" | cut -dT -f1)"
           IMAGE_TAG="${BUILD_DATE}-${{ github.event.workflow_run.id }}"
+          
+          # Added: Show the exact recreated image tag in the logs
+          echo "==== Recreated Image Tag ===="
+          echo "$IMAGE_TAG"
+          echo "============================="
+          
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Start container
@@ -63,11 +69,15 @@ jobs:
             -p "${APP_PORT}:8000" \
             "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
 
+      - name: Inspect running containers
+        # Added: Show running containers after startup
+        run: docker ps
+
       - name: Smoke test deployed app
         # Retry a few times because app startup can take a moment.
         run: |
           for attempt in 1 2 3 4 5; do
-            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health"; then
+            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health" > /dev/null; then
               exit 0
             fi
             echo "Waiting for app to become ready..."
@@ -75,6 +85,14 @@ jobs:
           done
           echo "App did not become ready in time."
           exit 1
+
+      - name: Show /health response body
+        # Added: Print the exact response body from the /health endpoint
+        run: |
+          echo "==== /health Response Body ===="
+          curl -s "http://127.0.0.1:${APP_PORT}/health"
+          echo "" # Adds a newline for cleaner logs formatting
+          echo "==============================="
 
       - name: Stop container
         if: always()
