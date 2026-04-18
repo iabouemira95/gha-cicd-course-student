@@ -1,6 +1,6 @@
 # This workflow completes the story by delivering the saved package.
 # It starts after the build workflow finishes successfully.
-name: 04 Deploy Workflow
+name: Deploy Workflow
 
 on:
   #on merge to main
