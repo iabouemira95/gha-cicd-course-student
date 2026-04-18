@@ -6,11 +6,6 @@ on:
   # Run automatically when app code, tests, or this workflow file changes.
   pull_request:
     branches: [main]
-    paths:
-      - "app/**"
-      - "tests/**"
-      - ".github/workflows/ci.yml"
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 env:
