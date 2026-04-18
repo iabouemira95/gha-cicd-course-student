@@ -12,6 +12,13 @@ on:
       - ".github/workflows/ci.yml"
   workflow_dispatch:
 
+env:
+  IMAGE_NAME: tiny-health-app
+  IMAGE_TAR: tiny-health-app.tar
+  ARTIFACT_NAME: tiny-health-app-image
+  CONTAINER_NAME: tiny-health-container
+  APP_PORT: "8000"
+
 jobs:
   run-tests:
     # The runner is the temporary machine that executes the steps below.
