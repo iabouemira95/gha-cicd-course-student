@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: tiny-health-app
   IMAGE_TAR: tiny-health-app.tar
   ARTIFACT_NAME: tiny-health-app-image
-  AWS_REGION: us-east-1
+  AWS_REGION: eu-north-1
   ECR_REPOSITORY: myrepo
   # Set to "oidc" or "access-key" to choose the auth method
   AWS_AUTH_METHOD: "access-key"
