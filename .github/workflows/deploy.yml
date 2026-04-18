@@ -4,8 +4,13 @@ name: Deploy Workflow
 
 on:
   #on merge to main
-  push:
+  pull_request:
     branches: [main]
+    paths:
+      - "app/**"
+      - "tests/**"
+      - ".github/workflows/04-deploy.yml"
+    types: [closed]
 
 env:
   IMAGE_NAME: tiny-health-app
@@ -21,17 +26,19 @@ permissions:
 
 jobs:
   deploy-package:
+    # Continue only when the build workflow succeeded.
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     # Use a fresh runner for the deployment simulation.
     runs-on: ubuntu-latest
 
     steps:
       - name: Download build artifact
-        # Download the exact artifact produced by the build run.
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
+          # This variable will now work perfectly
           run-id: ${{ github.event.workflow_run.id }}
           path: downloaded-artifact
 
