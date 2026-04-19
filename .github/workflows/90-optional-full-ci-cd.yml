@@ -1,0 +1,111 @@
+# This workflow shows a fuller CI/CD shape with Matrix Building.
+name: 90 OPTIONAL Full Containerized CI/CD Workflow
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: tiny-health-app
+  APP_PORT: "8000"
+
+jobs:
+  # --- 1. Verify Job (Single Run) ---
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+
+  # --- 2. Build Job (Matrix for 3.11 & 3.12) ---
+  build-container:
+    needs: verify
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set image tag
+        id: image-tag
+        run: |
+          TODAY="$(date -u +%Y-%m-%d)"
+          # Unique tag for each version
+          IMAGE_TAG="${TODAY}-${GITHUB_RUN_ID}-py${{ matrix.python-version }}"
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build Docker image
+        # Here we pass the BASE_IMAGE as a build-arg to the Dockerfile
+        run: |
+          docker build \
+            --build-arg BASE_IMAGE=python:${{ matrix.python-version }}-slim \
+            -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
+            .
+
+      - name: Save Docker image as artifact file
+        run: |
+          IMAGE_TAR="image-py${{ matrix.python-version }}.tar"
+          docker save "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" -o "$IMAGE_TAR"
+          echo "tar_name=$IMAGE_TAR" >> "$GITHUB_OUTPUT"
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # Unique artifact name for each matrix version
+          name: ${{ env.IMAGE_NAME }}-py${{ matrix.python-version }}
+          path: image-py${{ matrix.python-version }}.tar
+          retention-days: 7
+
+  # --- 3. Deploy Simulated (Testing both matrix versions) ---
+  deploy-simulated:
+    needs: build-container
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Download image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.IMAGE_NAME }}-py${{ matrix.python-version }}
+          path: downloaded-image
+
+      - name: Load Docker image
+        run: docker load --input "downloaded-image/image-py${{ matrix.python-version }}.tar"
+
+      - name: Start container from matrix image
+        run: |
+          # Get the image name with tag using a wildcard since we know the pattern
+          IMAGE_FULL_NAME=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "py${{ matrix.python-version }}")
+          
+          docker run -d \
+            --name "tiny-health-container-${{ matrix.python-version }}" \
+            -p "${{ env.APP_PORT }}:${{ env.APP_PORT }}" \
+            "$IMAGE_FULL_NAME"
+
+      - name: Smoke test containerized app
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health"; then
+              echo "Health check passed for Python ${{ matrix.python-version }}!"
+              exit 0
+            fi
+            echo "Waiting for containerized app (py${{ matrix.python-version }}) to become ready..."
+            sleep 2
+          done
+          exit 1
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f "tiny-health-container-${{ matrix.python-version }}" || true

@@ -1,0 +1,18 @@
+name: 01 Hello Exercise
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+  workflow_dispatch:
+
+jobs:
+  hello-merge:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Greet the Team
+      
+        run: echo "The Pull Request was successfully merged into main (test PR close). !"

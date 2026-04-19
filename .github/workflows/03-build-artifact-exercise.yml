@@ -1,0 +1,66 @@
+# This workflow packages the verified app using Buildx.
+# It is manual on purpose so Day 1 stays focused on CI.
+name: 03 Build Artifact Exercise Workflow
+
+on:
+  # Students start this workflow manually from the Actions tab.
+  workflow_dispatch:
+
+env:
+  # Keep common image values in one place so the build steps stay readable.
+  IMAGE_NAME: tiny-health-app
+  IMAGE_TAR: tiny-health-app.tar
+  ARTIFACT_NAME: tiny-health-app-image
+
+jobs:
+  build-package:
+    # Use a fresh GitHub-hosted runner for the build.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        # Get the repository files onto the runner.
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        # Prepare Python so the workflow can run the tests first.
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run tests
+        # Build only after the verification step passes.
+        run: python -m unittest discover -s tests -v
+
+      - name: Set image tag
+        # Use today's UTC date plus the GitHub run ID.
+        id: image-tag
+        run: |
+          TODAY="$(date -u +%Y-%m-%d)"
+          IMAGE_TAG="${TODAY}-${GITHUB_RUN_ID}"
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+      # --- Start of Buildx Steps ---
+
+      - name: Set up Docker Buildx
+        # This is the reusable action to initialize Buildx builder.
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and export to Docker local
+        # Instead of 'docker build', we use the build-push-action.
+        # We set 'outputs' to 'type=docker' to keep it in the local runner's images.
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.image-tag.outputs.image_tag }}
+          outputs: type=docker,dest=${{ env.IMAGE_TAR }}
+
+      # --- End of Buildx Steps ---
+
+      - name: Upload build artifact
+        # Store the packaged output so a later workflow can use the exact same package.
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.IMAGE_TAR }}
+          retention-days: 7

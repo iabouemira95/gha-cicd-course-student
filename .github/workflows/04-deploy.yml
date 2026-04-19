@@ -1,12 +1,8 @@
-# This workflow completes the story by delivering the saved package.
-# It starts after the build workflow finishes successfully.
 name: 04 Deploy Workflow
 
 on:
   workflow_run:
-    # Listen for the build workflow by name.
-    workflows: ["03 Build Artifact Workflow"]
-    # Start when the build workflow has completed.
+    workflows: ["Combined CI and Build Workflow"]
     types: [completed]
 
 env:
@@ -17,20 +13,16 @@ env:
   APP_PORT: "8000"
 
 permissions:
-  # Read access is enough because this workflow only downloads artifacts and reads repo data.
   actions: read
   contents: read
 
 jobs:
   deploy-package:
-    # Continue only when the build workflow succeeded.
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    # Use a fresh runner for the deployment simulation.
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
 
     steps:
       - name: Download build artifact
-        # Download the exact artifact produced by the build run.
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
@@ -40,34 +32,37 @@ jobs:
           path: downloaded-artifact
 
       - name: Show downloaded files
-        # Quick visibility step so students can see what arrived from the build.
         run: ls -R downloaded-artifact
 
       - name: Load Docker image
-        # Turn the saved artifact file back into a Docker image.
         run: docker load --input "downloaded-artifact/${IMAGE_TAR}"
 
       - name: Recreate image tag from build run
-        # Rebuild the same date-plus-run-id tag the build workflow created.
         id: image-tag
         run: |
           BUILD_DATE="$(echo "${{ github.event.workflow_run.created_at }}" | cut -dT -f1)"
           IMAGE_TAG="${BUILD_DATE}-${{ github.event.workflow_run.id }}"
+          
+          echo "==== Recreated Image Tag ===="
+          echo "$IMAGE_TAG"
+          echo "============================="
+          
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Start container
-        # Start the exact same tagged image that the build workflow created.
         run: |
           docker run -d \
             --name "${CONTAINER_NAME}" \
             -p "${APP_PORT}:8000" \
             "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
 
+      - name: Inspect running containers
+        run: docker ps
+
       - name: Smoke test deployed app
-        # Retry a few times because app startup can take a moment.
         run: |
           for attempt in 1 2 3 4 5; do
-            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health"; then
+            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health" > /dev/null; then
               exit 0
             fi
             echo "Waiting for app to become ready..."
@@ -76,7 +71,13 @@ jobs:
           echo "App did not become ready in time."
           exit 1
 
+      - name: Show /health response body
+        run: |
+          echo "==== /health Response Body ===="
+          curl -s "http://127.0.0.1:${APP_PORT}/health"
+          echo ""
+          echo "==============================="
+
       - name: Stop container
         if: always()
-        # Clean up even if an earlier step fails.
         run: docker rm -f "${CONTAINER_NAME}" || true

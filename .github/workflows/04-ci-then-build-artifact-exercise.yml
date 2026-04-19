@@ -1,0 +1,65 @@
+# This workflow runs a single CI check and then builds a Matrix of artifacts.
+name: 04 CI then Build Artifact Exercise
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: tiny-health-app
+
+jobs:
+  # --- JOB 1: Single CI Check (No Matrix here) ---
+  ci-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+
+  # --- JOB 2: Packaging (Matrix starts here) ---
+  build-package:
+    needs: ci-testing
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # The matrix only runs in the packaging stage
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set image tag
+        id: image-tag
+        run: |
+          TODAY="$(date -u +%Y-%m-%d)"
+          IMAGE_TAG="${TODAY}-${GITHUB_RUN_ID}"
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and export image to tar
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          # This passes the matrix version to your Dockerfile base image
+          build-args: |
+            PYTHON_VERSION=${{ matrix.python-version }}
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.image-tag.outputs.image_tag }}-py${{ matrix.python-version }}
+          outputs: type=docker,dest=image-py${{ matrix.python-version }}.tar
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # Unique artifact names: e.g., tiny-health-app-py3.11 and tiny-health-app-py3.12
+          name: ${{ env.IMAGE_NAME }}-py${{ matrix.python-version }}
+          path: image-py${{ matrix.python-version }}.tar
+          retention-days: 7

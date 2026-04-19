@@ -1,0 +1,61 @@
+# This is the first real CI workflow in the course.
+# It verifies a change by running tests on a fresh runner.
+name: 02 CI Workflow
+
+on:
+  # Run automatically when app code, tests, or this workflow file changes.
+  push:
+    paths:
+      - "app/**"
+      - "tests/**"
+      - ".github/workflows/02-ci-exercise.yml"
+
+  # --- Schedule added here ---
+  schedule:
+    # This runs at 2 PM Egypt time (12 UTC)
+    - cron: '0 12 * * *'
+
+  # Allow a safe manual run before students trigger it with a code change.
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    # The runner is the temporary machine that executes the steps below.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        # Download the repository contents onto the runner.
+        uses: actions/checkout@v6
+
+      - name: Display Execution Date and Time
+        # Shows the current date and time on the runner
+        run: |
+          echo "Current Date and Time of execution:"
+          date
+
+      - name: Verify repository files
+        # Ensures that the checkout was successful and required folders exist.
+        run: |
+          echo "Listing all files in the runner:"
+          ls -R
+
+
+      - name: Set up Python
+        # Prepare Python on the runner.
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Verify Python installation
+        # Checks if Python is installed and verifies the specific version.
+        run: |
+          echo "Python path:"
+          which python
+          echo "Python version:"
+          python --version
+
+
+      - name: Run tests
+        # This is the key verification step in the CI workflow.
+        run: python -m unittest discover -s tests -v

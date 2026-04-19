@@ -1,0 +1,59 @@
+name: Deploy Workflow
+
+on:
+  push:
+    branches: [main]
+
+env:
+  ECR_REPOSITORY: "iti-actions-assessment"
+  CONTAINER_NAME: "tiny-health-container"
+  APP_PORT: "8000"
+  STATIC_TAG: "latest_1"
+
+jobs:
+  deploy-package:
+    runs-on: ubuntu-latest
+
+    steps:
+
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Pull Docker image from ECR
+        run: |
+          IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.STATIC_TAG }}"
+          docker pull $IMAGE_URI
+
+      - name: Start container
+        run: |
+          IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.STATIC_TAG }}"
+          docker run -d \
+            --name "${{ env.CONTAINER_NAME }}" \
+            -p "${{ env.APP_PORT }}:8000" \
+            $IMAGE_URI
+
+      - name: Smoke test deployed app
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent "http://127.0.0.1:${{ env.APP_PORT }}/health" > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
+
+      - name: Show container running
+        run: docker ps --filter "name=${{ env.CONTAINER_NAME }}"
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f "${{ env.CONTAINER_NAME }}" || true
