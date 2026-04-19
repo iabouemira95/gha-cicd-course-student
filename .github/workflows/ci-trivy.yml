@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 env:
+  # Ensure this matches your AWS ECR repository name
   ECR_REPOSITORY: "iti-actions-assessment" 
 
 jobs:
@@ -26,7 +27,7 @@ jobs:
 
   build-and-push:
     needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # This job only runs on push to main (after merge)
     runs-on: ubuntu-latest
     
     steps:
@@ -68,7 +69,10 @@ jobs:
         run: |
           IMAGE_URI_DYNAMIC="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:${DYNAMIC_TAG}"
           IMAGE_URI_LATEST="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:latest"
+          
           docker build -t "$IMAGE_URI_DYNAMIC" -t "$IMAGE_URI_LATEST" .
+          
+          # Pass URIs to environment for subsequent steps
           echo "IMAGE_URI_DYNAMIC=$IMAGE_URI_DYNAMIC" >> $GITHUB_ENV
           echo "IMAGE_URI_LATEST=$IMAGE_URI_LATEST" >> $GITHUB_ENV
 
