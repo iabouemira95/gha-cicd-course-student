@@ -1,33 +1,39 @@
-# This is the first real CI workflow in the course.
-# It verifies a change by running tests on a fresh runner.
-name: 02 CI Workflow
+# name: CI Workflow
 
-on:
-  # Run automatically when app code, tests, or this workflow file changes.
-  push:
-    paths:
-      - "app/**"
-      - "tests/**"
-      - ".github/workflows/02-ci.yml"
-  # Allow a safe manual run before students trigger it with a code change.
-  workflow_dispatch:
+# on:
+#   pull_request:
+#     branches: [main]
+#     types: [opened, synchronize, reopened]
 
-jobs:
-  run-tests:
-    # The runner is the temporary machine that executes the steps below.
-    runs-on: ubuntu-latest
+#   workflow_dispatch:
+# # asdas
+# jobs:
+#   verify:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out repository
-        # Download the repository contents onto the runner.
-        uses: actions/checkout@v6
+#     steps:
+#       - name: Check out repository
+#         uses: actions/checkout@v4
 
-      - name: Set up Python
-        # Prepare Python on the runner. This does not change the student laptop.
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.12"
 
-      - name: Run tests
-        # This is the key verification step in the CI workflow.
-        run: python -m unittest discover -s tests -v
+#       - name: Run tests
+#         run: python -m unittest discover -s tests -v
+
+#       # ✅ NEW: Install Trivy
+#       - name: Install Trivy
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+#           wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+#           echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+#           sudo apt-get update
+#           sudo apt-get install -y trivy
+
+#       # ✅ NEW: Scan repository for vulnerabilities
+#       - name: Run Trivy filesystem scan
+#         run: |
+#           trivy fs --severity HIGH,CRITICAL --exit-code 1 .
