@@ -1,0 +1,103 @@
+# .github/workflows/04-deploy.yml
+name: 04 Deploy Workflow
+
+on:
+  workflow_run:
+    workflows: ["02-03 CI and Build Artifact Workflow"]
+    types: [completed]
+
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: myrepo
+  CONTAINER_NAME: tiny-health-container
+  APP_PORT: "8000"
+  # Must match the value set in the build workflow
+  AWS_AUTH_METHOD: "access-key"
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  deploy-package:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # ---------------------------------------------------------------
+      # AUTH METHOD 1 — OIDC (Recommended)
+      # To use: set AWS_AUTH_METHOD to "oidc" in env above.
+      # ---------------------------------------------------------------
+      - name: Configure AWS credentials (OIDC)
+        if: env.AWS_AUTH_METHOD == 'oidc'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # ---------------------------------------------------------------
+      # AUTH METHOD 2 — Access Key & Secret Access Key
+      # To use: set AWS_AUTH_METHOD to "access-key" in env above.
+      # ---------------------------------------------------------------
+      - name: Configure AWS credentials (Access Key)
+        if: env.AWS_AUTH_METHOD == 'access-key'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Authenticate Docker to ECR
+        id: ecr-registry
+        run: |
+          ECR_REGISTRY="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com"
+          echo "ecr_registry=$ECR_REGISTRY" >> "$GITHUB_OUTPUT"
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} \
+            | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+
+      - name: Download image tag artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: image-tag
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: .
+
+      - name: Read image tag
+        id: image-tag
+        run: |
+          IMAGE_TAG="$(cat image-tag.txt)"
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+          echo "Using image tag: $IMAGE_TAG"
+
+      - name: Pull image from ECR
+        run: |
+          docker pull \
+            ${{ steps.ecr-registry.outputs.ecr_registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image-tag.outputs.image_tag }}
+
+      - name: Start container
+        run: |
+          docker run -d \
+            --name "${{ env.CONTAINER_NAME }}" \
+            -p "${{ env.APP_PORT }}:8000" \
+            ${{ steps.ecr-registry.outputs.ecr_registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image-tag.outputs.image_tag }}
+
+      - name: Smoke test deployed app
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent "http://127.0.0.1:${{ env.APP_PORT }}/health"; then
+              exit 0
+            fi
+            echo "Attempt $attempt failed — waiting for app to become ready..."
+            sleep 2
+          done
+          echo "App did not become ready in time."
+          exit 1
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f "${{ env.CONTAINER_NAME }}" || true

@@ -1,0 +1,80 @@
+name: EX-10 Continuos Integration
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  IMAGE_NAME: tiny-health-app
+  IMAGE_TAR: tiny-health-app.tar
+  ARTIFACT_NAME: tiny-health-app-image 
+  AWS_REGION: us-east-1
+
+  # ✅ UPDATED VALUES
+  ECR_REGISTRY: 998718205915.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REPOSITORY: zeyad
+  IMAGE_TAG: ${{ github.run_id }}
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+
+  build-package:
+    runs-on: ubuntu-latest
+    needs: run-tests
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # ✅ UPDATED ROLE
+          role-to-assume: arn:aws:iam::998718205915:role/badrgithublabrole
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Fetch the caller identity
+        run: aws sts get-caller-identity
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region $AWS_REGION \
+          | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+      - name: Build & Push
+        run: |
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
