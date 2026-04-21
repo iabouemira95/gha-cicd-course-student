@@ -18,7 +18,6 @@ permissions:
 
 jobs:
   verify:
-  # The runner is the temporary machine that executes the steps below.
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
