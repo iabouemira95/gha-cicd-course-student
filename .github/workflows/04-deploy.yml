@@ -1,88 +1,81 @@
-# This workflow completes the story by delivering the saved package.
-# It starts after the build workflow finishes successfully.
 name: 04 Deploy Workflow
 
 on:
-  workflow_run:
-    # Listen for the build workflow by name.
-    workflows: ["03 Build Artifact Workflow"]
-    # Start when the build workflow has completed.
-    types: [completed]
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
 
 env:
-  IMAGE_NAME: tiny-health-app
-  IMAGE_TAR: tiny-health-app.tar
-  ARTIFACT_NAME: tiny-health-app-image
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
+  ECR_REPOSITORY: lab-app
 
 permissions:
-  # Read access is enough because this workflow only downloads artifacts and reads repo data.
-  actions: read
   contents: read
 
 jobs:
   deploy-package:
-    # Continue only when the build workflow succeeded.
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    # Use a fresh runner for the deployment simulation.
+    # We are still using the standard GitHub runner
     runs-on: ubuntu-latest
+    
+    # Optional: Only run this job if the PR was actually merged, not just closed without merging
+    if: github.event.pull_request.merged == true
 
     steps:
-      - name: Download build artifact
-        # Download the exact artifact produced by the build run.
-        uses: actions/download-artifact@v4
+      - name: Execute deployment on EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          # Pass GitHub Secrets and Env vars into the SSH action
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
+          APP_PORT: ${{ env.APP_PORT }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         with:
-          name: ${{ env.ARTIFACT_NAME }}
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
-          path: downloaded-artifact
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_SESSION_TOKEN,AWS_REGION,CONTAINER_NAME,APP_PORT,ECR_REPOSITORY
+          script: |
+            echo "1. Setting up AWS credentials for this SSH session..."
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
+            export AWS_DEFAULT_REGION=$AWS_REGION
 
-      - name: Show downloaded files
-        # Quick visibility step so students can see what arrived from the build.
-        run: ls -R downloaded-artifact
+            echo "2. Calculating ECR Registry and Image URI..."
+            ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+            ECR_REGISTRY="${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+            FULL_IMAGE="${ECR_REGISTRY}/${ECR_REPOSITORY}:latest"
 
-      - name: Load Docker image
-        # Turn the saved artifact file back into a Docker image.
-        run: docker load --input "downloaded-artifact/${IMAGE_TAR}"
+            echo "3. Logging into Amazon ECR..."
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
 
-      - name: Recreate image tag from build run
-        # Rebuild the same date-plus-run-id tag the build workflow created.
-        id: image-tag
-        run: |
-          BUILD_DATE="$(echo "${{ github.event.workflow_run.created_at }}" | cut -dT -f1)"
-          IMAGE_TAG="${BUILD_DATE}-${{ github.event.workflow_run.id }}"
-          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
-          echo "Recreated IMAGE TAG: $IMAGE_TAG"
+            echo "4. Pulling the latest image from ECR..."
+            docker pull $FULL_IMAGE
 
+            echo "5. Stopping and removing the old container (if it exists)..."
+            docker rm -f $CONTAINER_NAME || true
 
-      - name: Start container
-        # Start the exact same tagged image that the build workflow created.
-        run: |
-          docker run -d \
-            --name "${CONTAINER_NAME}" \
-            -p "${APP_PORT}:8000" \
-            "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
+            echo "6. Starting the new container..."
+            docker run -d --name $CONTAINER_NAME -p ${APP_PORT}:8000 $FULL_IMAGE
 
-      - name: Show running containers
-        run: docker ps
-        
-      - name: Smoke test deployed app
-        run: |
-          for attempt in 1 2 3 4 5; do
-            RESPONSE=$(curl --silent "http://127.0.0.1:${APP_PORT}/health") || true
-            if [ -n "$RESPONSE" ]; then
-              echo "Health response: $RESPONSE"
-              exit 0
-            fi
-            echo "Waiting for app to become ready..."
-            sleep 2
-          done
-          echo "App did not become ready in time."
-          exit 1
-
-      - name: Stop container
-        if: always()
-        # Clean up even if an earlier step fails.
-        run: docker rm -f "${CONTAINER_NAME}" || true
+            echo "7. Running smoke test on EC2 localhost..."
+            for attempt in 1 2 3 4 5; do
+              RESPONSE=$(curl --silent "http://127.0.0.1:${APP_PORT}/health" || true)
+              if [ -n "$RESPONSE" ]; then
+                echo "Health endpoint response: $RESPONSE"
+                exit 0
+              fi
+              echo "Waiting for app to become ready..."
+              sleep 2
+            done
+            
+            echo "App did not become ready in time."
+            # If the test fails, stop the broken container and fail the pipeline
+            docker rm -f $CONTAINER_NAME || true
+            exit 1
