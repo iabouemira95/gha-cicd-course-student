@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 # asdas
 jobs:
-  verify:
+  verifyy:
     runs-on: ubuntu-latest
 
     steps:
