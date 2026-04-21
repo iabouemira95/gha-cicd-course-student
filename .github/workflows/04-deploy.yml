@@ -2,103 +2,80 @@ name: 04 Deploy Workflow
 
 on:
   pull_request:
-    types: [closed]
-    branches: [main]
+    branches:
+      - main
+    types:
+      - closed
 
 env:
-  IMAGE_NAME: tiny-health-app
-  IMAGE_TAR: tiny-health-app.tar
-  ARTIFACT_BASE_NAME: tiny-health-app-image
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
+  ECR_REPOSITORY: my-app
 
 permissions:
-  actions: read
   contents: read
 
 jobs:
   deploy-package:
-    if: github.event.pull_request.merged == true
+    # We are still using the standard GitHub runner
     runs-on: ubuntu-latest
+    
+    # Optional: Only run this job if the PR was actually merged, not just closed without merging
+    if: github.event.pull_request.merged == true
 
     steps:
-      - name: Find build run by PR‑named artifact
-        id: find-run
+      - name: Execute deployment on EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          ARTIFACT_NAME="${ARTIFACT_BASE_NAME}-pr-${PR_NUMBER}"
-          echo "Looking for artifact: $ARTIFACT_NAME"
-
-          # Get all successful workflow runs for this commit
-          RUNS_JSON=$(gh api repos/${{ github.repository }}/actions/runs \
-            --jq "[.workflow_runs[] | select(.head_sha == \"${{ github.sha }}\" and .conclusion == \"success\")]")
-
-          RUN_ID=""
-          RUN_DATE=""
-
-          # Loop through runs to find one that has our artifact
-          for run_id in $(echo "$RUNS_JSON" | jq -r '.[].id'); do
-            ARTIFACTS_JSON=$(gh api repos/${{ github.repository }}/actions/runs/$run_id/artifacts)
-            if echo "$ARTIFACTS_JSON" | jq -e --arg name "$ARTIFACT_NAME" '.artifacts[] | select(.name == $name)' > /dev/null; then
-              RUN_ID=$run_id
-              RUN_DATE=$(gh api repos/${{ github.repository }}/actions/runs/$run_id --jq '.created_at' | cut -dT -f1)
-              break
-            fi
-          done
-
-          if [ -z "$RUN_ID" ]; then
-            echo "❌ No build run found with artifact $ARTIFACT_NAME for commit ${{ github.sha }}"
-            exit 1
-          fi
-
-          echo "✅ Found build run $RUN_ID (created $RUN_DATE)"
-          echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
-          echo "run_date=$RUN_DATE" >> $GITHUB_OUTPUT
-          echo "artifact_name=$ARTIFACT_NAME" >> $GITHUB_OUTPUT
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
+          # Pass GitHub Secrets and Env vars into the SSH action
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
+          APP_PORT: ${{ env.APP_PORT }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         with:
-          name: ${{ steps.find-run.outputs.artifact_name }}
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: ${{ steps.find-run.outputs.run_id }}
-          path: downloaded-artifact
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_SESSION_TOKEN,AWS_REGION,CONTAINER_NAME,APP_PORT,ECR_REPOSITORY
+          script: |
+            echo "1. Setting up AWS credentials for this SSH session..."
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
+            export AWS_DEFAULT_REGION=$AWS_REGION
 
-      - name: Show downloaded files
-        run: ls -R downloaded-artifact
+            echo "2. Calculating ECR Registry and Image URI..."
+            ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+            ECR_REGISTRY="${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+            FULL_IMAGE="${ECR_REGISTRY}/${ECR_REPOSITORY}:latest"
 
-      - name: Load Docker image
-        run: docker load --input "downloaded-artifact/${IMAGE_TAR}"
+            echo "3. Logging into Amazon ECR..."
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
 
-      - name: Recreate image tag from build run
-        id: image-tag
-        run: |
-          IMAGE_TAG="${{ steps.find-run.outputs.run_date }}-${{ steps.find-run.outputs.run_id }}"
-          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+            echo "4. Pulling the latest image from ECR..."
+            docker pull $FULL_IMAGE
 
-      - name: Start container
-        run: |
-          docker run -d \
-            --name "${CONTAINER_NAME}" \
-            -p "${APP_PORT}:8000" \
-            "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}"
+            echo "5. Stopping and removing the old container (if it exists)..."
+            docker rm -f $CONTAINER_NAME || true
 
-      - name: Smoke test deployed app
-        run: |
-          for attempt in 1 2 3 4 5; do
-            if curl --fail --silent "http://127.0.0.1:${APP_PORT}/health"; then
-              echo "✅ App is healthy"
-              exit 0
-            fi
-            echo "Waiting for app to become ready... (attempt $attempt/5)"
-            sleep 2
-          done
-          echo "❌ App did not become ready in time."
-          exit 1
+            echo "6. Starting the new container..."
+            docker run -d --name $CONTAINER_NAME -p ${APP_PORT}:8000 $FULL_IMAGE
 
-      - name: Stop container
-        if: always()
-        run: docker rm -f "${CONTAINER_NAME}" || true
+            echo "7. Running smoke test on EC2 localhost..."
+            for attempt in 1 2 3 4 5; do
+              RESPONSE=$(curl --silent "http://127.0.0.1:${APP_PORT}/health" || true)
+              if [ -n "$RESPONSE" ]; then
+                echo "Health endpoint response: $RESPONSE"
+                exit 0
+              fi
+              echo "Waiting for app to become ready..."
+              sleep 2
+            done
+            
+            echo "App did not become ready in time."
+            # If the test fails, stop the broken container and fail the pipeline
+            docker rm -f $CONTAINER_NAME || true
+            exit 1
