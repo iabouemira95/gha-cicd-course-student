@@ -11,7 +11,7 @@ on:
 
 env:
   IMAGE_NAME: tiny-health-app
-  ECR_REPOSITORY: lab-app
+  ECR_REPOSITORY: my-app
 
 permissions:
   contents: read
