@@ -1,0 +1,111 @@
+name: EX-10 Continuos Delivery
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  IMAGE_NAME: tiny-health-app
+  CONTAINER_NAME: tiny-health-container
+  APP_PORT: "8000"
+  AWS_REGION: us-east-1
+
+  # ✅ UPDATED VALUES
+  ECR_REGISTRY: 998718205915.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REPOSITORY: zeyad
+
+jobs:
+  deploy-package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # ✅ UPDATED ROLE
+          role-to-assume: arn:aws:iam::998718205915:role/badrgithublabrole
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Fetch the caller identity
+        run: aws sts get-caller-identity
+
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/ec2_key
+          chmod 600 ~/.ssh/ec2_key
+
+          ssh-keyscan -H ${{ vars.EC2_IP }} >> ~/.ssh/known_hosts
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Testing SSH 
+        run: |
+          ssh -i ~/.ssh/ec2_key ubuntu@${{ vars.EC2_IP }} \
+          "echo Connected && whoami && hostname"
+
+      - name: Check out repository
+        uses: actions/checkout@v6
+      
+      - name: Listing files
+        run: tree
+
+      - name: Copy scripts folder
+        run: |
+          scp -r -i ~/.ssh/ec2_key ./scripts \
+          ubuntu@${{ vars.EC2_IP }}:/tmp/
+
+      - name: Execute target script
+        run: |
+          ssh -i ~/.ssh/ec2_key ubuntu@${{ vars.EC2_IP }} \
+          "chmod +x /tmp/scripts/assessment/prepare-ubuntu-vm.sh && \
+          sudo /tmp/scripts/assessment/prepare-ubuntu-vm.sh"
+
+      - name: Get ECR login password
+        id: ecr
+        run: |
+          echo "PASSWORD=$(aws ecr get-login-password --region $AWS_REGION)" >> $GITHUB_OUTPUT
+
+      - name: Login + Pull on EC2
+        run: |
+          ssh -i ~/.ssh/ec2_key ubuntu@${{ vars.EC2_IP }} \
+          "echo '${{ steps.ecr.outputs.PASSWORD }}' | \
+          docker login --username AWS --password-stdin ${ECR_REGISTRY} && \
+          docker pull ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest"
+
+      - name: List Docker images on EC2
+        run: |
+          ssh -i ~/.ssh/ec2_key ubuntu@${{ vars.EC2_IP }} "docker image ls"
+
+      - name: Start container
+        run: |
+          ssh -i ~/.ssh/ec2_key ubuntu@${{ vars.EC2_IP }} \
+          "docker run -d \
+            --name ${{ env.CONTAINER_NAME }} \
+            -p ${{ env.APP_PORT }}:8000 \
+            ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest"
+
+      - name: Show running container
+        run: |
+          ssh -i ~/.ssh/ec2_key ubuntu@${{ vars.EC2_IP }} "docker ps"
+
+      - name: Running validation script
+        run: |
+          bash scripts/assessment/validate-deployment.sh http://${{ vars.EC2_IP }}:${{ env.APP_PORT }}
+          
+      - name: Stop container
+        if: always()
+        run: |
+          ssh -i ~/.ssh/ec2_key ubuntu@${{ vars.EC2_IP }} \
+          "docker rm -f ${{ env.CONTAINER_NAME }} || true"
