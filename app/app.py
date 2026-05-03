@@ -3,7 +3,6 @@ import os
 import socket
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-app = Flask(__name__)
 
 def get_runtime_metadata():
     return {
@@ -57,9 +56,6 @@ def run():
     print("Server running on http://0.0.0.0:8000")
     server.serve_forever()
 
-@app.route("/")
-def home():
-    return jsonify({"message": "Hello"}), 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    run()
