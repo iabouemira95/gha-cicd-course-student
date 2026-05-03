@@ -57,4 +57,11 @@ jobs:
             sleep 2
             bash ./scripts/assessment/validate-deployment.sh http://localhost:8000
             
+                    
+        - name: check docker image in actions
+          run: |
+            docker run --name=tinyhealthapp -d -p 8000:8000 ${{ steps.image_tag.outputs.IMAGE_TAG }} 
+            sleep 2
+            bash ./scripts/assessment/validate-deployment.sh http://localhost:8000
+            
             
