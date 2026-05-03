@@ -26,6 +26,7 @@ This workflow teaches delivery using the package created earlier:
 - `workflow_run` starts deploy after the build workflow finishes
 - `Download build artifact` gets the saved package
 - `Load Docker image` restores that package as an image
+- `Recreate image tag from build run` rebuilds the same date-plus-run-id tag
 - `Start container` runs the exact same tagged image from the build run
 - `Smoke test deployed app` checks that the app responds
 
@@ -67,6 +68,7 @@ Look for these steps:
 
 - `Download build artifact`
 - `Load Docker image`
+- `Recreate image tag from build run`
 - `Start container`
 - `Smoke test deployed app`
 
@@ -85,6 +87,11 @@ This workflow is important because it uses the exact packaged output from the bu
 It is not rebuilding the app.
 
 It is loading and running the same tagged image that the build workflow already created.
+
+In this course, that tag is based on:
+
+- the build date
+- the GitHub run ID
 
 That is the delivery idea we wanted to reach in this course.
 
@@ -124,3 +131,25 @@ After the lab, try to answer these questions:
 - Why is it useful to deploy the saved artifact?
 - What problem does the smoke test help us catch?
 - How is this different from testing source code only?
+
+## Exercises After Lab 04
+
+After this lab, continue with:
+
+- [EX-07: Deploy and Inspect the Deployment](../exercises/EX-07-deploy-inspect-the-deployment.md)
+
+`EX-07` keeps working in `.github/workflows/04-deploy.yml`.
+
+It adds deeper inspection after startup without changing the main deploy story.
+
+## Assessment Preparation Link
+
+Later, the final assessment keeps the same delivery ideas, but moves them to a real Ubuntu VM:
+
+- deploy the already-built image
+- run a small smoke test
+- prove the running app is the right one
+
+If you want to see that mapping clearly, use:
+
+- [How the Current Labs Prepare You](../docs/assessment/04-how-current-labs-prepare-you.md)

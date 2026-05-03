@@ -55,6 +55,17 @@ Teams often use it for:
 - review checks
 - policy checks
 
+You can also narrow pull request activity with `types:`.
+
+Common examples:
+
+- `opened`
+- `synchronize`
+- `reopened`
+- `closed`
+
+That is useful in later exercises where one workflow runs during review and another runs only after a pull request is closed and merged.
+
 We do not need it in the core beginner labs because the browser-first course flow uses direct commits for simplicity.
 
 ## Scheduled Trigger: `schedule`
@@ -70,6 +81,13 @@ Teams often use it for:
 Important note:
 
 Schedules use UTC time.
+
+Also remember:
+
+- the workflow file must exist on the default branch
+- the run may start later than the exact minute
+
+That is why `schedule` is useful to learn, but not the best trigger for a live classroom demo.
 
 ## API Trigger: `repository_dispatch`
 
@@ -91,6 +109,17 @@ Example idea:
 Path filtering lets a workflow run only when specific files change.
 
 In this course, we use path filtering to keep runs focused on the relevant files.
+
+## Path Ignore Filtering
+
+`paths-ignore` lets a workflow skip runs when only certain files changed.
+
+Teams often use it when they do not want documentation-only or note-only edits to trigger the same checks as application code changes.
+
+Simple example idea:
+
+- run the workflow for app and test files
+- skip the workflow when only `docs/**` changed
 
 ## Simple Memory Rule
 

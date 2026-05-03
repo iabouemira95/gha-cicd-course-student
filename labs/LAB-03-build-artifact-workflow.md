@@ -28,7 +28,7 @@ This workflow keeps the CI check and adds packaging:
 
 - `workflow_dispatch` lets you run it manually
 - `Run tests` verifies the code before packaging
-- `Set image tag` creates one simple tag for this workflow run
+- `Set image tag` creates one simple date-plus-run-id tag for this workflow run
 - `Build Docker image with docker build` creates the package
 - `Save Docker image as artifact file` turns the image into a saved file
 - `Upload build artifact` stores that file for later use
@@ -50,7 +50,7 @@ The core packaging command in this lab is:
 
 ```bash
 docker build \
-  -t "tiny-health-app:run-123" \
+  -t "tiny-health-app:2026-04-08-123456789" \
   .
 ```
 
@@ -58,12 +58,47 @@ What this means:
 
 - `docker build` builds an image from the `Dockerfile`
 - `-t` adds a tag to the image
-- `run-123` stands for one traceable tag for one build
+- `2026-04-08-123456789` stands for today's UTC date plus the GitHub run ID
 - `.` means "build using the current folder"
 
 For this course, this is the simplest build shape to learn.
 
 If you want a quick reminder about image tags, use [Artifacts, Images, and Containers](../docs/02-artifacts-images-and-containers.md).
+
+## Exercise After Lab 03
+
+After this lab, continue with:
+
+- [EX-05: Build Artifact with Buildx](../exercises/EX-05-build-artifact-with-buildx.md)
+- [EX-06: CI Then Build Artifact With `needs`](../exercises/EX-06-ci-then-build-artifact-with-needs.md)
+
+`EX-05` keeps the same packaging story and asks you to rebuild `.github/workflows/03-build-artifact.yml` with Buildx-based actions.
+
+Then `EX-06` strengthens that same workflow again by splitting verify and package into clearer jobs with `needs`.
+
+Use that exercise when you want to compare:
+
+- a simple raw Docker command path
+- a reusable-action path that many real workflows use
+
+If your instructor reveals a reference solution for `EX-05`, it lives in the instructor repository.
+
+## How the Docker Image Tar File Can Be Used
+
+When the workflow saves the built image as a `.tar` file, it is turning the packaged image into a normal file we can carry forward.
+
+For this course, that tar file can be used in simple ways:
+
+- uploaded as a GitHub Actions artifact
+- downloaded by a later workflow
+- loaded back into Docker with `docker load`
+- used as the exact built package for deployment steps
+
+That is why the tar file matters.
+
+It helps us say:
+
+"Use the image we already built" instead of "build it again and hope it matches."
 
 ## Step 3: Run the Workflow Manually
 
@@ -148,5 +183,19 @@ After the lab, try to answer these questions:
 
 - Why is a build artifact useful?
 - Why are image tags useful?
+- Why is today's date plus the GitHub run ID a simple useful tag?
 - Why is an image different from a container?
 - Why is saving the packaged output better than relying only on source code?
+- How is the Buildx version of this workflow similar to the plain `docker build` version?
+
+## Assessment Preparation Link
+
+Later, the final assessment uses the same packaging ideas again:
+
+- one exact image tag
+- one exact built output
+- one deployable package carried forward
+
+If you want to see how this lab prepares you for that track, use:
+
+- [How the Current Labs Prepare You](../docs/assessment/04-how-current-labs-prepare-you.md)

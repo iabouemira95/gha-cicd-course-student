@@ -20,7 +20,7 @@ This optional example adds a few ideas that are common in real pipelines:
 
 - one workflow with multiple jobs
 - explicit job order with `needs`
-- a simple image tag
+- a simple image tag based on date and run ID
 - one artifact handoff between jobs
 - a final deployment-style smoke test
 
@@ -58,7 +58,7 @@ That helps answer:
 - Which build created this image?
 - Which exact package are we deploying?
 
-In this optional example, the build job creates one simple tag and the deploy job uses that same tag.
+In this optional example, the build job creates one simple date-plus-run-id tag and the deploy job uses that same tag.
 
 ## Why `needs` Matters
 
@@ -94,6 +94,7 @@ The main lesson is that even a fuller workflow is still telling the same story:
 ## Related Pages
 
 - [LAB-06: Full Containerized CI/CD Pipeline](../labs/LAB-06-full-containerized-cicd-pipeline.md)
+- [Final Assessment Support](assessment/README.md)
 - [Next Steps: Matrix and Secrets](06-next-steps-matrix-and-secrets.md)
 - [Simulated Deployment](03-simulated-deployment.md)
 - [How ACR and AKS Fit the Story](08-how-acr-and-aks-fit-the-story.md)

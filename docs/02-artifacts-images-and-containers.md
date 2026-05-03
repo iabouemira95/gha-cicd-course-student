@@ -6,6 +6,12 @@ This file explains the new ideas we need before the build workflow.
 
 We will keep the explanation practical and shallow.
 
+## When to Use This Page
+
+Read this page right before the related Day 2 lab.
+
+Use it to understand the concept first, then open the workflow lab.
+
 ## What Is an Artifact
 
 An artifact is a file produced during a workflow run.
@@ -47,7 +53,12 @@ You do not need deep Docker internals for this course.
 
 An image tag is a readable label attached to an image.
 
-In this course, a tag like `run-123` helps us talk about one exact built image.
+In this course, a tag like `2026-04-08-123456789` helps us talk about one exact built image.
+
+That example means:
+
+- the date part helps us see when the image was created
+- the GitHub run ID makes the tag unique for that run
 
 That matters because we want to say:
 
@@ -55,7 +66,7 @@ That matters because we want to say:
 
 You may also see tags such as `latest` in optional examples.
 
-For the core course, the traceable run tag is the most important one to remember.
+For the core course, the date-plus-run-id tag is the most important one to remember.
 
 ## What Is a Container
 
@@ -88,7 +99,7 @@ The build workflow will:
 1. check out the repository
 2. set up Python
 3. run the tests
-4. build a Docker image with a traceable tag
+4. build a Docker image with a date-plus-run-id tag
 5. save that image as a file
 6. upload that file as a workflow artifact
 
@@ -99,3 +110,9 @@ For this course, these three sentences are enough:
 - an artifact is a saved output from a workflow
 - an image is a packaged application
 - a container is a running instance of that image
+
+## Related Next Steps
+
+- [LAB-03: Build Artifact Workflow](../labs/LAB-03-build-artifact-workflow.md)
+- [Simulated Deployment](03-simulated-deployment.md)
+- [LAB-04: Deploy Workflow](../labs/LAB-04-deploy-workflow.md)

@@ -66,6 +66,18 @@ If a workflow fails:
 
 Do not change many files at once before you understand the failure.
 
+## Example of a Failed Step
+
+Use this reference view:
+
+![Reference view of a failed workflow step](../images/actions-failed-step-example.svg)
+
+Notice these three things:
+
+- workflow name
+- failed step
+- first useful error
+
 ## Example Questions to Ask Yourself
 
 When reading logs, ask:

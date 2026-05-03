@@ -60,11 +60,14 @@ How do we know that a change is still safe?
 We will cover:
 
 1. Why CI/CD exists
-2. What CI means
-3. How to think in pipeline stages
-4. How GitHub Actions represents those ideas
-5. How to run a first workflow
-6. How to build a small real CI pipeline
+2. What CI/CD means
+3. Why GitHub standard practices and branching strategy matter
+4. How to think in pipeline stages
+5. How GitHub Actions represents those ideas
+6. How to read a workflow skeleton
+7. How triggers, jobs, steps, actions, and env fit together
+8. How to run a first workflow
+9. How to build a small real CI pipeline
 
 By the end of Day 1, students should understand:
 

@@ -34,9 +34,38 @@ If you do not see any workflow runs yet, that is okay.
 
 The first lab will create the first run.
 
-If you also see workflows with names that start with `OPTIONAL`, do not worry.
+You may also see later optional example workflows and one later final assessment prep workflow.
 
-Those are extra example workflows and are not part of the core starting path.
+That is normal.
+
+At the start, still focus only on the four core workflows.
+
+## Open Only These Workflows at the Start
+
+At the start of the course, open only these workflow names:
+
+- `01 Hello Workflow`
+- `02 CI Workflow`
+- `03 Build Artifact Workflow`
+- `04 Deploy Workflow`
+
+## What the Actions Page Looks Like
+
+Use this reference view to match the page quickly:
+
+![Reference view of the Actions page](../images/actions-page-core-workflows.svg)
+
+In this view:
+
+- `01`, `02`, `03`, and `04` are the workflows to open first
+- `05` and `06` are optional next-step examples
+- `07` is the later final assessment prep workflow
+
+The final assessment prep workflow is preloaded later in the course.
+
+The final assessment workflow itself is not preloaded in the student repo.
+
+You create that later yourself if your instructor uses the final assessment.
 
 ## Step 4: If GitHub Asks You to Enable Workflows
 

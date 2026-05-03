@@ -126,3 +126,30 @@ After the lab, try to answer these questions:
 - Why is this workflow closer to real CI?
 - What is the value of running tests automatically on push?
 - Which step gives the main verification result?
+
+## Exercises After Lab 02
+
+After the lab is complete, continue with these exercises in order:
+
+1. [EX-02: CI Visibility and Schedule](../exercises/EX-02-ci-visibility-and-schedule.md)
+2. [EX-03: CI Matrix](../exercises/EX-03-ci-matrix.md)
+3. [EX-04: CI Secrets and Matrix Patterns](../exercises/EX-04-ci-secrets-and-matrix.md)
+
+These exercises extend the same CI story in three different ways:
+
+- `EX-02` adds visibility and schedule
+- `EX-03` adds matrix
+- `EX-04` adds advanced secrets and matrix patterns
+
+They all keep working in `.github/workflows/02-ci.yml`.
+
+## Assessment Preparation Link
+
+Later, the final assessment still starts with this same idea:
+
+- verify the change first
+- trust tests before packaging or deployment
+
+If you want to see how the final assessment builds on this lab, use:
+
+- [How the Current Labs Prepare You](../docs/assessment/04-how-current-labs-prepare-you.md)

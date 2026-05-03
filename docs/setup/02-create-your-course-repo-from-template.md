@@ -56,6 +56,12 @@ Those are the exact button labels most students should look for.
 
 If you do not see that button, ask your instructor to confirm that the course repository is marked as a template repository.
 
+## What the Template Button Looks Like
+
+Use this reference view to match the page quickly:
+
+![Reference view of the GitHub template button](../images/setup-template-button.svg)
+
 ## Step 3: Choose Your New Repository Settings
 
 Use these beginner-friendly settings:

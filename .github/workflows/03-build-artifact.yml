@@ -33,10 +33,12 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Set image tag
-        # Create one simple tag so the image is easy to identify in this run.
+        # Use today's UTC date plus the GitHub run ID.
+        # This keeps the tag easy to explain and still unique for the run.
         id: image-tag
         run: |
-          IMAGE_TAG="run-${GITHUB_RUN_NUMBER}"
+          TODAY="$(date -u +%Y-%m-%d)"
+          IMAGE_TAG="${TODAY}-${GITHUB_RUN_ID}"
           echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Build Docker image with docker build

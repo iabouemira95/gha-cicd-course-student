@@ -88,6 +88,39 @@ That does not make the value secret.
 
 It only gives it a reusable name.
 
+You can place `env` at more than one level.
+
+Example:
+
+```yaml
+env:
+  APP_NAME: tiny-health-app
+
+jobs:
+  run-tests:
+    env:
+      PYTHON_VERSION: "3.12"
+```
+
+Simple rule:
+
+- workflow-level `env` can be reused by many jobs
+- job-level `env` is only for that one job
+
+GitHub Actions also supports repository variables from settings.
+
+Example:
+
+```yaml
+env:
+  BASE_IMAGE: ${{ vars.PYTHON_BASE_IMAGE }}
+  APP_PORT: ${{ vars.APP_PORT }}
+```
+
+Use that when the value should live in GitHub settings instead of directly in the workflow file.
+
+`vars` comes from GitHub settings; `env` is written inside the YAML file.
+
 ## Safe Beginner Habits
 
 - edit one block at a time

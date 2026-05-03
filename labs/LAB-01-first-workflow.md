@@ -132,3 +132,13 @@ After the lab, try to answer these questions:
 - Where did the job run?
 - What is the difference between a workflow and a step?
 - Where do you look first when a run fails?
+
+## Exercise After Lab 01
+
+After this lab, continue with:
+
+- [EX-01: Hello Trigger and PR Merge](../exercises/EX-01-hello-trigger-and-pr-merge.md)
+
+`EX-01` keeps working in `.github/workflows/01-hello.yml`.
+
+The challenge is to change the trigger story, not to start a second hello workflow.

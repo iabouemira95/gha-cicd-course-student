@@ -6,6 +6,12 @@ This file explains what "deployment" means in this course.
 
 We will keep deployment simple and focused on the CI/CD story.
 
+## When to Use This Page
+
+Read this page right before the related Day 2 lab.
+
+Use it to understand the concept first, then open the workflow lab.
+
 ## What We Mean by Deployment Here
 
 In many teams, deployment means sending an application to a real server or cloud platform.
@@ -87,3 +93,10 @@ For this course, you do not need to learn:
 - advanced Docker commands
 
 The simple delivery story is enough.
+
+## Related Next Steps
+
+- [LAB-03: Build Artifact Workflow](../labs/LAB-03-build-artifact-workflow.md)
+- [LAB-04: Deploy Workflow](../labs/LAB-04-deploy-workflow.md)
+- [Final Assessment Support](assessment/README.md)
+- [Troubleshooting](help/02-troubleshooting.md)

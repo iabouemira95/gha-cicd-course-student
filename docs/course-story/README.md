@@ -59,19 +59,27 @@ Use this short explanation:
 flowchart LR
     A["Day 1<br/>Confidence After Change"] --> B["Day 2<br/>Package and Delivery"]
     A --> C["Why CI exists"]
-    A --> D["Workflow, Job, Step, Trigger, Runner"]
-    A --> E["First Workflow"]
-    A --> F["Real CI Workflow"]
-    B --> G["Artifacts"]
-    B --> H["Image vs Container"]
-    B --> I["Build Workflow"]
-    B --> J["Deploy Workflow"]
-    B --> K["Full CI/CD Story"]
+    A --> D["GitHub Practices and Branching"]
+    A --> E["Workflow, Job, Step, Trigger, Runner"]
+    A --> F["First Workflow"]
+    A --> G["Real CI Workflow"]
+    B --> H["Artifacts"]
+    B --> I["Image vs Container"]
+    B --> J["Build Workflow"]
+    B --> K["Deploy Workflow"]
+    B --> L["Full CI/CD Story"]
 ```
 
 Day 1 answers:
 
 `How do we know a change is still safe?`
+
+Day 1 also builds the language needed for the labs:
+
+- GitHub standard practices and a simple branching strategy
+- workflow structure and trigger choices
+- jobs, steps, actions, and environment variables
+- where `matrix`, `needs`, and `secrets` fit as later exercise or next-step ideas
 
 Day 2 answers:
 
