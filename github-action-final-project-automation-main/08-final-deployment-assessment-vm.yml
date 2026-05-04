@@ -1,0 +1,26 @@
+        
+        - name: shh to the machine
+          uses: appleboy/ssh-action@v1
+          with:
+            host: ${{ secrets.VM_HOST }}
+            username: ${{ secrets.VM_USER }}
+            key: ${{ secrets.VM_SSH_KEY }}
+            script: |
+              if [[ $EUID -ne 0 ]]; then
+                echo "This script must be run as root (use sudo)."
+                exit 1
+              fi
+              if ! which docker > /dev/null 2>&1; then
+                curl -fsSL https://get.docker.com -o get-docker.sh
+                sudo sh get-docker.sh
+                rm get-docker.sh
+                sudo usermod -aG docker $USER
+              fi
+
+              docker run --name=tinyhealthapp -d -p 8000:8000 ${{ steps.image_tag.outputs.IMAGE_TAG }}
+              sleep 2
+              curl -O https://raw.githubusercontent.com/iabouemira95/gha-cicd-course-student/main/scripts/assessment/validate-deployment.sh
+              bash validate-deployment.sh http://localhost:8000
+
+            
+            
