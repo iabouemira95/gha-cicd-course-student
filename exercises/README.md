@@ -18,7 +18,7 @@ Exercises extend that same workflow in one clear direction.
 - use the exercise to change or extend one idea from the lab workflow you already know
 - if an earlier exercise is broken, start again from the clean lab workflow unless the exercise page tells you otherwise
 - most exercises modify an existing workflow file instead of creating a new one
-- `EX-12` is the later exception where you create workflow `08`
+- `EX-12` is the later exception where you create workflows `08` and `09`
 - solution snapshots live only in the instructor repo
 
 `EX-10` is the one exception.

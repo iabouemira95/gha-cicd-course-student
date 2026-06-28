@@ -37,7 +37,8 @@ This setup keeps the deployment target real enough to matter, but still simple e
 
 - one Linux host reachable over SSH
 - one lab readiness workflow
-- one student-built final assessment workflow with both PR CI and post-merge CD
+- two student-built final assessment workflows:
+  one PR CI workflow and one post-merge CD workflow
 - the same app you already used in the earlier labs
 - one small Docker image
 - one set of registry credentials provided for the assessment
@@ -80,11 +81,12 @@ The final validation command and self-check now live in the rubric page so you h
 
 You create the final assessment workflow file in your own student repo, and the prepared solution stays in the instructor repo.
 
-Use the guided starter in:
+Use the guided starters in:
 
-- `docs/assessment/starter-workflows/08-final-deployment-assessment-starter.yml`
+- `docs/assessment/starter-workflows/08-final-assessment-ci-starter.yml`
+- `docs/assessment/starter-workflows/09-final-assessment-cd-starter.yml`
 
-That starter should become:
+Those starters should become:
 
-- one PR-based CI gate for `main`
-- one post-merge CD path for `main`
+- one PR-based CI workflow for `main`
+- one post-merge CD workflow for `main`

@@ -1,122 +1,34 @@
-# Copy this file to `.github/workflows/08-final-deployment-assessment.yml`
+# Copy this file to `.github/workflows/09-final-assessment-cd.yml`
 # when you start EX-12.
 #
 # This starter is intentionally incomplete.
 # It is meant to guide your thinking, not to run successfully as-is.
 #
-# Assessment target:
-# - CI runs on pull requests to `main`
-# - that CI becomes a required status check for merge
-# - after merge, CD builds the image, pushes it to the registry,
-#   deploys it over SSH, and validates the running app
+# Assessment target for this workflow:
+# - run after trusted code reaches `main`
+# - build one exact release image
+# - push it to the registry
+# - deploy it to the remote Linux host over SSH
+# - validate what is running
 #
-# Keep the course story visible the whole time:
-# code -> verify -> package -> deliver
-name: 08 Final Deployment Assessment
+# Keep the course story visible:
+# package -> deliver
+name: 09 Final Assessment CD
 
 # TODO:
 # Add the trigger block yourself.
-# This workflow should:
-# - run CI for pull requests targeting `main`
-# - run again after code is merged to `main`
-# - make it obvious which path is PR verification and which path is post-merge delivery
+# This workflow should run only after trusted code reaches `main`.
+# Keep the trigger easy to explain to another student.
 on: {}
 
 env:
   IMAGE_NAME: tiny-health-app
   APP_PORT: "8000"
-  PR_SCAN_IMAGE: tiny-health-app:pr-scan
 
 jobs:
-  verify:
-    name: CI quality gate
-    runs-on: ubuntu-latest
-    # This job should become the required status check on `main`.
-    # Keep the visible job name stable after your first successful run.
-    #
-    # Build order for this job:
-    # 1. check out the code
-    # 2. set up Python
-    # 3. run tests
-    # 4. run Ruff
-    # 5. run Trivy filesystem scan
-    # 6. run Trivy Dockerfile/config scan
-    # 7. build one local image for CI scanning
-    # 8. run Trivy image scan
-
-    steps:
-      - name: Check out repository
-        uses: "REPLACE_WITH_CHECKOUT_ACTION"
-
-      - name: Set up Python
-        uses: "REPLACE_WITH_SETUP_PYTHON_ACTION"
-        # TODO:
-        # Add the Python version configuration used in this course.
-
-      - name: Run tests
-        run: |
-          # TODO:
-          # Step 3:
-          # run the project unit tests.
-          # Keep this aligned with the earlier CI labs.
-          exit 1
-
-      - name: Run Ruff linting
-        uses: "REPLACE_WITH_RUFF_ACTION"
-        # TODO:
-        # Step 4:
-        # choose the Ruff action already used in the course.
-
-      - name: Run Trivy filesystem scan
-        uses: "REPLACE_WITH_TRIVY_ACTION"
-        # TODO:
-        # Step 5:
-        # Add the Trivy inputs so this step scans the repository filesystem.
-        # Keep it beginner-safe and visibility-focused:
-        # - point the scan at the repository
-        # - include the scanner types you want students to interpret
-        # - choose a stable severity set
-        # - decide whether findings should fail the workflow or stay visibility-only
-
-      - name: Run Trivy Dockerfile and config scan
-        uses: "REPLACE_WITH_TRIVY_ACTION"
-        # TODO:
-        # Step 6:
-        # Add the Trivy inputs so this step scans Dockerfile and config risk.
-        # This should stay a config-style scan, not an image scan.
-
-      - name: Set up Docker Buildx
-        uses: "REPLACE_WITH_SETUP_BUILDX_ACTION"
-        # TODO:
-        # Step 7 prep:
-        # add the Buildx setup action used earlier in the course.
-
-      - name: Build local image for scan
-        uses: "REPLACE_WITH_BUILD_PUSH_ACTION"
-        # TODO:
-        # Step 7:
-        # Add the build inputs so this step builds one local image for CI scanning only.
-        # This image should:
-        # - build from the current repository
-        # - stay local on the runner
-        # - use the PR_SCAN_IMAGE tag from env
-
-      - name: Run Trivy image scan
-        uses: "REPLACE_WITH_TRIVY_ACTION"
-        # TODO:
-        # Step 8:
-        # Add the Trivy inputs so this step scans the built image from PR_SCAN_IMAGE.
-        # Keep this one focused on image visibility before merge.
-
   build-and-push:
     name: Build and push release image
-    if: "REPLACE_WITH_PUSH_TO_MAIN_CONDITION"
-    needs:
-      - verify
     runs-on: ubuntu-latest
-    outputs:
-      image_tag: "${{ steps.image-tag.outputs.value }}"
-      image_ref: "${{ steps.image-ref.outputs.value }}"
     #
     # Build order for this job:
     # 1. confirm required secrets exist
@@ -127,6 +39,10 @@ jobs:
     # 6. log in to the registry
     # 7. show the image reference in logs
     # 8. build and push the release image
+
+    outputs:
+      image_tag: "${{ steps.image-tag.outputs.value }}"
+      image_ref: "${{ steps.image-ref.outputs.value }}"
 
     steps:
       - name: Check required GitHub secrets
@@ -195,7 +111,6 @@ jobs:
 
   deploy-to-host:
     name: Deploy to remote host
-    if: "REPLACE_WITH_PUSH_TO_MAIN_CONDITION"
     needs:
       - build-and-push
     runs-on: ubuntu-latest

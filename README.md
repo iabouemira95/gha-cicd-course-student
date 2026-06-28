@@ -48,7 +48,7 @@ Use this simple rule:
 - later guided extension = `LAB-07` and `EX-12` when your instructor starts the Ubuntu VM assessment path
 - optional examples = workflow examples `05`, `06`, `LAB-06`, and the cloud-oriented extra reading
 - most exercises modify the workflow file from the lab you just finished
-- `EX-12` is the later exception where you create workflow `08`
+- `EX-12` is the later exception where you create workflows `08` and `09`
 
 Use this quick rule in the `Actions` tab:
 
@@ -59,7 +59,7 @@ Use this quick rule in the `Actions` tab:
 - final assessment workflow = create `08` yourself later when the final assessment page asks you to
 - optional next-step examples = workflows `05`, `06`, and later example pages
 
-Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-12`.
+Workflows `08` and `09` will not appear in the `Actions` tab until you create `.github/workflows/08-final-assessment-ci.yml` and `.github/workflows/09-final-assessment-cd.yml` during `EX-12`.
 
 ## Before Class
 
@@ -161,11 +161,14 @@ Open these files in order:
 
 `EX-12` is the build-it-yourself part.
 
-Start `EX-12` from the guided starter in `docs/assessment/starter-workflows/08-final-deployment-assessment-starter.yml`.
+Start `EX-12` from the guided starters in:
+
+- `docs/assessment/starter-workflows/08-final-assessment-ci-starter.yml`
+- `docs/assessment/starter-workflows/09-final-assessment-cd-starter.yml`
 
 You create the final assessment workflow file yourself, and the prepared solution lives only in the instructor repo.
 
-Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-12`.
+Workflows `08` and `09` will not appear in the `Actions` tab until you create `.github/workflows/08-final-assessment-ci.yml` and `.github/workflows/09-final-assessment-cd.yml` during `EX-12`.
 
 ## Assessment Prep
 
