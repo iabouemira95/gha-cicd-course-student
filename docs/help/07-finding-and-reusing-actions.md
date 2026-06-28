@@ -11,6 +11,8 @@ This page explains:
 
 This is a next-step topic, not part of the main beginner labs.
 
+Use it after the core path or when a lab explicitly asks you to add an action.
+
 ## What an Action Is
 
 An action is a reusable building block for a workflow.

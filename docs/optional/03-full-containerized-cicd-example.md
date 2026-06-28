@@ -36,7 +36,7 @@ To stay beginner-safe, we still avoid:
 
 That means the example is inspired by real patterns without becoming an enterprise operations lab.
 
-If you want to see how the same story often grows into a cloud-shaped flow with ACR and AKS, use [How ACR and AKS Fit the Story](08-how-acr-and-aks-fit-the-story.md).
+If you want to see how the same story often grows into a cloud-shaped flow with ACR and AKS, use [How ACR and AKS Fit the Story](04-how-acr-and-aks-fit-the-story.md).
 
 That page also points to a manual-only example workflow in `.github/workflows`.
 
@@ -93,8 +93,8 @@ The main lesson is that even a fuller workflow is still telling the same story:
 
 ## Related Pages
 
-- [LAB-06: Full Containerized CI/CD Pipeline](../labs/LAB-06-full-containerized-cicd-pipeline.md)
-- [Final Assessment Support](assessment/README.md)
-- [Next Steps: Matrix and Secrets](06-next-steps-matrix-and-secrets.md)
-- [Simulated Deployment](03-simulated-deployment.md)
-- [How ACR and AKS Fit the Story](08-how-acr-and-aks-fit-the-story.md)
+- [LAB-06: Full Containerized CI/CD Pipeline](../../labs/optional/LAB-06-full-containerized-cicd-pipeline.md)
+- [Final Assessment Support](../assessment/README.md)
+- [Next Steps: Matrix and Secrets](02-next-steps-matrix-and-secrets.md)
+- [Simulated Deployment](../03-simulated-deployment.md)
+- [How ACR and AKS Fit the Story](04-how-acr-and-aks-fit-the-story.md)

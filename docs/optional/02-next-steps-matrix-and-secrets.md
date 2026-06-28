@@ -67,7 +67,7 @@ In GitHub Actions, secrets should be stored in GitHub settings, not written dire
 
 If you want to practice the simplest useful secrets pattern in this repository, continue with:
 
-- [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-and-matrix.md)
+- [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-as-env.md)
 
 That exercise teaches this pattern:
 
@@ -107,8 +107,8 @@ Learn these after you are comfortable with:
 
 ## Related Pages
 
-- [CI vs CD](05-ci-vs-cd.md)
-- [Trigger Reference](help/06-trigger-reference.md)
-- [Finding and Reusing GitHub Actions](help/07-finding-and-reusing-actions.md)
-- [Glossary](help/03-glossary.md)
-- [Full Containerized CI/CD Example](07-full-containerized-cicd-example.md)
+- [CI vs CD](01-ci-vs-cd.md)
+- [Trigger Reference](../help/06-trigger-reference.md)
+- [Finding and Reusing GitHub Actions](../help/07-finding-and-reusing-actions.md)
+- [Glossary](../help/03-glossary.md)
+- [Full Containerized CI/CD Example](03-full-containerized-cicd-example.md)

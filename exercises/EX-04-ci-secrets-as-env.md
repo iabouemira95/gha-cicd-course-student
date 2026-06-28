@@ -25,6 +25,16 @@ Practice the most common beginner-safe secrets pattern:
 
 This exercise extends the CI workflow without turning it into a second matrix lesson.
 
+## Secret -> Env -> Step
+
+Keep these three layers clear:
+
+1. the secret is stored in GitHub repository settings
+2. the workflow maps that secret into `env:`
+3. the step reads the environment variable while it runs
+
+That pattern is useful because the workflow can use the secret without printing it directly.
+
 ## Challenge
 
 Modify `.github/workflows/02-ci.yml`.

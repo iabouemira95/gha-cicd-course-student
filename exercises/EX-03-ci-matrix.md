@@ -24,6 +24,18 @@ This exercise keeps the same CI story from `LAB-02` and adds one matrix with two
 - runner operating system
 - Python version
 
+## What Matrix Changes
+
+A matrix does not create four different workflow files.
+
+It keeps one job definition and repeats it across combinations.
+
+In this exercise:
+
+- the test step stays the same
+- the job shape stays the same
+- only the runner and Python values change around that same job
+
 ## Challenge
 
 Modify `.github/workflows/02-ci.yml`.

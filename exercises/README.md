@@ -35,7 +35,7 @@ After [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md):
 
 1. [EX-02: CI Visibility and Schedule](EX-02-ci-visibility-and-schedule.md)
 2. [EX-03: CI Matrix Across OS and Python](EX-03-ci-matrix.md)
-3. [EX-04: CI Secrets as Environment Variables](EX-04-ci-secrets-and-matrix.md)
+3. [EX-04: CI Secrets as Environment Variables](EX-04-ci-secrets-as-env.md)
 4. [EX-05: CI Quality and Security Checks](EX-05-ci-quality-and-security-checks.md)
 
 ## Day 2

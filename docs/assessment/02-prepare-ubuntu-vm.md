@@ -4,6 +4,10 @@
 
 This page is the fuller operational reference for one Ubuntu VM used in the final assessment.
 
+Use this page when you want the deeper VM checklist and recovery notes.
+
+It is not the short gateway page and it is not the full script reference.
+
 If you want the quick setup gateway first, start with:
 
 - [Prepare the Assessment VM](../setup/04-prepare-assessment-vm.md)

@@ -176,7 +176,7 @@ Confirm that:
 
 Open this manual-only example workflow:
 
-- [06-azure-acr-aks-example.yml](../.github/workflows/06-azure-acr-aks-example.yml)
+- [06-azure-acr-aks-example.yml](../../.github/workflows/06-azure-acr-aks-example.yml)
 
 Look for these steps:
 
@@ -221,8 +221,8 @@ For this course, we stop before that point to keep the lab stable and beginner-f
 
 If you want to see that shape, read:
 
-- [How ACR and AKS Fit the Story](../docs/08-how-acr-and-aks-fit-the-story.md)
-- [06-azure-acr-aks-example.yml](../.github/workflows/06-azure-acr-aks-example.yml)
+- [How ACR and AKS Fit the Story](../../docs/optional/04-how-acr-and-aks-fit-the-story.md)
+- [06-azure-acr-aks-example.yml](../../.github/workflows/06-azure-acr-aks-example.yml)
 
 ## If You Get Stuck
 
@@ -235,9 +235,9 @@ Check these things first:
 
 Use these help pages if needed:
 
-- [How to Read Actions Logs](../docs/help/01-how-to-read-actions-logs.md)
-- [Troubleshooting](../docs/help/02-troubleshooting.md)
-- [Full Containerized CI/CD Example](../docs/07-full-containerized-cicd-example.md)
+- [How to Read Actions Logs](../../docs/help/01-how-to-read-actions-logs.md)
+- [Troubleshooting](../../docs/help/02-troubleshooting.md)
+- [Full Containerized CI/CD Example](../../docs/optional/03-full-containerized-cicd-example.md)
 
 ## Success Check
 
@@ -275,4 +275,4 @@ The final assessment keeps that same direction, but standardizes on:
 
 Use this page if you want to continue:
 
-- [Final Assessment Support](../docs/assessment/README.md)
+- [Final Assessment Support](../../docs/assessment/README.md)
