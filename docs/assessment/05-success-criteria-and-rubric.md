@@ -17,12 +17,14 @@ Use it as the final reference for:
 Confirm all of these are already true:
 
 - you completed `LAB-05`
+- you completed `EX-05`
+- you completed `EX-11`
 - you completed `LAB-07`
 - you have a local shell on your own machine for `scp`, `ssh`, and local validation commands
 - you have a local copy of this repository, or at least the assessment script files available locally
-- your Ubuntu VM accepts SSH key login
-- port `8000` is reachable on the VM
-- Docker works on the VM
+- your target Linux host accepts SSH key login
+- port `8000` is reachable on the host
+- Docker works on the host
 - your registry repository `tiny-health-app` exists
 - all six required GitHub secrets are saved
 
@@ -30,9 +32,10 @@ Confirm all of these are already true:
 
 ### 1. Verification
 
-- the workflow starts
-- the test job passes
-- the student can point to the verification step
+- opening or updating a pull request to `main` starts the CI path
+- the CI quality gate passes
+- the student can point to the test, lint, and scan steps
+- the branch protection rule requires the CI quality gate before merge
 
 ### 2. Deployable Output and Traceability
 
@@ -42,9 +45,9 @@ Confirm all of these are already true:
 
 ### 3. Remote Deployment
 
-- the VM is reached over SSH
-- the VM pulls the same image that was pushed earlier
-- the container starts on the VM successfully
+- the remote host is reached over SSH
+- the remote host pulls the same image that was pushed earlier
+- the container starts on the remote host successfully
 
 ### 4. Running Application Checks
 
@@ -65,9 +68,9 @@ Use this simple rubric:
 
 | Category | What a passing result looks like |
 |---|---|
-| verification | tests pass in the workflow |
+| verification | PR CI runs tests, linting, and scans successfully |
 | output | one clear deployable output is prepared and traceable |
-| deployment | the VM runs the intended updated container |
+| deployment | the remote host runs the intended updated container |
 | validation | the app responds on the expected port and endpoints |
 | explanation | the student can describe the deployed output clearly |
 
@@ -76,6 +79,7 @@ Use this simple rubric:
 A fair beginner pass means:
 
 - the workflow works end to end
+- the required PR status check is visible and understandable
 - the app is reachable on the expected port
 - the status endpoints show useful deployment details
 - the student can explain what was deployed and why the flow is trustworthy
@@ -85,9 +89,10 @@ A fair beginner pass means:
 When you or your instructor review the result, these are the clearest things to point to:
 
 - the passing `verify` job
+- the visible PR CI quality gate result before merge
 - the image reference shown in the workflow logs
 - the running app responses from `/health`, `/version`, and `/status`
-- one clear explanation of what exact thing is now running on the VM
+- one clear explanation of what exact thing is now running on the remote host
 
 ## Final Validation Command
 
@@ -111,6 +116,7 @@ That validation script checks:
 You are done when all of these are true:
 
 - the workflow passes end to end
+- the pull request gate is visible before merge
 - the deployed app responds on port `8000`
 - the homepage at `/` is reachable from a browser after the VM exposure path is correct
 - the validation command passes

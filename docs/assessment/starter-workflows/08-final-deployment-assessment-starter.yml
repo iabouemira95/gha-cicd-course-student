@@ -2,48 +2,107 @@
 # when you start EX-12.
 #
 # This starter is intentionally incomplete.
-# It gives you the workflow shape, job order, and key secrets,
-# but you still fill in the important CI/CD pieces yourself.
+# It is meant to guide your thinking, not to run successfully as-is.
 #
-# Assessment model:
-# - verify the app
-# - build and push one exact image to a container registry
-# - deploy that same image to one Linux host over SSH
-# - validate what is running
+# Assessment target:
+# - CI runs on pull requests to `main`
+# - that CI becomes a required status check for merge
+# - after merge, CD builds the image, pushes it to the registry,
+#   deploys it over SSH, and validates the running app
 #
-# The host may be an Ubuntu VM, EC2 instance, or another Linux VM.
-# The registry may be ACR, ECR, or another container registry your instructor provides.
+# Keep the course story visible the whole time:
+# code -> verify -> package -> deliver
 name: 08 Final Deployment Assessment
 
 on:
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+  push:
+    branches:
+      - main
 
 env:
   IMAGE_NAME: tiny-health-app
   APP_PORT: "8000"
+  PR_SCAN_IMAGE: tiny-health-app:pr-scan
 
 jobs:
   verify:
+    name: CI quality gate
     runs-on: ubuntu-latest
+    # This job should become the required status check on `main`.
+    # Keep the visible job name stable after your first successful run.
 
     steps:
       - name: Check out repository
-        uses: # TODO: add the checkout action
+        uses: "REPLACE_WITH_CHECKOUT_ACTION"
 
       - name: Set up Python
-        uses: # TODO: add the setup-python action
+        uses: "REPLACE_WITH_SETUP_PYTHON_ACTION"
         with:
-          python-version: # TODO: choose the Python version used in the course
+          python-version: "REPLACE_WITH_COURSE_PYTHON_VERSION"
 
       - name: Run tests
-        run: # TODO: run the unit tests
+        run: |
+          # TODO:
+          # run the project unit tests
+          exit 1
+
+      - name: Run Ruff linting
+        uses: "REPLACE_WITH_RUFF_ACTION"
+
+      - name: Run Trivy filesystem scan
+        uses: "REPLACE_WITH_TRIVY_ACTION"
+        with:
+          scan-type: "REPLACE_ME"
+          scan-ref: "REPLACE_ME"
+          scanners: "REPLACE_ME"
+          severity: "REPLACE_ME"
+          ignore-unfixed: "REPLACE_ME"
+          exit-code: "REPLACE_ME"
+
+      - name: Run Trivy Dockerfile and config scan
+        uses: "REPLACE_WITH_TRIVY_ACTION"
+        with:
+          scan-type: "REPLACE_ME"
+          scan-ref: "REPLACE_ME"
+          severity: "REPLACE_ME"
+          exit-code: "REPLACE_ME"
+
+      - name: Set up Docker Buildx
+        uses: "REPLACE_WITH_SETUP_BUILDX_ACTION"
+
+      - name: Build local image for scan
+        uses: "REPLACE_WITH_BUILD_PUSH_ACTION"
+        with:
+          context: "."
+          push: false
+          load: true
+          tags: "${{ env.PR_SCAN_IMAGE }}"
+
+      - name: Run Trivy image scan
+        uses: "REPLACE_WITH_TRIVY_ACTION"
+        with:
+          image-ref: "${{ env.PR_SCAN_IMAGE }}"
+          scanners: "REPLACE_ME"
+          severity: "REPLACE_ME"
+          ignore-unfixed: "REPLACE_ME"
+          exit-code: "REPLACE_ME"
 
   build-and-push:
-    needs: # TODO: depend on the verify job
+    name: Build and push release image
+    if: "REPLACE_WITH_PUSH_TO_MAIN_CONDITION"
+    needs:
+      - verify
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ${{ steps.image-tag.outputs.value }}
-      image_ref: ${{ steps.image-ref.outputs.value }}
+      image_tag: "${{ steps.image-tag.outputs.value }}"
+      image_ref: "${{ steps.image-ref.outputs.value }}"
 
     steps:
       - name: Check required GitHub secrets
@@ -56,74 +115,92 @@ jobs:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
           # TODO:
-          # 1. fail if any required secret is missing
-          # 2. print a clear success message when they are all present
+          # fail clearly if any required secret is missing
+          exit 1
 
       - name: Check out repository
-        uses: # TODO: add the checkout action again for this job
+        uses: "REPLACE_WITH_CHECKOUT_ACTION"
 
       - name: Create image tag
         id: image-tag
         run: |
           # TODO:
-          # create one traceable tag using the UTC date and GITHUB_RUN_ID
-          # write it to GITHUB_OUTPUT using the key `value`
+          # create one traceable tag from UTC date and GITHUB_RUN_ID
+          # then write it to GITHUB_OUTPUT with the key `value`
+          exit 1
 
       - name: Create full image reference
         id: image-ref
         run: |
           # TODO:
-          # combine REGISTRY_HOST, IMAGE_NAME, and the generated tag
-          # write the final image reference to GITHUB_OUTPUT using the key `value`
+          # combine REGISTRY_HOST, IMAGE_NAME, and the image tag
+          # then write it to GITHUB_OUTPUT with the key `value`
+          exit 1
+
+      - name: Set up Docker Buildx
+        uses: "REPLACE_WITH_SETUP_BUILDX_ACTION"
 
       - name: Log in to registry
-        uses: # TODO: add the docker login action
+        uses: "REPLACE_WITH_DOCKER_LOGIN_ACTION"
         with:
-          registry: ${{ secrets.REGISTRY_HOST }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+          registry: "${{ secrets.REGISTRY_HOST }}"
+          username: "${{ secrets.REGISTRY_USERNAME }}"
+          password: "${{ secrets.REGISTRY_PASSWORD }}"
 
       - name: Show image reference
-        run: 'echo "Image to push: ${{ steps.image-ref.outputs.value }}"'
+        run: |
+          # TODO:
+          # print the exact image reference that will be pushed
+          exit 1
 
-      - name: Build and push image
-        uses: # TODO: add the build-push action
+      - name: Build and push release image
+        uses: "REPLACE_WITH_BUILD_PUSH_ACTION"
         with:
-          context: .
+          context: "."
           push: true
           tags: "${{ steps.image-ref.outputs.value }}"
 
   deploy-to-host:
-    needs: # TODO: depend on the build-and-push job
+    name: Deploy to remote host
+    if: "REPLACE_WITH_PUSH_TO_MAIN_CONDITION"
+    needs:
+      - build-and-push
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy image on remote host over SSH
-        uses: # TODO: add the SSH action used in the course
+      - name: Deploy image over SSH
+        uses: "REPLACE_WITH_SSH_ACTION"
         env:
+          REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
           IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
           IMAGE_REF: ${{ needs.build-and-push.outputs.image_ref }}
           COMMIT_SHA: ${{ github.sha }}
           APP_PORT: ${{ env.APP_PORT }}
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          envs: IMAGE_REF,IMAGE_TAG,COMMIT_SHA,APP_PORT
+          host: "${{ secrets.DEPLOY_HOST }}"
+          username: "${{ secrets.DEPLOY_USER }}"
+          key: "${{ secrets.DEPLOY_SSH_KEY }}"
+          envs: "REGISTRY_HOST,REGISTRY_USERNAME,REGISTRY_PASSWORD,IMAGE_REF,IMAGE_TAG,COMMIT_SHA,APP_PORT"
           script: |
             set -e
             DEPLOYED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
             # TODO:
-            # 1. pull the exact image reference
-            # 2. remove the old container safely if it exists
-            # 3. run the new container on port 8000
-            # 4. pass APP_ENV, APP_VERSION, COMMIT_SHA, DEPLOYED_AT, IMAGE_TAG, and DEPLOY_MODE
-            # 5. wait for /health on 127.0.0.1:${APP_PORT}
-            # 6. check /version and /status on the remote host
+            # 1. confirm Docker exists on the remote host
+            # 2. log in to the registry on the remote host
+            # 3. pull the exact image reference
+            # 4. remove the old container safely if it exists
+            # 5. run the new container on port 8000
+            # 6. pass APP_ENV, APP_VERSION, COMMIT_SHA, DEPLOYED_AT, IMAGE_TAG, and DEPLOY_MODE
+            # 7. wait for /health on 127.0.0.1:${APP_PORT}
+            # 8. check /version and /status on the remote host
+            exit 1
 
       - name: Validate deployed app from GitHub Actions
         run: |
           # TODO:
-          # check /health, /version, and /status from the runner
+          # validate /health, /version, and /status from the runner
           # using http://${{ secrets.DEPLOY_HOST }}:${APP_PORT}
+          exit 1

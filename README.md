@@ -140,8 +140,9 @@ After the main Day 2 path and the related exercises, your instructor may give yo
 
 It keeps the same story and asks you to build one fuller deployment workflow yourself:
 
-- build a Docker image
-- push it to a container registry
+- run CI on pull requests to `main`
+- require that CI before merge
+- after merge, build and push one image
 - deploy that same image to a Linux VM or EC2 host over SSH
 
 Open these files in order:

@@ -10,10 +10,11 @@ They keep the same course story and reduce setup friction before the final asses
 
 For this course, the final assessment uses one shared target and one shared delivery model:
 
-1. verify the code
-2. prepare one deployable output
-3. deploy it to one Ubuntu VM over SSH
-4. validate what is running
+1. verify, lint, and scan on pull requests to `main`
+2. require that CI before merge
+3. build and push one deployable image after merge
+4. deploy it to one Linux host over SSH
+5. validate what is running
 
 The standardized delivery model is:
 
@@ -36,7 +37,7 @@ This setup keeps the deployment target real enough to matter, but still simple e
 
 - one Linux host reachable over SSH
 - one lab readiness workflow
-- one student-built final assessment workflow
+- one student-built final assessment workflow with both PR CI and post-merge CD
 - the same app you already used in the earlier labs
 - one small Docker image
 - one set of registry credentials provided for the assessment
@@ -82,3 +83,8 @@ You create the final assessment workflow file in your own student repo, and the 
 Use the guided starter in:
 
 - `docs/assessment/starter-workflows/08-final-deployment-assessment-starter.yml`
+
+That starter should become:
+
+- one PR-based CI gate for `main`
+- one post-merge CD path for `main`

@@ -18,7 +18,9 @@ For fairness, use one shared delivery model for the whole cohort.
 
 The course standard is:
 
-- build a Docker image
+- run CI on pull requests to `main`
+- require that CI before merge
+- build a Docker image after merge
 - push it to a container registry
 - deploy it on a Linux host over SSH
 - run it as a Docker container on that host
@@ -73,6 +75,7 @@ Your instructor will tell you what registry service is used in your cohort.
 The assessment still measures the same course story:
 
 - verify first
+- keep merge gated by CI
 - deliver a known output
 - validate the running app
 - explain what was deployed
