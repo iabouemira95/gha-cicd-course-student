@@ -33,6 +33,16 @@ jobs:
     runs-on: ubuntu-latest
     # This job should become the required status check on `main`.
     # Keep the visible job name stable after your first successful run.
+    #
+    # Build order for this job:
+    # 1. check out the code
+    # 2. set up Python
+    # 3. run tests
+    # 4. run Ruff
+    # 5. run Trivy filesystem scan
+    # 6. run Trivy Dockerfile/config scan
+    # 7. build one local image for CI scanning
+    # 8. run Trivy image scan
 
     steps:
       - name: Check out repository
@@ -46,15 +56,21 @@ jobs:
       - name: Run tests
         run: |
           # TODO:
-          # run the project unit tests
+          # Step 3:
+          # run the project unit tests.
+          # Keep this aligned with the earlier CI labs.
           exit 1
 
       - name: Run Ruff linting
         uses: "REPLACE_WITH_RUFF_ACTION"
+        # TODO:
+        # Step 4:
+        # choose the Ruff action already used in the course.
 
       - name: Run Trivy filesystem scan
         uses: "REPLACE_WITH_TRIVY_ACTION"
         # TODO:
+        # Step 5:
         # Add the Trivy inputs so this step scans the repository filesystem.
         # Keep it beginner-safe and visibility-focused:
         # - point the scan at the repository
@@ -65,15 +81,20 @@ jobs:
       - name: Run Trivy Dockerfile and config scan
         uses: "REPLACE_WITH_TRIVY_ACTION"
         # TODO:
+        # Step 6:
         # Add the Trivy inputs so this step scans Dockerfile and config risk.
         # This should stay a config-style scan, not an image scan.
 
       - name: Set up Docker Buildx
         uses: "REPLACE_WITH_SETUP_BUILDX_ACTION"
+        # TODO:
+        # Step 7 prep:
+        # add the Buildx setup action used earlier in the course.
 
       - name: Build local image for scan
         uses: "REPLACE_WITH_BUILD_PUSH_ACTION"
         # TODO:
+        # Step 7:
         # Add the build inputs so this step builds one local image for CI scanning only.
         # This image should:
         # - build from the current repository
@@ -83,6 +104,7 @@ jobs:
       - name: Run Trivy image scan
         uses: "REPLACE_WITH_TRIVY_ACTION"
         # TODO:
+        # Step 8:
         # Add the Trivy inputs so this step scans the built image from PR_SCAN_IMAGE.
         # Keep this one focused on image visibility before merge.
 
@@ -95,6 +117,16 @@ jobs:
     outputs:
       image_tag: "${{ steps.image-tag.outputs.value }}"
       image_ref: "${{ steps.image-ref.outputs.value }}"
+    #
+    # Build order for this job:
+    # 1. confirm required secrets exist
+    # 2. check out the code
+    # 3. create one traceable image tag
+    # 4. create the full image reference
+    # 5. prepare Buildx
+    # 6. log in to the registry
+    # 7. show the image reference in logs
+    # 8. build and push the release image
 
     steps:
       - name: Check required GitHub secrets
@@ -107,6 +139,7 @@ jobs:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
           # TODO:
+          # Step 1:
           # fail clearly if any required secret is missing
           exit 1
 
@@ -117,6 +150,7 @@ jobs:
         id: image-tag
         run: |
           # TODO:
+          # Step 3:
           # create one traceable tag from UTC date and GITHUB_RUN_ID
           # then write it to GITHUB_OUTPUT with the key `value`
           exit 1
@@ -125,28 +159,35 @@ jobs:
         id: image-ref
         run: |
           # TODO:
+          # Step 4:
           # combine REGISTRY_HOST, IMAGE_NAME, and the image tag
           # then write it to GITHUB_OUTPUT with the key `value`
           exit 1
 
       - name: Set up Docker Buildx
         uses: "REPLACE_WITH_SETUP_BUILDX_ACTION"
+        # TODO:
+        # Step 5:
+        # add the Buildx setup action used earlier in the course.
 
       - name: Log in to registry
         uses: "REPLACE_WITH_DOCKER_LOGIN_ACTION"
         # TODO:
+        # Step 6:
         # Add the login inputs so GitHub Actions can authenticate to the registry.
         # Use the registry host, username, and password secrets already listed above.
 
       - name: Show image reference
         run: |
           # TODO:
+          # Step 7:
           # print the exact image reference that will be pushed
           exit 1
 
       - name: Build and push release image
         uses: "REPLACE_WITH_BUILD_PUSH_ACTION"
         # TODO:
+        # Step 8:
         # Add the build inputs so this step:
         # - builds from the repository
         # - pushes to the registry
@@ -158,6 +199,16 @@ jobs:
     needs:
       - build-and-push
     runs-on: ubuntu-latest
+    #
+    # Build order for this job:
+    # 1. connect to the remote host over SSH
+    # 2. confirm Docker is ready there
+    # 3. log in to the registry on the remote host
+    # 4. pull the exact image
+    # 5. replace the running container safely
+    # 6. wait for health locally on the host
+    # 7. check version and status on the host
+    # 8. validate the deployed app from the GitHub runner
 
     steps:
       - name: Deploy image over SSH
@@ -171,6 +222,7 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           APP_PORT: ${{ env.APP_PORT }}
         # TODO:
+        # Steps 1 to 7:
         # Add the SSH action inputs yourself.
         # This step should:
         # - connect with DEPLOY_HOST, DEPLOY_USER, and DEPLOY_SSH_KEY
@@ -188,6 +240,7 @@ jobs:
       - name: Validate deployed app from GitHub Actions
         run: |
           # TODO:
+          # Step 8:
           # validate /health, /version, and /status from the runner
           # using http://${{ secrets.DEPLOY_HOST }}:${APP_PORT}
           exit 1
