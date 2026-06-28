@@ -55,7 +55,7 @@ This shape teaches:
 - keep the image inside the workflow runner
 - save it as a GitHub artifact if needed
 
-In the core build workflow, we keep the tag story very simple and use one date-plus-run-id tag.
+In the core build workflow, we keep the naming story very simple and use one fixed course image reference.
 
 In the optional fuller example, you can also see a `latest` tag added for comparison.
 

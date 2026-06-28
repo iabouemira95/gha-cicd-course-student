@@ -90,11 +90,19 @@ We want to deliver the same package that we already built and verified.
 For this course, you do not need to learn:
 
 - cloud deployment services
-- networking details
+- deeper networking details
 - container orchestration
 - advanced Docker commands
 
 The simple delivery story is enough.
+
+Later, when the course moves to the Ubuntu VM assessment path, you will open the same app in a browser from:
+
+`http://<vm-public-ip>:8000/`
+
+That later step still follows the same idea:
+
+deliver the package first, then prove it is reachable.
 
 ## Related Next Steps
 

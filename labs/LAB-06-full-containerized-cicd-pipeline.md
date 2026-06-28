@@ -93,7 +93,7 @@ This is good for learning:
 - add tags
 - save it as an artifact
 
-In the core build workflow, the course keeps the tag story simpler and uses one date-plus-run-id tag.
+In the core build workflow, the course now keeps the image naming simpler and uses one fixed course image reference.
 
 In this optional fuller example, you also see `latest` so students can recognize a common real-world pattern.
 
@@ -160,7 +160,7 @@ Confirm that the tests passed.
 Confirm that:
 
 - the Docker image was built
-- a simple date-plus-run-id tag was created
+- one simple packaged image reference was created
 - the image was tagged more than once
 - the image artifact was uploaded
 
@@ -255,7 +255,7 @@ After the lab, try to answer these questions:
 
 - What made this workflow feel more production-like?
 - Which parts were still the same as the smaller beginner workflows?
-- Why is a date-plus-run-id image tag useful?
+- Why is a simple fixed image reference enough in the core build lab?
 - Why might a real team push a tagged image to ACR?
 - Why is it better to deploy the built image than to rebuild again later?
 

@@ -80,8 +80,8 @@ Return to these two short ideas:
 ## Useful Pages to Revisit Later
 
 - [LAB-05: Full CI/CD Flow](../labs/LAB-05-full-cicd-flow.md)
-- [EX-09: Full Flow Failure and Recovery](../exercises/EX-09-full-flow-failure-and-recovery.md)
-- [EX-10: PR-Based CI/CD with Branch Protection](../exercises/EX-10-pr-based-ci-cd-with-branch-protection.md)
+- [EX-10: Full Flow Failure and Recovery](../exercises/EX-10-full-flow-failure-and-recovery.md)
+- [EX-11: PR-Based CI/CD with Branch Protection](../exercises/EX-11-pr-based-ci-cd-with-branch-protection.md)
 - [Course Map](00-course-map.md)
 - [CI vs CD](05-ci-vs-cd.md)
 - [How to Read Actions Logs](help/01-how-to-read-actions-logs.md)

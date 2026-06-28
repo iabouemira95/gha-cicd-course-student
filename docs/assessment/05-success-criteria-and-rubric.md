@@ -7,12 +7,12 @@ This page gives clear and observable checks for the final assessment.
 Use it as the final reference for:
 
 - what success looks like
-- what should already be ready before `EX-11`
+- what should already be ready before `EX-12`
 - what command to run after deployment
 - what should be visible in the workflow
 - what should be visible in the deployed app
 
-## Before You Start EX-11
+## Before You Start EX-12
 
 Confirm all of these are already true:
 
@@ -37,7 +37,7 @@ Confirm all of these are already true:
 ### 2. Deployable Output and Traceability
 
 - the workflow prepares one clear Docker image as the deployable output
-- the image tag is shown clearly with `YYYY-MM-DD-GITHUB_RUN_ID`
+- the image reference is shown clearly in the logs
 - the image is pushed to Docker Hub successfully
 
 ### 3. Remote Deployment
@@ -112,6 +112,7 @@ You are done when all of these are true:
 
 - the workflow passes end to end
 - the deployed app responds on port `8000`
+- the homepage at `/` is reachable from a browser after the VM exposure path is correct
 - the validation command passes
 - you can explain what exact image was deployed
 - you can explain why the flow is repeatable

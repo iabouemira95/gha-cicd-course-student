@@ -8,6 +8,10 @@
 
 - `.github/workflows/02-ci.yml`
 
+## Safe Starting Point
+
+Start from the clean `LAB-02` version of `.github/workflows/02-ci.yml`.
+
 ## Goal
 
 Keep the same CI check, but make the workflow more visible.

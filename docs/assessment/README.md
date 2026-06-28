@@ -67,7 +67,7 @@ If you want the full script guidance first, open:
 5. [How the Current Labs Prepare You](04-how-current-labs-prepare-you.md)
 6. [LAB-07: Final Assessment Setup and Validation Prep](../../labs/LAB-07-docker-hub-vm-deploy.md)
 7. [Assessment Success Criteria, Validation, and Rubric](05-success-criteria-and-rubric.md)
-8. [EX-11: Final Deployment Assessment](../../exercises/EX-11-final-deployment-assessment.md)
+8. [EX-12: Final Deployment Assessment](../../exercises/EX-12-final-deployment-assessment.md)
 
 The final validation command and self-check now live in the rubric page so you have one final assessment reference instead of two.
 
@@ -75,6 +75,6 @@ The final validation command and self-check now live in the rubric page so you h
 
 `LAB-07` prepares the final assessment setup.
 
-`EX-11` is build-it-yourself.
+`EX-12` is build-it-yourself.
 
 You create the final assessment workflow file in your own student repo, and the prepared solution stays in the instructor repo.

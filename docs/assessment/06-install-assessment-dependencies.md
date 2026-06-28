@@ -57,7 +57,7 @@ Use `--configure-firewall` only if you explicitly want it to add `ufw` rules for
 Run this script:
 
 - before `LAB-07`
-- before `EX-11`
+- before `EX-12`
 - any time you want one clean setup check on a fresh Ubuntu VM
 
 ## VM Usage

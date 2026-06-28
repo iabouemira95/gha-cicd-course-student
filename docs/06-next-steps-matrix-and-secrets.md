@@ -7,7 +7,7 @@ This page introduces two common GitHub Actions ideas that are useful after the b
 - matrix builds
 - secrets management
 
-These are next-step topics, not main course topics.
+These are next-step topics, not the first ideas you need on Day 1.
 
 ## Why These Topics Are Not in the Main Labs
 
@@ -40,93 +40,16 @@ It helps teams answer questions like:
 - Does the app work on Python 3.11 and 3.12?
 - Does the test suite pass on Linux and Windows?
 
-### Small Example
-
-```yaml
-strategy:
-  matrix:
-    python-version: ["3.11", "3.12"]
-```
-
-That tells GitHub Actions to repeat the job for both values.
-
-### What New Complexity It Adds
-
-Matrix workflows are useful, but beginners now have to read:
-
-- repeated jobs
-- multiple logs
-- failures in only one variation
-
-That is why we did not put matrix builds in the main course labs.
-
 ### Practice Path
 
-If you want to build a small matrix exercise yourself in this repository, continue with:
+If you want to practice that idea in this repository, continue with:
 
-- [EX-03: CI Matrix](../exercises/EX-03-ci-matrix.md)
+- [EX-03: CI Matrix Across OS and Python](../exercises/EX-03-ci-matrix.md)
 
-That exercise keeps the trigger manual-only and repeats the CI test job for:
+That exercise keeps the same CI workflow shape while repeating it across:
 
-- Python `3.11`
-- Python `3.12`
-
-### Advanced Practice Pattern: Matrix Values From One Secret
-
-For a more advanced build-it-yourself pattern, continue with:
-
-- [EX-04: CI Secrets and Matrix Patterns](../exercises/EX-04-ci-secrets-and-matrix.md)
-
-This example shows a useful GitHub Actions limitation and workaround:
-
-- `secrets` cannot be used directly inside `strategy.matrix`
-- a first job reads the secret
-- that job passes a normal output forward
-- the matrix job uses that output with `fromJSON(...)`
-
-Simple way to read the workflow:
-
-- first job: prepare the version list
-- second job: run the same CI test flow once per version
-
-Expected secret format:
-
-```json
-["3.11","3.12"]
-```
-
-Important teaching note:
-
-For normal values like Python versions, a repository variable or workflow input is usually a better fit than a secret.
-
-This example is useful mainly for understanding how GitHub Actions contexts and job outputs work.
-
-This is a useful pattern exercise, not the recommended default for normal non-sensitive configuration.
-
-### Smarter Fixed-Matrix Pattern: Secret Lookup
-
-The same `EX-04` exercise also includes a second build-it-yourself pattern:
-
-This version uses a different idea:
-
-- the matrix entries stay fixed in the workflow
-- each matrix entry holds the name of a secret
-- the workflow reads the real version with `secrets[matrix.version_secret]`
-
-Why this is useful:
-
-- it is simpler than the two-job workaround
-- it works well when you already know the small fixed set of matrix runs
-- it still teaches a useful GitHub Actions expression pattern
-
-Important difference:
-
-- use the `from-secret` workflow when the whole matrix list must come from one secret
-- use the `secret-lookup` workflow when the matrix is already known and each job just needs to read a different secret
-
-Prepared solution workflows for these patterns live only in the instructor repository.
-
-This is also a useful pattern exercise, not the recommended default for normal non-sensitive configuration.
+- Ubuntu and Windows runners
+- Python `3.11` and `3.12`
 
 ## Secrets Management
 
@@ -140,20 +63,17 @@ A secret is a sensitive value such as:
 
 In GitHub Actions, secrets should be stored in GitHub settings, not written directly in workflow files.
 
-### Why Teams Need It
+### Beginner-Safe Practice Path
 
-Real delivery workflows often need credentials.
+If you want to practice the simplest useful secrets pattern in this repository, continue with:
 
-Those credentials must be protected.
+- [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-and-matrix.md)
 
-### Small Example
+That exercise teaches this pattern:
 
-```yaml
-env:
-  API_TOKEN: ${{ secrets.MY_API_TOKEN }}
-```
-
-That means the value comes from GitHub's stored secrets.
+1. store a secret in GitHub
+2. map it into `env:`
+3. use it safely in a workflow step
 
 ### Beginner Safety Rules
 

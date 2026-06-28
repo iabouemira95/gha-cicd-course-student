@@ -133,13 +133,15 @@ After the lab is complete, continue with these exercises in order:
 
 1. [EX-02: CI Visibility and Schedule](../exercises/EX-02-ci-visibility-and-schedule.md)
 2. [EX-03: CI Matrix](../exercises/EX-03-ci-matrix.md)
-3. [EX-04: CI Secrets and Matrix Patterns](../exercises/EX-04-ci-secrets-and-matrix.md)
+3. [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-and-matrix.md)
+4. [EX-05: CI Quality and Security Checks](../exercises/EX-05-ci-quality-and-security-checks.md)
 
 These exercises extend the same CI story in three different ways:
 
 - `EX-02` adds visibility and schedule
 - `EX-03` adds matrix
-- `EX-04` adds advanced secrets and matrix patterns
+- `EX-04` adds safe secret handling
+- `EX-05` adds one staged quality-and-security hardening exercise
 
 They all keep working in `.github/workflows/02-ci.yml`.
 

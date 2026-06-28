@@ -26,8 +26,8 @@ This workflow teaches delivery using the package created earlier:
 - `workflow_run` starts deploy after the build workflow finishes
 - `Download build artifact` gets the saved package
 - `Load Docker image` restores that package as an image
-- `Read image metadata from build artifact` reads the exact image reference from the build run
-- `Start container` runs the exact same tagged image from the build run
+- `Read image metadata from build artifact` reads the fixed image reference from the build run
+- `Start container` runs the exact same packaged image from the build run
 - `Smoke test deployed app` checks that the app responds
 
 ## Step 1: Read the Workflow File
@@ -87,7 +87,7 @@ This workflow is important because it uses the exact packaged output from the bu
 
 It is not rebuilding the app.
 
-It is loading and running the same tagged image that the build workflow already created.
+It is loading and running the same packaged image that the build workflow already created.
 
 In this course, the build workflow now saves that exact image reference inside the artifact bundle.
 
@@ -154,9 +154,9 @@ After the demo, remove that line or set it back to false so the workflow returns
 
 After this lab, continue with:
 
-- [EX-07: Deploy and Inspect the Deployment](../exercises/EX-07-deploy-inspect-the-deployment.md)
+- [EX-09: Deploy and Inspect the Deployment](../exercises/EX-09-deploy-inspect-the-deployment.md)
 
-`EX-07` keeps working in `.github/workflows/04-deploy.yml`.
+`EX-09` keeps working in `.github/workflows/04-deploy.yml`.
 
 It adds deeper inspection after startup without changing the main deploy story.
 

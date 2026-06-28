@@ -45,10 +45,10 @@ Use this simple rule:
 - core beginner path = workflows `01` to `04` and Labs `01` to `05`
 - `LAB-05` is still part of the guided Day 2 continuation
 - `LAB-05` does not correspond to workflow `05`
-- later guided extension = `LAB-07` and `EX-11` when your instructor starts the Ubuntu VM assessment path
+- later guided extension = `LAB-07` and `EX-12` when your instructor starts the Ubuntu VM assessment path
 - optional examples = workflow examples `05`, `06`, `LAB-06`, and the cloud-oriented extra reading
 - most exercises modify the workflow file from the lab you just finished
-- `EX-11` is the later exception where you create workflow `08`
+- `EX-12` is the later exception where you create workflow `08`
 
 Use this quick rule in the `Actions` tab:
 
@@ -59,7 +59,7 @@ Use this quick rule in the `Actions` tab:
 - final assessment workflow = create `08` yourself later when the final assessment page asks you to
 - optional next-step examples = workflows `05`, `06`, and later example pages
 
-Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-11`.
+Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-12`.
 
 ## Before Class
 
@@ -88,10 +88,11 @@ Open these files during Day 1:
 7. [How to Read Actions Logs](docs/help/01-how-to-read-actions-logs.md)
 8. [Lab 02: Real CI Workflow](labs/LAB-02-real-ci-workflow.md)
 9. [Exercise 02: CI Visibility and Schedule](exercises/EX-02-ci-visibility-and-schedule.md)
-10. [Exercise 03: CI Matrix](exercises/EX-03-ci-matrix.md)
-11. [Exercise 04: CI Secrets and Matrix Patterns](exercises/EX-04-ci-secrets-and-matrix.md)
-12. [Exercises Index](exercises/README.md)
-13. [Labs Guide](labs/README.md)
+10. [Exercise 03: CI Matrix Across OS and Python](exercises/EX-03-ci-matrix.md)
+11. [Exercise 04: CI Secrets as Environment Variables](exercises/EX-04-ci-secrets-and-matrix.md)
+12. [Exercise 05: CI Quality and Security Checks](exercises/EX-05-ci-quality-and-security-checks.md)
+13. [Exercises Index](exercises/README.md)
+14. [Labs Guide](labs/README.md)
 
 Exercises always follow the related lab.
 
@@ -115,20 +116,21 @@ Open these files during Day 2:
 1. [Day 2 Opening Bridge](docs/day-2-opening-bridge.md)
 2. [Artifacts, Images, and Containers](docs/02-artifacts-images-and-containers.md)
 3. [Lab 03: Build Artifact Workflow](labs/LAB-03-build-artifact-workflow.md)
-4. [Exercise 05: Build Artifact with Buildx](exercises/EX-05-build-artifact-with-buildx.md)
-5. [Exercise 06: CI Then Build Artifact With `needs`](exercises/EX-06-ci-then-build-artifact-with-needs.md)
-6. [Simulated Deployment](docs/03-simulated-deployment.md)
-7. [Lab 04: Deploy Workflow](labs/LAB-04-deploy-workflow.md)
-8. [Exercise 07: Deploy and Inspect the Deployment](exercises/EX-07-deploy-inspect-the-deployment.md)
-9. [Lab 05: Full CI/CD Flow](labs/LAB-05-full-cicd-flow.md)
-10. [Exercise 09: Full Flow Failure and Recovery](exercises/EX-09-full-flow-failure-and-recovery.md)
-11. [Exercise 10: PR-Based CI/CD with Branch Protection](exercises/EX-10-pr-based-ci-cd-with-branch-protection.md)
-12. [Final Recap](docs/04-final-recap.md)
-13. [Labs Guide](labs/README.md)
+4. [Exercise 06: Build Artifact with Buildx](exercises/EX-06-build-artifact-with-buildx.md)
+5. [Exercise 07: Build Artifact Scan with Trivy](exercises/EX-07-build-artifact-scan-with-trivy.md)
+6. [Exercise 08: CI Then Build Artifact With `needs`](exercises/EX-08-ci-then-build-artifact-with-needs.md)
+7. [Simulated Deployment](docs/03-simulated-deployment.md)
+8. [Lab 04: Deploy Workflow](labs/LAB-04-deploy-workflow.md)
+9. [Exercise 09: Deploy and Inspect the Deployment](exercises/EX-09-deploy-inspect-the-deployment.md)
+10. [Lab 05: Full CI/CD Flow](labs/LAB-05-full-cicd-flow.md)
+11. [Exercise 10: Full Flow Failure and Recovery](exercises/EX-10-full-flow-failure-and-recovery.md)
+12. [Exercise 11: PR-Based CI/CD with Branch Protection](exercises/EX-11-pr-based-ci-cd-with-branch-protection.md)
+13. [Final Recap](docs/04-final-recap.md)
+14. [Labs Guide](labs/README.md)
 
-`EX-05` and `EX-06` both extend `.github/workflows/03-build-artifact.yml`.
+`EX-06`, `EX-07`, and `EX-08` all extend `.github/workflows/03-build-artifact.yml`.
 
-Do `EX-05` first, then use `EX-06` to strengthen that same build workflow with a clearer multi-job shape.
+Do `EX-06` first, then use `EX-07` to add an artifact scan, and `EX-08` to strengthen that same build workflow with a clearer multi-job shape.
 
 `LAB-05` is the integration lab that reuses workflows `02`, `03`, and `04`.
 
@@ -152,15 +154,15 @@ Open these files in order:
 6. [How the Current Labs Prepare You](docs/assessment/04-how-current-labs-prepare-you.md)
 7. [LAB-07: Final Assessment Setup and Validation Prep](labs/LAB-07-docker-hub-vm-deploy.md)
 8. [Assessment Success Criteria, Validation, and Rubric](docs/assessment/05-success-criteria-and-rubric.md)
-9. [EX-11: Final Deployment Assessment](exercises/EX-11-final-deployment-assessment.md)
+9. [EX-12: Final Deployment Assessment](exercises/EX-12-final-deployment-assessment.md)
 
 `LAB-07` uses one preloaded readiness workflow to check the setup.
 
-`EX-11` is the build-it-yourself part.
+`EX-12` is the build-it-yourself part.
 
 You create the final assessment workflow file yourself, and the prepared solution lives only in the instructor repo.
 
-Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-11`.
+Workflow `08` will not appear in the `Actions` tab until you create `.github/workflows/08-final-deployment-assessment.yml` during `EX-12`.
 
 ## Assessment Prep
 

@@ -161,12 +161,12 @@ After the lab, try to answer these questions:
 
 After this lab, continue with:
 
-- [EX-09: Full Flow Failure and Recovery](../exercises/EX-09-full-flow-failure-and-recovery.md)
-- [EX-10: PR-Based CI/CD with Branch Protection](../exercises/EX-10-pr-based-ci-cd-with-branch-protection.md)
+- [EX-10: Full Flow Failure and Recovery](../exercises/EX-10-full-flow-failure-and-recovery.md)
+- [EX-11: PR-Based CI/CD with Branch Protection](../exercises/EX-11-pr-based-ci-cd-with-branch-protection.md)
 
-`EX-09` keeps the same core workflows and focuses only on failure and recovery.
+`EX-10` keeps the same core workflows and focuses only on failure and recovery.
 
-`EX-10` keeps the same full story and changes it into a PR-based team workflow by extending `.github/workflows/02-ci.yml` and `.github/workflows/03-build-artifact.yml` while reusing `.github/workflows/04-deploy.yml`.
+`EX-11` keeps the same full story and changes it into a PR-based team workflow by extending `.github/workflows/02-ci.yml` and `.github/workflows/03-build-artifact.yml` while reusing `.github/workflows/04-deploy.yml`.
 
 ## Assessment Preparation Link
 
@@ -182,4 +182,4 @@ The difference is that delivery moves from a GitHub-hosted simulation to a real 
 Use these pages when you are ready:
 
 - [Final Assessment Support](../docs/assessment/README.md)
-- [EX-11: Final Deployment Assessment](../exercises/EX-11-final-deployment-assessment.md)
+- [EX-12: Final Deployment Assessment](../exercises/EX-12-final-deployment-assessment.md)

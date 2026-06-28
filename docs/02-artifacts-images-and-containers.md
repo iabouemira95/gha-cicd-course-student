@@ -56,20 +56,13 @@ You do not need deep Docker internals for this course.
 
 An image tag is a readable label attached to an image.
 
-In this course, a tag like `2026-04-08-123456789` helps us talk about one exact built image.
+In this course, a tag like `course` can be enough for the core packaging lab because the artifact tar is the main package we carry forward.
 
-That example means:
+That matters because we still want to say:
 
-- the date part helps us see when the image was created
-- the GitHub run ID makes the tag unique for that run
+"Deploy the exact image we already built."
 
-That matters because we want to say:
-
-"Deploy the exact image from this build run."
-
-You may also see tags such as `latest` in optional examples.
-
-For the core course, the date-plus-run-id tag is the most important one to remember.
+You may see more detailed tag shapes in later optional examples or in the final assessment path.
 
 ## What Is a Container
 
@@ -102,7 +95,7 @@ The build workflow will:
 1. check out the repository
 2. set up Python
 3. run the tests
-4. build a Docker image with a date-plus-run-id tag
+4. build a Docker image with one simple course image name
 5. save that image as a file
 6. save a tiny metadata file with the exact image reference
 7. upload both files as one workflow artifact

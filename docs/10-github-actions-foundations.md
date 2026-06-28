@@ -131,8 +131,8 @@ In this repo:
 3. [How to Read Actions Logs](help/01-how-to-read-actions-logs.md)
 4. [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md)
 5. [EX-02: CI Visibility and Schedule](../exercises/EX-02-ci-visibility-and-schedule.md)
-6. [EX-03: CI Matrix](../exercises/EX-03-ci-matrix.md)
-7. [EX-04: CI Secrets and Matrix Patterns](../exercises/EX-04-ci-secrets-and-matrix.md)
+6. [EX-03: CI Matrix Across OS and Python](../exercises/EX-03-ci-matrix.md)
+7. [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-and-matrix.md)
 
 ## Related Pages
 

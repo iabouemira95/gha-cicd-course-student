@@ -88,7 +88,7 @@ If you want the full local Ubuntu dependency check directly, run:
 bash scripts/install-assessment-deps.sh --check-only
 ```
 
-## What Should Be True Before You Run LAB-07 or EX-11
+## What Should Be True Before You Run LAB-07 or EX-12
 
 Before you run `LAB-07` and later build the final assessment workflow, all items below should be true:
 
@@ -96,6 +96,7 @@ Before you run `LAB-07` and later build the final assessment workflow, all items
 - the VM is reachable on port `8000`
 - the VM secrets are saved
 - one manual SSH login from your machine has already worked
+- you understand that external browser access also depends on VM and cloud firewall rules
 
 - the Docker Hub repository exists and is public
 - the Docker Hub secrets are saved

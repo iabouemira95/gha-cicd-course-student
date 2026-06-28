@@ -145,6 +145,19 @@ Make sure:
 
 This script can detect local firewall state, but it cannot open cloud rules for you.
 
+## External Browser Access Path
+
+When the app is deployed on the VM, students should be able to explain this path:
+
+1. the app listens on `0.0.0.0:8000`
+2. Docker publishes the port with `-p 8000:8000`
+3. the VM firewall allows `8000`
+4. the cloud firewall or VM network rule also allows `8000`
+5. a browser can then open:
+   - `http://<vm-public-ip>:8000/`
+
+If the app works inside the VM but not from your laptop, the problem may be exposure rather than app health.
+
 ## Why This Matters
 
 The workflow can only deploy successfully if the VM is ready first.

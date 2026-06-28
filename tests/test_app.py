@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from app.app import route_request
+from app.app import get_runtime_metadata, increment_request_count, render_home_page, route_request
 
 
 class RouteRequestTests(unittest.TestCase):
@@ -45,6 +45,13 @@ class RouteRequestTests(unittest.TestCase):
             },
         )
 
+    def test_ready_route_returns_ready_payload(self):
+        status_code, payload = route_request("/ready")
+
+        self.assertEqual(status_code, 200)
+        self.assertEqual(payload["status"], "ready")
+        self.assertEqual(payload["checks"]["app"], "loaded")
+
     def test_status_route_returns_runtime_metadata(self):
         with patch.dict(
             "os.environ",
@@ -70,6 +77,28 @@ class RouteRequestTests(unittest.TestCase):
         self.assertEqual(payload["deployment_mode"], "vm-docker-ssh")
         self.assertEqual(payload["force_unhealthy"], False)
         self.assertTrue(payload["hostname"])
+
+    def test_config_route_returns_safe_values_only(self):
+        status_code, payload = route_request("/config")
+
+        self.assertEqual(status_code, 200)
+        self.assertEqual(payload["bind_host"], "0.0.0.0")
+        self.assertEqual(payload["port"], 8000)
+        self.assertNotIn("DOCKERHUB_TOKEN", payload)
+
+    def test_home_page_returns_html(self):
+        body = render_home_page()
+
+        self.assertIn("<!doctype html>", body)
+        self.assertIn("Tiny Health App", body)
+        self.assertIn("/health", body)
+
+    def test_request_counter_increments_in_memory(self):
+        before = get_runtime_metadata()["request_count"]
+        increment_request_count()
+        after = get_runtime_metadata()["request_count"]
+
+        self.assertEqual(after, before + 1)
 
 
 if __name__ == "__main__":

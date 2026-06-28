@@ -142,11 +142,34 @@ If it fails, also use:
 - [LAB-07: Final Assessment Setup and Validation Prep](../../labs/LAB-07-docker-hub-vm-deploy.md)
 - [Assessment Success Criteria, Validation, and Rubric](../assessment/05-success-criteria-and-rubric.md)
 
-## The EX-11 Final Assessment Workflow Failed
+## The EX-12 Final Assessment Workflow Failed
 
 If you are already in the assessed exercise, start with the same checks above and then continue with:
 
-- [EX-11: Final Deployment Assessment](../../exercises/EX-11-final-deployment-assessment.md)
+- [EX-12: Final Deployment Assessment](../../exercises/EX-12-final-deployment-assessment.md)
+
+## The App Works on the VM but Not in My Browser
+
+Ask this first:
+
+`Is the app broken, or is the path to it blocked?`
+
+Use this short table:
+
+| Symptom | Most likely layer |
+|---|---|
+| `curl http://127.0.0.1:8000/health` works on the VM, but your laptop browser fails | VM firewall or cloud firewall |
+| container starts, but nothing on port `8000` answers | Docker port publish or app bind |
+| app answers on the VM, but not on the public IP | cloud firewall, NSG, security group, or wrong public host |
+| `/health` fails everywhere | app or container startup problem |
+
+Quick recovery order:
+
+1. test inside the VM first
+2. confirm the container publishes `8000`
+3. confirm the VM allows `8000`
+4. confirm the cloud/network rule allows `8000`
+5. retry the public browser URL
 
 ## I Accidentally Ran an Optional Workflow
 

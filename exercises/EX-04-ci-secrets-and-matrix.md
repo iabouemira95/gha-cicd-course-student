@@ -1,64 +1,66 @@
-# EX-04: CI Secrets and Matrix Patterns
+# EX-04: CI Secrets as Environment Variables
 
 ## Use This After
 
 - [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md)
-- preferably [EX-03: CI Matrix](EX-03-ci-matrix.md)
+- preferably [EX-03: CI Matrix Across OS and Python](EX-03-ci-matrix.md)
 
 ## Workflow To Modify
 
 - `.github/workflows/02-ci.yml`
 
+## Safe Starting Point
+
+Start from the clean `LAB-02` version of `.github/workflows/02-ci.yml`.
+
+If your `EX-02` or `EX-03` version already works, you may continue from that file instead.
+
 ## Goal
 
-Practice two advanced GitHub Actions patterns:
+Practice the most common beginner-safe secrets pattern:
 
-1. build a matrix from one stored secret
-2. keep a fixed matrix and look up a different secret in each run
+1. store a secret in GitHub
+2. map it into `env:`
+3. use it in a step
 
-This exercise extends `LAB-02`.
-
-It does not replace the base CI workflow. It compares two more advanced matrix patterns.
-
-## Important Note
-
-This exercise is for learning GitHub Actions behavior.
-
-It is not the normal way to store simple values like Python versions.
+This exercise extends the CI workflow without turning it into a second matrix lesson.
 
 ## Challenge
 
-Continue modifying `.github/workflows/02-ci.yml`.
+Modify `.github/workflows/02-ci.yml`.
 
-Keep this as one same-file exercise:
+Create one harmless repository secret named:
 
-- Pattern A is the required version
-- Pattern B is the optional comparison version on that same file after Pattern A works
+`TRAINING_MESSAGE`
+
+Use a safe value such as:
+
+`Keep shipping carefully`
 
 ## Requirements
 
-### Pattern A: Matrix From One Secret
+- Keep the same test step from `LAB-02`.
+- Read `TRAINING_MESSAGE` from GitHub secrets.
+- Map it into `env:` for one step.
+- Use the secret in a way that proves the workflow received it.
+- Do not print the raw secret value in the logs.
 
-- Replace the fixed matrix in `.github/workflows/02-ci.yml`.
-- Store the whole version list in one secret.
-- Use one job to read that secret and publish a normal output.
-- Use a second job that turns that output into a matrix with `fromJSON(...)`.
-- Complete this pattern first.
-- Ask your instructor to review it before you move on to Pattern B.
+## Suggested Pattern
 
-### Pattern B: Fixed Matrix with Secret Lookup
+Use one step that:
 
-- After Pattern A works, you may adapt the same `.github/workflows/02-ci.yml` file to try the fixed-matrix secret-lookup version.
-- Keep the matrix fixed in the YAML.
-- Put a secret name in each matrix item.
-- Read the real value with `secrets[matrix.version_secret]`.
-- Treat Pattern B as an optional comparison on the same workflow file, not as a second required exercise workflow.
+- checks whether the environment variable is empty
+- fails with a clear message if the secret is missing
+- prints only a safe confirmation such as:
+  - `Training message is present`
 
 ## Acceptance Criteria
 
-- Pattern A clearly shows one job preparing the matrix values and another job fanning out into multiple CI runs.
-- You keep working in `.github/workflows/02-ci.yml` instead of splitting into extra exercise workflow files.
-- Pattern B, if you try it, clearly shows that the matrix is already known in the YAML and each run resolves a different secret during the job.
-- You can explain why Pattern A needs two jobs.
-- You can explain why Pattern B can stay in one job even though Pattern A cannot.
-- You can explain which pattern is simpler when the matrix is already known.
+- The workflow still lives inside `.github/workflows/02-ci.yml`.
+- The run fails clearly if the secret is missing.
+- The run succeeds when the secret exists.
+- The logs do not reveal the secret value itself.
+- You can explain the difference between:
+  - a GitHub secret
+  - a workflow environment variable
+  - a normal configuration value

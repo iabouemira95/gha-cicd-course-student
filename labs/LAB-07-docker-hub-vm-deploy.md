@@ -10,6 +10,7 @@ By the end of this lab, you should have:
 2. GitHub secrets ready
 3. one clear validation path ready for `/health`, `/version`, and `/status`
 4. one public Docker Hub repository ready
+5. one clear browser validation path ready for `/`
 
 ## Why This Lab Matters
 
@@ -154,6 +155,10 @@ Know what it will check later after deploy:
 - `/version`
 - `/status`
 
+Also remember the human-friendly browser path you will use later:
+
+- `http://<vm-host>:8000/`
+
 You will run this script after the final assessment deploy succeeds.
 
 ## What You Should Notice
@@ -167,7 +172,7 @@ This lab is still part of the same story:
 The important difference is:
 
 - `LAB-07` checks readiness
-- `EX-11` builds the real deploy workflow by combining ideas you already know from `02-ci.yml`, `03-build-artifact.yml`, and `04-deploy.yml`
+- `EX-12` builds the real deploy workflow by combining ideas you already know from `02-ci.yml`, `03-build-artifact.yml`, and `04-deploy.yml`
 
 ## If You Get Stuck
 
@@ -190,6 +195,7 @@ You are done when:
 - the Docker Hub repository exists
 - the readiness workflow passes
 - you can explain what the final assessment workflow must do
+- you can explain how the app becomes reachable from outside the VM
 
 ## Reflection
 
@@ -199,10 +205,11 @@ After the lab, try to answer these questions:
 - Which parts are really setup tasks, not CI/CD logic?
 - Why is a readiness workflow useful before an assessed deploy workflow?
 - What should the final assessment workflow prove when it runs?
+- If the app works inside the VM but not from your laptop, which layer might be blocking the path?
 
 ## Next Step
 
 After this prep lab, continue with:
 
 - [Assessment Success Criteria, Validation, and Rubric](../docs/assessment/05-success-criteria-and-rubric.md)
-- [EX-11: Final Deployment Assessment](../exercises/EX-11-final-deployment-assessment.md)
+- [EX-12: Final Deployment Assessment](../exercises/EX-12-final-deployment-assessment.md)

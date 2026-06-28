@@ -15,7 +15,7 @@ Unlike the early labs, this later setup path uses a local shell on your own mach
 Use this page:
 
 - before `LAB-07`
-- before `EX-11`
+- before `EX-12`
 - when you are preparing one Ubuntu VM for the final Docker-based deployment path
 
 Do not use this page:
@@ -172,6 +172,18 @@ Even if the script passes, your VM may still need external network rules that al
 That part is outside the VM itself.
 
 If your VM lives behind cloud networking rules, security groups, or NSGs, you must still allow those ports there.
+
+Use this simple question during troubleshooting:
+
+`Is the app broken, or is the path to it blocked?`
+
+That path includes:
+
+1. the app listening on `0.0.0.0:8000`
+2. Docker publishing `8000`
+3. the VM allowing `8000`
+4. the cloud/network allowing `8000`
+5. the browser using the correct public IP or DNS name
 
 ## What To Open Next
 

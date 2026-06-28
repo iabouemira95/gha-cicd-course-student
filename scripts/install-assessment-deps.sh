@@ -87,7 +87,7 @@ print_summary() {
   if [[ "${EXIT_CODE}" -eq 0 ]]; then
     printf -- '- If the critical checks above passed, continue with docs/setup/04-prepare-assessment-vm.md.\n'
   else
-    printf -- '- Fix the FAIL items above before you continue to LAB-07 or EX-11.\n'
+    printf -- '- Fix the FAIL items above before you continue to LAB-07 or EX-12.\n'
   fi
 
   if [[ "${CONFIGURE_FIREWALL}" -eq 0 ]]; then

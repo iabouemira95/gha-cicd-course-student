@@ -1,10 +1,10 @@
-# EX-10: PR-Based CI/CD with Branch Protection
+# EX-11: PR-Based CI/CD with Branch Protection
 
 ## Use This After
 
 - [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md)
 - [LAB-05: Full CI/CD Flow](../labs/LAB-05-full-cicd-flow.md)
-- preferably [EX-09: Full Flow Failure and Recovery](EX-09-full-flow-failure-and-recovery.md)
+- preferably [EX-10: Full Flow Failure and Recovery](EX-10-full-flow-failure-and-recovery.md)
 
 ## Workflows To Modify
 
@@ -59,17 +59,6 @@ Keep extending the same integrated flow from `LAB-05`.
 - Configure `main` so changes come through pull requests.
 - Configure `main` so the CI check must pass before merge.
 - If your GitHub plan allows it, also block direct pushes to `main`.
-
-## Suggested Flow
-
-1. create a feature branch
-2. make one safe change
-3. open a pull request to `main`
-4. watch PR CI run
-5. confirm merge is blocked until CI passes
-6. merge the pull request
-7. watch the build workflow run on `main`
-8. watch the deploy workflow follow that build
 
 ## Acceptance Criteria
 
