@@ -24,6 +24,8 @@ on: {}
 env:
   IMAGE_NAME: tiny-health-app
   APP_PORT: "8000"
+  # Keep one exact image name for the whole assessment.
+  # The tag will change per run, but the image name should stay stable.
 
 jobs:
   build-and-push:
@@ -43,6 +45,15 @@ jobs:
     outputs:
       image_tag: "${{ steps.image-tag.outputs.value }}"
       image_ref: "${{ steps.image-ref.outputs.value }}"
+    #
+    # Why outputs exist here:
+    # - the deploy job must use the exact same image values created in this build job
+    # - `GITHUB_OUTPUT` writes step outputs
+    # - job outputs expose those values to the next job
+    # - `needs.build-and-push.outputs...` reads them in deploy
+    #
+    # Keep this pattern simple.
+    # Do not add extra output variables unless they directly help the story.
 
     steps:
       - name: Check required GitHub secrets
@@ -69,6 +80,7 @@ jobs:
           # Step 3:
           # create one traceable tag from UTC date and GITHUB_RUN_ID
           # then write it to GITHUB_OUTPUT with the key `value`
+          # This keeps the later deploy job tied to one exact built image.
           exit 1
 
       - name: Create full image reference
@@ -78,6 +90,7 @@ jobs:
           # Step 4:
           # combine REGISTRY_HOST, IMAGE_NAME, and the image tag
           # then write it to GITHUB_OUTPUT with the key `value`
+          # This gives deploy one exact image reference to pull.
           exit 1
 
       - name: Set up Docker Buildx
@@ -124,6 +137,9 @@ jobs:
     # 6. wait for health locally on the host
     # 7. check version and status on the host
     # 8. validate the deployed app from the GitHub runner
+    #
+    # Keep this job straightforward.
+    # Do not add `always()` or extra cleanup logic unless your instructor asks for it.
 
     steps:
       - name: Deploy image over SSH

@@ -124,6 +124,21 @@ In this repo:
 - the exercises introduce matrix and secret patterns after the related lab
 - the larger optional workflows make `needs` easier to see
 
+## Later Patterns We Introduce Carefully
+
+Some GitHub Actions features are useful, but they are not part of the core beginner path.
+
+- step outputs and job outputs pass a value from one place to another
+- `needs` makes one job wait for another job clearly
+- `fail-fast` changes how matrix jobs stop after failures
+- `always()` forces a step to run even after an earlier failure
+
+Simple course rule:
+
+- do not reach for these patterns unless the lab or exercise explains why they are needed
+- the core labs `01` to `04` avoid them on purpose
+- the final assessment introduces outputs only because deploy must use the exact image values created by build
+
 ## Day 1 Course Path
 
 1. [LAB-01: First Workflow](../labs/LAB-01-first-workflow.md)

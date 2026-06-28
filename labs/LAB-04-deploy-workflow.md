@@ -26,7 +26,7 @@ This workflow teaches delivery using the package created earlier:
 - `workflow_run` starts deploy after the build workflow finishes
 - `Download build artifact` gets the saved package
 - `Load Docker image` restores that package as an image
-- `Read image metadata from build artifact` reads the fixed image reference from the build run
+- `Show exact image reference` shows the fixed course image name being delivered
 - `Start container` runs the exact same packaged image from the build run
 - `Smoke test deployed app` checks that the app responds
 
@@ -38,7 +38,7 @@ You should be able to find:
 
 - the trigger based on the build workflow
 - the artifact download step
-- the image metadata step
+- the exact image reference step
 - the smoke test step
 
 ## Step 2: Start the Build Workflow
@@ -69,7 +69,7 @@ Look for these steps:
 
 - `Download build artifact`
 - `Load Docker image`
-- `Read image metadata from build artifact`
+- `Show exact image reference`
 - `Start container`
 - `Smoke test deployed app`
 
@@ -89,9 +89,9 @@ It is not rebuilding the app.
 
 It is loading and running the same packaged image that the build workflow already created.
 
-In this course, the build workflow now saves that exact image reference inside the artifact bundle.
+In this core path, that image reference stays fixed as `tiny-health-app:course`.
 
-That means deploy does not need to guess or rebuild the tag.
+That means deploy does not need to guess, rebuild, or compute a tag yet.
 
 That is the delivery idea we wanted to reach in this course.
 

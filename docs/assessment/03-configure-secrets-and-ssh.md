@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This page shows the minimum setup needed before the final assessment workflow can run.
+This page shows the minimum setup needed before the final assessment workflows can run.
 
 ## GitHub Secrets to Create
 
@@ -90,7 +90,7 @@ bash scripts/install-assessment-deps.sh --check-only
 
 ## What Should Be True Before You Run LAB-07 or EX-12
 
-Before you run `LAB-07` and later build the final assessment workflow, all items below should be true:
+Before you run `LAB-07` and later build the final assessment workflows, all items below should be true:
 
 - the host accepts SSH key login
 - the host is reachable on port `8000`

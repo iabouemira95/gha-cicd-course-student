@@ -143,7 +143,11 @@ It keeps the same story and asks you to build one fuller deployment workflow you
 - run CI on pull requests to `main`
 - require that CI before merge
 - after merge, build and push one image
-- deploy that same image to a Linux VM or EC2 host over SSH
+- deploy that same image to one SSH-reachable Linux host
+
+The only important new GitHub Actions pattern here is passing one exact image value from the build job to the deploy job.
+
+That pattern is introduced inside `EX-12` on purpose.
 
 Open these files in order:
 
@@ -166,7 +170,7 @@ Start `EX-12` from the guided starters in:
 - `docs/assessment/starter-workflows/08-final-assessment-ci-starter.yml`
 - `docs/assessment/starter-workflows/09-final-assessment-cd-starter.yml`
 
-You create the final assessment workflow file yourself, and the prepared solution lives only in the instructor repo.
+You create the final assessment workflow files yourself, and the prepared solutions live only in the instructor repo.
 
 Workflows `08` and `09` will not appear in the `Actions` tab until you create `.github/workflows/08-final-assessment-ci.yml` and `.github/workflows/09-final-assessment-cd.yml` during `EX-12`.
 

@@ -11,6 +11,9 @@
 #
 # Keep the course story visible:
 # code -> verify
+#
+# Keep this workflow intentionally simple.
+# Do not add `fail-fast`, matrix strategy, or extra control logic here unless your instructor asks for it.
 name: 08 Final Assessment CI
 
 # TODO:
@@ -28,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     # This job should become the required status check on `main`.
     # Keep the visible job name stable after your first successful run.
+    # That stable visible name is what branch protection should require later.
     #
     # Build order for this job:
     # 1. check out the code
@@ -72,6 +76,7 @@ jobs:
         # - include the scanner types you want students to interpret
         # - choose a stable severity set
         # - decide whether findings should fail the workflow or stay visibility-only
+        # Do not add policy files or advanced exceptions in this assessment version.
 
       - name: Run Trivy Dockerfile and config scan
         uses: "REPLACE_WITH_TRIVY_ACTION"

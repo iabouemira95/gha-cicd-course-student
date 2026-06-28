@@ -10,9 +10,8 @@ on:
     types: [completed]
 
 env:
-  IMAGE_NAME: tiny-health-app
+  IMAGE_REFERENCE: tiny-health-app:course
   IMAGE_TAR: tiny-health-app.tar
-  IMAGE_METADATA: image-metadata.env
   ARTIFACT_NAME: tiny-health-app-image
   CONTAINER_NAME: tiny-health-container
   APP_PORT: "8000"
@@ -48,17 +47,9 @@ jobs:
         # Turn the saved artifact file back into a Docker image.
         run: docker load --input "downloaded-artifact/${IMAGE_TAR}"
 
-      - name: Read image metadata from build artifact
-        # Read the exact built image reference that the build workflow saved.
-        id: image-metadata
-        run: |
-          source "downloaded-artifact/${IMAGE_METADATA}"
-          echo "image_tag=${IMAGE_TAG}" >> "$GITHUB_OUTPUT"
-          echo "image_reference=${IMAGE_REFERENCE}" >> "$GITHUB_OUTPUT"
-
       - name: Show exact image reference
         # Visibility step so students can see what exact package is being delivered.
-        run: echo "Deploying ${{ steps.image-metadata.outputs.image_reference }}"
+        run: echo "Deploying ${IMAGE_REFERENCE}"
 
       - name: Start container
         # Start the exact same tagged image that the build workflow created.
@@ -66,7 +57,7 @@ jobs:
           docker run -d \
             --name "${CONTAINER_NAME}" \
             -p "${APP_PORT}:8000" \
-            "${{ steps.image-metadata.outputs.image_reference }}"
+            "${IMAGE_REFERENCE}"
 
       - name: Smoke test deployed app
         # Retry a few times because app startup can take a moment.
@@ -80,8 +71,3 @@ jobs:
           done
           echo "App did not become ready in time."
           exit 1
-
-      - name: Stop container
-        if: always()
-        # Clean up even if an earlier step fails.
-        run: docker rm -f "${CONTAINER_NAME}" || true

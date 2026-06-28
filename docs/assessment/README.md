@@ -79,7 +79,7 @@ The final validation command and self-check now live in the rubric page so you h
 
 `EX-12` is build-it-yourself.
 
-You create the final assessment workflow file in your own student repo, and the prepared solution stays in the instructor repo.
+You create the final assessment workflow files in your own student repo, and the prepared solutions stay in the instructor repo.
 
 Use the guided starters in:
 

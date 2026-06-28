@@ -39,7 +39,7 @@ Confirm all of these are already true:
 
 ### 2. Deployable Output and Traceability
 
-- the workflow prepares one clear Docker image as the deployable output
+- the CD workflow prepares one clear Docker image as the deployable output
 - the image reference is shown clearly in the logs
 - the image is pushed to the registry successfully
 
@@ -78,7 +78,7 @@ Use this simple rubric:
 
 A fair beginner pass means:
 
-- the workflow works end to end
+- the CI and CD workflows work end to end
 - the required PR status check is visible and understandable
 - the app is reachable on the expected port
 - the status endpoints show useful deployment details
@@ -96,7 +96,7 @@ When you or your instructor review the result, these are the clearest things to 
 
 ## Final Validation Command
 
-After the workflow succeeds, run this from your repository root on your own machine:
+After the CD workflow succeeds, run this from your repository root on your own machine:
 
 ```bash
 bash scripts/assessment/validate-deployment.sh http://<vm-host>:8000
@@ -115,7 +115,7 @@ That validation script checks:
 
 You are done when all of these are true:
 
-- the workflow passes end to end
+- the workflows pass end to end
 - the pull request gate is visible before merge
 - the deployed app responds on port `8000`
 - the homepage at `/` is reachable from a browser after the VM exposure path is correct

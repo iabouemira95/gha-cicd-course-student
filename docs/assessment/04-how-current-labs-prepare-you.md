@@ -23,11 +23,17 @@ This page shows how the existing labs and exercises already prepare you for the 
 
 The final assessment adds only a few new ideas:
 
-- combine PR CI and post-merge CD into one realistic workflow
+- split PR CI and post-merge CD into two realistic workflows
 - push the image to a registry
 - use SSH to reach a real Ubuntu VM
 - pull the exact image on that VM
 - prove what was deployed with `/health`, `/version`, and `/status`
+
+The one new GitHub Actions pattern to notice is this:
+
+- pass the exact image tag and image reference from the build job to the deploy job with outputs
+
+That pattern appears later because the assessment is the first place where build and deploy truly need a computed per-run image value.
 
 ## How the Earlier Labs Support the Assessment
 

@@ -16,10 +16,7 @@ Use it to understand the concept first, then open the workflow lab.
 
 An artifact is a file produced during a workflow run.
 
-For this course, the artifact we care about is a small artifact bundle:
-
-- a saved Docker image file
-- a tiny metadata file that records the exact image tag
+For this course, the artifact we care about is a saved Docker image file.
 
 That matters because we do not want to say:
 
@@ -97,8 +94,9 @@ The build workflow will:
 3. run the tests
 4. build a Docker image with one simple course image name
 5. save that image as a file
-6. save a tiny metadata file with the exact image reference
-7. upload both files as one workflow artifact
+6. upload that file as one workflow artifact
+
+In the later final assessment, you will add more image-traceability detail because the image is pushed to a real registry and deployed to a real VM.
 
 ## What You Need to Remember
 

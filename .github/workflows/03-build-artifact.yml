@@ -10,7 +10,6 @@ env:
   # Keep the packaged image name fixed in the core lab so students can focus on packaging itself.
   IMAGE_REFERENCE: tiny-health-app:course
   IMAGE_TAR: tiny-health-app.tar
-  IMAGE_METADATA: image-metadata.env
   ARTIFACT_NAME: tiny-health-app-image
 
 jobs:
@@ -41,18 +40,10 @@ jobs:
         # Convert that packaged image into a file we can carry forward to the deploy workflow.
         run: docker save "${IMAGE_REFERENCE}" -o "${IMAGE_TAR}"
 
-      - name: Save image metadata
-        # Keep one tiny metadata file so deploy can reuse the exact same image reference later.
-        run: |
-          printf 'IMAGE_TAG=%s\n' "course" > "${IMAGE_METADATA}"
-          printf 'IMAGE_REFERENCE=%s\n' "${IMAGE_REFERENCE}" >> "${IMAGE_METADATA}"
-
       - name: Upload build artifact
         # Store the packaged output so a later workflow can use the exact same package.
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
-          path: |
-            ${{ env.IMAGE_TAR }}
-            ${{ env.IMAGE_METADATA }}
+          path: ${{ env.IMAGE_TAR }}
           retention-days: 7

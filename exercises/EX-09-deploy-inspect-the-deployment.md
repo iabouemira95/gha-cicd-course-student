@@ -26,7 +26,7 @@ Modify `.github/workflows/04-deploy.yml`.
 
 - Keep the same build-triggered deploy flow from `LAB-04`.
 - Keep using the saved artifact from the build run.
-- Show the exact image reference being deployed from the metadata file.
+- Show the exact image reference being deployed.
 - After startup, show the running containers with `docker ps`.
 - After startup, print the `/health` response body.
 

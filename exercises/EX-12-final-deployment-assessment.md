@@ -37,6 +37,43 @@ These new files are still derived from earlier lab workflows:
 
 Copy the two starters into `.github/workflows/08-final-assessment-ci.yml` and `.github/workflows/09-final-assessment-cd.yml`, then fill the gaps yourself.
 
+## Important Concepts Before You Build
+
+Keep these ideas clear before you start editing:
+
+- `08-final-assessment-ci.yml` answers: "Is this change safe enough to merge?"
+- `09-final-assessment-cd.yml` answers: "Now that trusted code reached `main`, can we package and deliver it?"
+- branch protection uses the visible CI job result to block merge until verification passes
+- the CD workflow uses one exact image tag and one exact image reference so build and deploy talk about the same thing
+
+### One Small GitHub Actions Pattern You Will Use
+
+Inside the CD workflow, the deploy job needs the same image values created in the build job.
+
+That is why the starter uses:
+
+- step outputs written through `GITHUB_OUTPUT`
+- job outputs exposed from the build job
+- `needs.build-and-push.outputs...` inside the deploy job
+
+This is not "advanced for the sake of advanced."
+
+It is the smallest clean way to pass one exact image tag and one exact image reference from build to deploy inside one workflow.
+
+### What To Avoid In This Assessment
+
+Do not add extra GitHub Actions features unless your instructor explicitly asks for them.
+
+Avoid:
+
+- `fail-fast`
+- `always()`
+- reusable workflows
+- matrix builds in the assessment workflows
+- extra helper jobs that do not support the story directly
+
+The goal is a clear, teachable path, not the most clever YAML.
+
 ## Requirements
 
 - The CI workflow should trigger on pull requests to `main`.
@@ -51,8 +88,9 @@ Copy the two starters into `.github/workflows/08-final-assessment-ci.yml` and `.
 - The CD workflow should build the image from the current `Dockerfile`.
 - The CD workflow should push the image to the container registry your instructor provides.
 - The CD workflow logs should show the full image reference clearly.
+- The CD workflow should pass the exact image tag and image reference from the build job to the deploy job clearly.
 - The CD workflow should connect to the Linux host over SSH using GitHub secrets.
-- The Linux host can be an Ubuntu VM, an EC2 instance, or another SSH-reachable Linux VM.
+- The deployment target should be one SSH-reachable Linux host such as an Ubuntu VM.
 - The host should log in to the registry if needed and pull the same image that was pushed earlier.
 - The workflow should replace any older container safely.
 - The container should run on port `8000`.

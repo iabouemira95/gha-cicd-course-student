@@ -30,8 +30,7 @@ This workflow keeps the CI check and adds packaging:
 - `Run tests` verifies the code before packaging
 - `Build Docker image with docker build` creates one simple packaged image
 - `Save Docker image as artifact file` turns the image into a saved file
-- `Save image metadata` records the fixed image reference for later delivery
-- `Upload build artifact` stores that file bundle for later use
+- `Upload build artifact` stores that packaged file for later use
 
 ## Step 1: Read the Workflow File
 
@@ -42,7 +41,6 @@ You should be able to find:
 - the test step
 - the Docker build step
 - the artifact upload step
-- the metadata step
 
 ## Step 2: Read the Main Docker Command
 
@@ -98,7 +96,6 @@ You should see steps like:
 - `Run tests`
 - `Build Docker image with docker build`
 - `Save Docker image as artifact file`
-- `Save image metadata`
 - `Upload build artifact`
 
 ## Step 5: Find the Artifact
@@ -113,8 +110,7 @@ You do not need to inspect the file contents for this lab.
 
 The important point is that the workflow produced a packaged output and saved:
 
-- the image file itself
-- one tiny metadata file that says which exact image reference was built
+- the image file itself as a reusable workflow artifact
 
 ## Step 6: Explain the Story in Your Own Words
 
@@ -183,6 +179,8 @@ Later, the final assessment uses the same packaging ideas again:
 - one built image
 - one saved package
 - one deployable output carried forward
+
+In the final assessment, you will add more traceability around image tags because the image is pushed to a registry and reused on a real VM.
 
 If you want to see how this lab prepares you for that track, use:
 
