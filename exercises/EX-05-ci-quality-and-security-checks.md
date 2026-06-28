@@ -3,7 +3,7 @@
 ## Use This After
 
 - [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md)
-- preferably [EX-04: CI Secrets as Environment Variables](EX-04-ci-secrets-and-matrix.md)
+- preferably [EX-04: CI Secrets as Environment Variables](EX-04-ci-secrets-as-env.md)
 
 ## Workflow To Modify
 
@@ -24,6 +24,16 @@ Harden the same CI workflow in three small stages:
 3. add a Trivy Dockerfile/config scan
 
 This is still one exercise on the same CI file.
+
+## What Each New Check Is Doing
+
+Use this short rule while you build the exercise:
+
+- Ruff checks Python code quality and linting
+- Trivy filesystem scan checks the repository contents and visible config files
+- Trivy Dockerfile/config scan checks packaging and configuration risk
+
+These checks are related, but they are not looking at the same thing.
 
 ## Mini-Checkpoint 1: Ruff
 

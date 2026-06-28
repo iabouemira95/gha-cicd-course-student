@@ -22,7 +22,7 @@ Read these labs in order first:
 
 Use these only after the main guided path is already complete:
 
-1. [LAB-06: Full Containerized CI/CD Pipeline](LAB-06-full-containerized-cicd-pipeline.md)
+1. [Optional Labs](optional/README.md)
 2. [LAB-07: Final Assessment Setup and Validation Prep](LAB-07-docker-hub-vm-deploy.md)
 
 ## How These Labs Fit the Story
@@ -42,7 +42,7 @@ Do not read the numbering alone as the course path.
 Use this order:
 
 - first complete `LAB-01` to `LAB-05`
-- then use `LAB-06` only if your instructor chooses the optional fuller example
+- then use `labs/optional/` only if your instructor chooses the optional fuller example
 - use `LAB-07` only when your instructor starts the Ubuntu VM assessment path
 
 ## What To Open Alongside The Labs

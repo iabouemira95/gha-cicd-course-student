@@ -54,6 +54,6 @@ If the question is:
 
 ## Related Pages
 
-- [Course Map](00-course-map.md)
-- [Final Recap](04-final-recap.md)
-- [Next Steps: Matrix and Secrets](06-next-steps-matrix-and-secrets.md)
+- [Course Map](../00-course-map.md)
+- [Final Recap](../04-final-recap.md)
+- [Next Steps: Matrix and Secrets](02-next-steps-matrix-and-secrets.md)

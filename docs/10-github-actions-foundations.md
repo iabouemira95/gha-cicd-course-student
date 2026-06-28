@@ -147,7 +147,7 @@ Simple course rule:
 4. [LAB-02: Real CI Workflow](../labs/LAB-02-real-ci-workflow.md)
 5. [EX-02: CI Visibility and Schedule](../exercises/EX-02-ci-visibility-and-schedule.md)
 6. [EX-03: CI Matrix Across OS and Python](../exercises/EX-03-ci-matrix.md)
-7. [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-and-matrix.md)
+7. [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-as-env.md)
 
 ## Related Pages
 

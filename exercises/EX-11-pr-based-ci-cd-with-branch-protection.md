@@ -24,6 +24,14 @@ This exercise keeps the full flow idea from `LAB-05` and changes the trigger mod
 
 Use the existing lab workflows as your starting point.
 
+## Why the Job Name Must Stay Stable
+
+Branch protection looks for the visible CI job result.
+
+That means the PR CI job name should stay stable after you choose it.
+
+If you keep renaming the job, the required status check can become confusing to configure and harder to trust.
+
 ## Challenge
 
 Do not start a separate PR exercise track.

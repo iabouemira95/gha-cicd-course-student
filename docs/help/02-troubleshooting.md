@@ -112,7 +112,9 @@ For the main course, focus on:
 - `03 Build Artifact Workflow`
 - `04 Deploy Workflow`
 
-If you are in the main course labs, focus on the four core workflows first and ignore later optional examples unless your instructor tells you to use them.
+If you are in the main course labs, focus on the four core workflows first.
+
+Use optional materials only if your instructor explicitly opens them.
 
 The final assessment prep workflow is preloaded later in the course.
 

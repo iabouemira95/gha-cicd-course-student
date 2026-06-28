@@ -119,7 +119,7 @@ The beginner idea is enough:
 
 Open this workflow file to see a sanitized example:
 
-- [06-azure-acr-aks-example.yml](../.github/workflows/06-azure-acr-aks-example.yml)
+- [06-azure-acr-aks-example.yml](../../.github/workflows/06-azure-acr-aks-example.yml)
 
 It is visible in the `Actions` tab, but it does not trigger automatically.
 
@@ -207,6 +207,6 @@ Use this sentence:
 
 ## Related Pages
 
-- [Full Containerized CI/CD Example](07-full-containerized-cicd-example.md)
-- [Next Steps: Matrix and Secrets](06-next-steps-matrix-and-secrets.md)
-- [Trigger Reference](help/06-trigger-reference.md)
+- [Full Containerized CI/CD Example](03-full-containerized-cicd-example.md)
+- [Next Steps: Matrix and Secrets](02-next-steps-matrix-and-secrets.md)
+- [Trigger Reference](../help/06-trigger-reference.md)

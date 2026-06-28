@@ -35,6 +35,14 @@ The one new GitHub Actions pattern to notice is this:
 
 That pattern appears later because the assessment is the first place where build and deploy truly need a computed per-run image value.
 
+In the core path:
+
+- the build and deploy story uses one fixed course image reference
+
+In the final assessment:
+
+- the build job computes one traceable per-run image tag and passes it forward to deploy
+
 ## How the Earlier Labs Support the Assessment
 
 These ideas stay useful in the final assessment:

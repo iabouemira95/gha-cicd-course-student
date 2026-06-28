@@ -114,7 +114,7 @@ That core path is:
 
 After that, the course can extend in two different ways:
 
-- `LAB-06` is an optional fuller containerized example
+- optional follow-up material lives in `docs/optional/` and `labs/optional/`
 - `LAB-07` and `EX-12` are the later Ubuntu VM assessment path
 
 That later assessment path is not a different story.

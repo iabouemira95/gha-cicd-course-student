@@ -32,6 +32,12 @@ Workflows can also use inputs with `workflow_dispatch`, but we do not need that 
 
 In this course, deploy uses that pattern after the build workflow.
 
+That choice is intentional:
+
+- build creates the package first
+- deploy reacts only after that package exists
+- students can see delivery happen as a result of a successful packaging step
+
 ## Why This Course Uses Different Trigger Types
 
 The trigger choices in this course are intentional:
@@ -136,4 +142,4 @@ Use this short rule:
 
 - [YAML Cheatsheet for GitHub Actions](04-yaml-cheatsheet.md)
 - [Runner Types](05-runner-types.md)
-- [Next Steps: Matrix and Secrets](../06-next-steps-matrix-and-secrets.md)
+- [Next Steps: Matrix and Secrets](../optional/02-next-steps-matrix-and-secrets.md)

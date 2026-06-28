@@ -25,6 +25,15 @@ This keeps the same build workflow story:
 
 verify -> package -> inspect the package -> save the package
 
+## What This Scan Is Looking At
+
+This Trivy step is different from the earlier CI scans.
+
+- the earlier source-tree scans look at repository files and Dockerfile/config content
+- this exercise scans the packaged output after the image tar already exists
+
+That is why this step belongs after the build work, not before it.
+
 ## Challenge
 
 Modify `.github/workflows/03-build-artifact.yml`.

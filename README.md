@@ -89,7 +89,7 @@ Open these files during Day 1:
 8. [Lab 02: Real CI Workflow](labs/LAB-02-real-ci-workflow.md)
 9. [Exercise 02: CI Visibility and Schedule](exercises/EX-02-ci-visibility-and-schedule.md)
 10. [Exercise 03: CI Matrix Across OS and Python](exercises/EX-03-ci-matrix.md)
-11. [Exercise 04: CI Secrets as Environment Variables](exercises/EX-04-ci-secrets-and-matrix.md)
+11. [Exercise 04: CI Secrets as Environment Variables](exercises/EX-04-ci-secrets-as-env.md)
 12. [Exercise 05: CI Quality and Security Checks](exercises/EX-05-ci-quality-and-security-checks.md)
 13. [Exercises Index](exercises/README.md)
 14. [Labs Guide](labs/README.md)
@@ -193,18 +193,13 @@ When the assessment path starts, use:
 
 ## Optional Next Steps
 
-Use these after the main course if you want a little more context:
+Use these only after the core path or when your instructor explicitly opens them:
 
-1. [CI vs CD](docs/05-ci-vs-cd.md)
-2. [YAML Cheatsheet for GitHub Actions](docs/help/04-yaml-cheatsheet.md)
-3. [Runner Types](docs/help/05-runner-types.md)
-4. [Trigger Reference](docs/help/06-trigger-reference.md)
-5. [Finding and Reusing GitHub Actions](docs/help/07-finding-and-reusing-actions.md)
-6. [Next Steps: Matrix and Secrets](docs/06-next-steps-matrix-and-secrets.md)
-7. [Full Containerized CI/CD Example](docs/07-full-containerized-cicd-example.md)
-8. [How ACR and AKS Fit the Story](docs/08-how-acr-and-aks-fit-the-story.md)
-9. [91 OPTIONAL Example - Azure ACR and AKS Workflow](.github/workflows/06-azure-acr-aks-example.yml)
-10. [Lab 06: Full Containerized CI/CD Pipeline](labs/LAB-06-full-containerized-cicd-pipeline.md)
+- [Optional Next Steps](docs/optional/README.md)
+- [YAML Cheatsheet for GitHub Actions](docs/help/04-yaml-cheatsheet.md)
+- [Runner Types](docs/help/05-runner-types.md)
+- [Trigger Reference](docs/help/06-trigger-reference.md)
+- [Finding and Reusing GitHub Actions](docs/help/07-finding-and-reusing-actions.md)
 
 ## If You Feel Stuck
 

@@ -6,6 +6,10 @@ These files support the final assessed deployment exercise.
 
 They keep the same course story and reduce setup friction before the final assessment starts.
 
+Use this page when you want the assessment sequence.
+
+It is not the deeper VM reference and it is not the full script manual.
+
 ## Standardized Assessment Setup
 
 For this course, the final assessment uses one shared target and one shared delivery model:

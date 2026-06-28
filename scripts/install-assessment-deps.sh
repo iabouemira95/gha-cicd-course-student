@@ -8,11 +8,7 @@ SUPPORTED_UBUNTU_VERSIONS=("20.04" "22.04" "24.04")
 NEEDS_DOCKER_RELOGIN=0
 EXIT_CODE=0
 
-declare -A STATUS=()
-declare -A DETAILS=()
-declare -a SUMMARY_ORDER=()
-
-usage() {
+print_early_usage() {
   cat <<EOF
 Usage:
   sudo bash scripts/install-assessment-deps.sh [--target-user <user>]
@@ -31,6 +27,27 @@ Useful flags:
   --target-user USER   User that should be able to run docker without sudo
   --help               Show this message
 EOF
+}
+
+for arg in "$@"; do
+  if [[ "${arg}" == "--help" || "${arg}" == "-h" ]]; then
+    print_early_usage
+    exit 0
+  fi
+done
+
+if [[ -z "${BASH_VERSINFO:-}" || "${BASH_VERSINFO[0]}" -lt 4 ]]; then
+  printf 'This script needs Bash 4 or newer.\n' >&2
+  printf 'Use the default Bash on the target Ubuntu VM, or rerun it there for the real assessment setup.\n' >&2
+  exit 1
+fi
+
+declare -A STATUS=()
+declare -A DETAILS=()
+declare -a SUMMARY_ORDER=()
+
+usage() {
+  print_early_usage
 }
 
 print_header() {

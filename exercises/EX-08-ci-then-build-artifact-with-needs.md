@@ -24,6 +24,17 @@ Strengthen the build workflow so it shows two clear phases:
 
 The packaging job must wait for CI by using `needs`.
 
+## Why `needs` Exists
+
+`needs` makes the workflow easier to trust and easier to read.
+
+It tells GitHub Actions:
+
+- verification must finish first
+- packaging must wait until verification succeeds
+
+That makes the workflow order explicit instead of only implied by the file layout.
+
 ## Challenge
 
 Continue modifying `.github/workflows/03-build-artifact.yml`.

@@ -133,7 +133,7 @@ After the lab is complete, continue with these exercises in order:
 
 1. [EX-02: CI Visibility and Schedule](../exercises/EX-02-ci-visibility-and-schedule.md)
 2. [EX-03: CI Matrix](../exercises/EX-03-ci-matrix.md)
-3. [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-and-matrix.md)
+3. [EX-04: CI Secrets as Environment Variables](../exercises/EX-04-ci-secrets-as-env.md)
 4. [EX-05: CI Quality and Security Checks](../exercises/EX-05-ci-quality-and-security-checks.md)
 
 These exercises extend the same CI story in three different ways:

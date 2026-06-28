@@ -6,6 +6,10 @@ This page explains the assessment dependency setup script.
 
 Use it when you want one clear install-and-check path for the Ubuntu VM or one quick validation pass on a local Ubuntu machine.
 
+Use this page when you want script behavior and commands specifically.
+
+It is not the main assessment sequence page and it is not the deeper VM operations page.
+
 For the main student-facing setup flow, start with:
 
 - [Prepare the Assessment VM](../setup/04-prepare-assessment-vm.md)
