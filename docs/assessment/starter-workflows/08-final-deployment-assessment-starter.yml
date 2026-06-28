@@ -14,17 +14,13 @@
 # code -> verify -> package -> deliver
 name: 08 Final Deployment Assessment
 
-on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - opened
-      - synchronize
-      - reopened
-  push:
-    branches:
-      - main
+# TODO:
+# Add the trigger block yourself.
+# This workflow should:
+# - run CI for pull requests targeting `main`
+# - run again after code is merged to `main`
+# - make it obvious which path is PR verification and which path is post-merge delivery
+on: {}
 
 env:
   IMAGE_NAME: tiny-health-app
@@ -44,8 +40,8 @@ jobs:
 
       - name: Set up Python
         uses: "REPLACE_WITH_SETUP_PYTHON_ACTION"
-        with:
-          python-version: "REPLACE_WITH_COURSE_PYTHON_VERSION"
+        # TODO:
+        # Add the Python version configuration used in this course.
 
       - name: Run tests
         run: |
@@ -58,41 +54,37 @@ jobs:
 
       - name: Run Trivy filesystem scan
         uses: "REPLACE_WITH_TRIVY_ACTION"
-        with:
-          scan-type: "REPLACE_ME"
-          scan-ref: "REPLACE_ME"
-          scanners: "REPLACE_ME"
-          severity: "REPLACE_ME"
-          ignore-unfixed: "REPLACE_ME"
-          exit-code: "REPLACE_ME"
+        # TODO:
+        # Add the Trivy inputs so this step scans the repository filesystem.
+        # Keep it beginner-safe and visibility-focused:
+        # - point the scan at the repository
+        # - include the scanner types you want students to interpret
+        # - choose a stable severity set
+        # - decide whether findings should fail the workflow or stay visibility-only
 
       - name: Run Trivy Dockerfile and config scan
         uses: "REPLACE_WITH_TRIVY_ACTION"
-        with:
-          scan-type: "REPLACE_ME"
-          scan-ref: "REPLACE_ME"
-          severity: "REPLACE_ME"
-          exit-code: "REPLACE_ME"
+        # TODO:
+        # Add the Trivy inputs so this step scans Dockerfile and config risk.
+        # This should stay a config-style scan, not an image scan.
 
       - name: Set up Docker Buildx
         uses: "REPLACE_WITH_SETUP_BUILDX_ACTION"
 
       - name: Build local image for scan
         uses: "REPLACE_WITH_BUILD_PUSH_ACTION"
-        with:
-          context: "."
-          push: false
-          load: true
-          tags: "${{ env.PR_SCAN_IMAGE }}"
+        # TODO:
+        # Add the build inputs so this step builds one local image for CI scanning only.
+        # This image should:
+        # - build from the current repository
+        # - stay local on the runner
+        # - use the PR_SCAN_IMAGE tag from env
 
       - name: Run Trivy image scan
         uses: "REPLACE_WITH_TRIVY_ACTION"
-        with:
-          image-ref: "${{ env.PR_SCAN_IMAGE }}"
-          scanners: "REPLACE_ME"
-          severity: "REPLACE_ME"
-          ignore-unfixed: "REPLACE_ME"
-          exit-code: "REPLACE_ME"
+        # TODO:
+        # Add the Trivy inputs so this step scans the built image from PR_SCAN_IMAGE.
+        # Keep this one focused on image visibility before merge.
 
   build-and-push:
     name: Build and push release image
@@ -142,10 +134,9 @@ jobs:
 
       - name: Log in to registry
         uses: "REPLACE_WITH_DOCKER_LOGIN_ACTION"
-        with:
-          registry: "${{ secrets.REGISTRY_HOST }}"
-          username: "${{ secrets.REGISTRY_USERNAME }}"
-          password: "${{ secrets.REGISTRY_PASSWORD }}"
+        # TODO:
+        # Add the login inputs so GitHub Actions can authenticate to the registry.
+        # Use the registry host, username, and password secrets already listed above.
 
       - name: Show image reference
         run: |
@@ -155,10 +146,11 @@ jobs:
 
       - name: Build and push release image
         uses: "REPLACE_WITH_BUILD_PUSH_ACTION"
-        with:
-          context: "."
-          push: true
-          tags: "${{ steps.image-ref.outputs.value }}"
+        # TODO:
+        # Add the build inputs so this step:
+        # - builds from the repository
+        # - pushes to the registry
+        # - uses the exact image reference produced earlier
 
   deploy-to-host:
     name: Deploy to remote host
@@ -178,25 +170,20 @@ jobs:
           IMAGE_REF: ${{ needs.build-and-push.outputs.image_ref }}
           COMMIT_SHA: ${{ github.sha }}
           APP_PORT: ${{ env.APP_PORT }}
-        with:
-          host: "${{ secrets.DEPLOY_HOST }}"
-          username: "${{ secrets.DEPLOY_USER }}"
-          key: "${{ secrets.DEPLOY_SSH_KEY }}"
-          envs: "REGISTRY_HOST,REGISTRY_USERNAME,REGISTRY_PASSWORD,IMAGE_REF,IMAGE_TAG,COMMIT_SHA,APP_PORT"
-          script: |
-            set -e
-            DEPLOYED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-
-            # TODO:
-            # 1. confirm Docker exists on the remote host
-            # 2. log in to the registry on the remote host
-            # 3. pull the exact image reference
-            # 4. remove the old container safely if it exists
-            # 5. run the new container on port 8000
-            # 6. pass APP_ENV, APP_VERSION, COMMIT_SHA, DEPLOYED_AT, IMAGE_TAG, and DEPLOY_MODE
-            # 7. wait for /health on 127.0.0.1:${APP_PORT}
-            # 8. check /version and /status on the remote host
-            exit 1
+        # TODO:
+        # Add the SSH action inputs yourself.
+        # This step should:
+        # - connect with DEPLOY_HOST, DEPLOY_USER, and DEPLOY_SSH_KEY
+        # - pass the registry and image values into the remote shell
+        # - run a remote script that:
+        #   1. confirms Docker exists on the remote host
+        #   2. logs in to the registry on the remote host
+        #   3. pulls the exact image reference
+        #   4. removes the old container safely if it exists
+        #   5. runs the new container on port 8000
+        #   6. passes APP_ENV, APP_VERSION, COMMIT_SHA, DEPLOYED_AT, IMAGE_TAG, and DEPLOY_MODE
+        #   7. waits for /health on 127.0.0.1:${APP_PORT}
+        #   8. checks /version and /status on the remote host
 
       - name: Validate deployed app from GitHub Actions
         run: |
