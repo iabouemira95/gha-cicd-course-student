@@ -21,7 +21,7 @@ This page shows how the existing labs and exercises already prepare you for the 
 
 The final assessment adds only a few new ideas:
 
-- push the image to Docker Hub
+- push the image to a registry
 - use SSH to reach a real Ubuntu VM
 - pull the exact image on that VM
 - prove what was deployed with `/health`, `/version`, and `/status`

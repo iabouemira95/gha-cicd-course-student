@@ -17,8 +17,8 @@ For this course, the final assessment uses one shared target and one shared deli
 
 The standardized delivery model is:
 
-- Docker on the Ubuntu VM
-- one public Docker Hub repository
+- Docker on one Linux host reached over SSH
+- one container registry
 - one clear image tag
 
 We keep one model so the assessment measures CI/CD thinking, not setup variation.
@@ -27,19 +27,19 @@ We keep one model so the assessment measures CI/CD thinking, not setup variation
 
 This setup keeps the deployment target real enough to matter, but still simple enough for beginners:
 
-- Docker Hub is easier to reach than ACR or ECR
-- one Ubuntu VM is easier to reason about than a cloud platform
+- one registry keeps packaging realistic without adding orchestration
+- one Linux host is easier to reason about than a larger platform
 - SSH gives one clear remote-deploy step
 - the deployed app is easy to validate with HTTP endpoints
 
 ## What You Will Use
 
-- one Ubuntu VM reachable over SSH
+- one Linux host reachable over SSH
 - one lab readiness workflow
 - one student-built final assessment workflow
 - the same app you already used in the earlier labs
 - one small Docker image
-- one Docker Hub account and access token
+- one set of registry credentials provided for the assessment
 
 Unlike the early browser-first labs, this later path also uses a local shell on your machine for `scp`, `ssh`, and the local deployment validation command.
 
@@ -63,7 +63,7 @@ If you want the full script guidance first, open:
 1. [Standardized Assessment Setup](01-standardized-assessment-setup.md)
 2. [Prepare the Assessment VM](../setup/04-prepare-assessment-vm.md)
 3. [Prepare the Ubuntu VM](02-prepare-ubuntu-vm.md)
-4. [Configure Docker Hub, SSH, and GitHub Secrets](03-configure-secrets-and-ssh.md)
+4. [Configure Registry, SSH, and GitHub Secrets](03-configure-secrets-and-ssh.md)
 5. [How the Current Labs Prepare You](04-how-current-labs-prepare-you.md)
 6. [LAB-07: Final Assessment Setup and Validation Prep](../../labs/LAB-07-docker-hub-vm-deploy.md)
 7. [Assessment Success Criteria, Validation, and Rubric](05-success-criteria-and-rubric.md)
@@ -78,3 +78,7 @@ The final validation command and self-check now live in the rubric page so you h
 `EX-12` is build-it-yourself.
 
 You create the final assessment workflow file in your own student repo, and the prepared solution stays in the instructor repo.
+
+Use the guided starter in:
+
+- `docs/assessment/starter-workflows/08-final-deployment-assessment-starter.yml`

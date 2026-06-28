@@ -1,0 +1,129 @@
+# Copy this file to `.github/workflows/08-final-deployment-assessment.yml`
+# when you start EX-12.
+#
+# This starter is intentionally incomplete.
+# It gives you the workflow shape, job order, and key secrets,
+# but you still fill in the important CI/CD pieces yourself.
+#
+# Assessment model:
+# - verify the app
+# - build and push one exact image to a container registry
+# - deploy that same image to one Linux host over SSH
+# - validate what is running
+#
+# The host may be an Ubuntu VM, EC2 instance, or another Linux VM.
+# The registry may be ACR, ECR, or another container registry your instructor provides.
+name: 08 Final Deployment Assessment
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: tiny-health-app
+  APP_PORT: "8000"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: # TODO: add the checkout action
+
+      - name: Set up Python
+        uses: # TODO: add the setup-python action
+        with:
+          python-version: # TODO: choose the Python version used in the course
+
+      - name: Run tests
+        run: # TODO: run the unit tests
+
+  build-and-push:
+    needs: # TODO: depend on the verify job
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.image-tag.outputs.value }}
+      image_ref: ${{ steps.image-ref.outputs.value }}
+
+    steps:
+      - name: Check required GitHub secrets
+        env:
+          REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          # TODO:
+          # 1. fail if any required secret is missing
+          # 2. print a clear success message when they are all present
+
+      - name: Check out repository
+        uses: # TODO: add the checkout action again for this job
+
+      - name: Create image tag
+        id: image-tag
+        run: |
+          # TODO:
+          # create one traceable tag using the UTC date and GITHUB_RUN_ID
+          # write it to GITHUB_OUTPUT using the key `value`
+
+      - name: Create full image reference
+        id: image-ref
+        run: |
+          # TODO:
+          # combine REGISTRY_HOST, IMAGE_NAME, and the generated tag
+          # write the final image reference to GITHUB_OUTPUT using the key `value`
+
+      - name: Log in to registry
+        uses: # TODO: add the docker login action
+        with:
+          registry: ${{ secrets.REGISTRY_HOST }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Show image reference
+        run: 'echo "Image to push: ${{ steps.image-ref.outputs.value }}"'
+
+      - name: Build and push image
+        uses: # TODO: add the build-push action
+        with:
+          context: .
+          push: true
+          tags: "${{ steps.image-ref.outputs.value }}"
+
+  deploy-to-host:
+    needs: # TODO: depend on the build-and-push job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy image on remote host over SSH
+        uses: # TODO: add the SSH action used in the course
+        env:
+          IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
+          IMAGE_REF: ${{ needs.build-and-push.outputs.image_ref }}
+          COMMIT_SHA: ${{ github.sha }}
+          APP_PORT: ${{ env.APP_PORT }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          envs: IMAGE_REF,IMAGE_TAG,COMMIT_SHA,APP_PORT
+          script: |
+            set -e
+            DEPLOYED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+            # TODO:
+            # 1. pull the exact image reference
+            # 2. remove the old container safely if it exists
+            # 3. run the new container on port 8000
+            # 4. pass APP_ENV, APP_VERSION, COMMIT_SHA, DEPLOYED_AT, IMAGE_TAG, and DEPLOY_MODE
+            # 5. wait for /health on 127.0.0.1:${APP_PORT}
+            # 6. check /version and /status on the remote host
+
+      - name: Validate deployed app from GitHub Actions
+        run: |
+          # TODO:
+          # check /health, /version, and /status from the runner
+          # using http://${{ secrets.DEPLOY_HOST }}:${APP_PORT}

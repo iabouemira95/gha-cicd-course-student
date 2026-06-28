@@ -21,6 +21,10 @@ This final exercise builds on `LAB-05`, `EX-11`, and `LAB-07`.
 
 - `.github/workflows/08-final-deployment-assessment.yml`
 
+Start from this guided starter:
+
+- `docs/assessment/starter-workflows/08-final-deployment-assessment-starter.yml`
+
 This is the later exception where you create a new workflow file.
 
 That new file is still derived from earlier lab workflows:
@@ -29,6 +33,8 @@ That new file is still derived from earlier lab workflows:
 - take the packaging idea from `.github/workflows/03-build-artifact.yml`
 - take the delivery-and-validation idea from `.github/workflows/04-deploy.yml`
 
+Copy the starter into `.github/workflows/08-final-deployment-assessment.yml` and then fill the gaps yourself.
+
 ## Requirements
 
 - The workflow should use `workflow_dispatch`.
@@ -36,10 +42,11 @@ That new file is still derived from earlier lab workflows:
 - The later jobs should depend on the earlier ones clearly.
 - The workflow should run the project tests before packaging or deployment.
 - The workflow should build the image from the current `Dockerfile`.
-- The workflow should push the image to your public Docker Hub repository `tiny-health-app`.
+- The workflow should push the image to the container registry your instructor provides.
 - The workflow logs should show the full image reference clearly.
-- The workflow should connect to the Ubuntu VM over SSH using GitHub secrets.
-- The VM should pull the same image that was pushed earlier.
+- The workflow should connect to the Linux host over SSH using GitHub secrets.
+- The Linux host can be an Ubuntu VM, an EC2 instance, or another SSH-reachable Linux VM.
+- The host should pull the same image that was pushed earlier.
 - The workflow should replace any older container safely.
 - The container should run on port `8000`.
 - The deployment should pass useful runtime values so the app can show clear details in `/version`, `/status`, or `/`.
@@ -54,6 +61,6 @@ bash scripts/assessment/validate-deployment.sh http://<vm-host>:8000
 
 - The `verify` part passes before the image is built or deployed.
 - The logs show the exact image reference that was pushed.
-- The VM runs the same image that the workflow pushed earlier.
+- The remote host runs the same image that the workflow pushed earlier.
 - `/health`, `/version`, and `/status` all respond successfully.
 - You can explain what exact thing was deployed and why this flow is repeatable.

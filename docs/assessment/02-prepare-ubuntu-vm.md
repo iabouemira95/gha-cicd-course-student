@@ -15,7 +15,7 @@ Use this page only after you already know the standardized assessment model:
 - one Ubuntu VM is the deployment target
 - GitHub Actions reaches that VM over SSH
 - the deployed app must answer on port `8000`
-- Docker Hub carries the image and the VM must support Docker
+- the container registry carries the image and the host must support Docker
 
 This page goes deeper than the setup gateway page.
 
@@ -175,7 +175,7 @@ If the VM still fails readiness checks after the script:
 
 When this page is done, continue with:
 
-- [Configure Docker Hub, SSH, and GitHub Secrets](03-configure-secrets-and-ssh.md)
+- [Configure Registry, SSH, and GitHub Secrets](03-configure-secrets-and-ssh.md)
 - [Assessment Success Criteria, Validation, and Rubric](05-success-criteria-and-rubric.md)
 
 If you want the full script details again, return to:

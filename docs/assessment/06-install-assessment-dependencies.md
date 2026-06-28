@@ -149,5 +149,5 @@ If you see `WARN` on port `8000`:
 After this page, continue with:
 
 1. [Prepare the Ubuntu VM](02-prepare-ubuntu-vm.md)
-2. [Configure Docker Hub, SSH, and GitHub Secrets](03-configure-secrets-and-ssh.md)
+2. [Configure Registry, SSH, and GitHub Secrets](03-configure-secrets-and-ssh.md)
 3. [LAB-07: Final Assessment Setup and Validation Prep](../../labs/LAB-07-docker-hub-vm-deploy.md)

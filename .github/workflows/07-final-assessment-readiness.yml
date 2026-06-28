@@ -1,5 +1,9 @@
 # This workflow checks whether the final assessment setup is ready.
 # It does not build or deploy the final solution.
+# The assessment stays generic:
+# - one container registry
+# - one Linux host reachable over SSH
+# - one app exposed on port 8000
 name: 07 Final Assessment Readiness Workflow
 
 on:
@@ -31,14 +35,15 @@ jobs:
     steps:
       - name: Check required GitHub secrets
         env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          VM_HOST: ${{ secrets.VM_HOST }}
-          VM_USER: ${{ secrets.VM_USER }}
-          VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
+          REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
           missing_secret=0
-          for required in DOCKERHUB_USERNAME DOCKERHUB_TOKEN VM_HOST VM_USER VM_SSH_KEY; do
+          for required in REGISTRY_HOST REGISTRY_USERNAME REGISTRY_PASSWORD DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_KEY; do
             if [ -z "${!required}" ]; then
               echo "Missing required GitHub secret: ${required}"
               missing_secret=1
@@ -51,14 +56,15 @@ jobs:
 
           echo "All required GitHub secrets are present."
 
-      - name: Log in to Docker Hub
+      - name: Log in to registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ secrets.REGISTRY_HOST }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Show expected image repository
-        run: 'echo "Expected assessment image repository: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}"'
+        run: 'echo "Expected assessment image repository: ${{ secrets.REGISTRY_HOST }}/${{ env.IMAGE_NAME }}"'
 
   check-vm-readiness:
     needs: check-registry-access
@@ -68,9 +74,9 @@ jobs:
       - name: Check Ubuntu VM readiness over SSH
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             set -e
             docker --version

@@ -23,8 +23,8 @@ Confirm all of these are already true:
 - your Ubuntu VM accepts SSH key login
 - port `8000` is reachable on the VM
 - Docker works on the VM
-- your public Docker Hub repository `tiny-health-app` exists
-- all five required GitHub secrets are saved
+- your registry repository `tiny-health-app` exists
+- all six required GitHub secrets are saved
 
 ## Core Success Categories
 
@@ -38,7 +38,7 @@ Confirm all of these are already true:
 
 - the workflow prepares one clear Docker image as the deployable output
 - the image reference is shown clearly in the logs
-- the image is pushed to Docker Hub successfully
+- the image is pushed to the registry successfully
 
 ### 3. Remote Deployment
 
@@ -97,7 +97,7 @@ After the workflow succeeds, run this from your repository root on your own mach
 bash scripts/assessment/validate-deployment.sh http://<vm-host>:8000
 ```
 
-Replace `<vm-host>` with the same public host value you saved in `VM_HOST`.
+Replace `<vm-host>` with the same public host value you saved in `DEPLOY_HOST`.
 
 That validation script checks:
 

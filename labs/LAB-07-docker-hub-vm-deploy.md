@@ -9,7 +9,7 @@ By the end of this lab, you should have:
 1. one Ubuntu VM ready
 2. GitHub secrets ready
 3. one clear validation path ready for `/health`, `/version`, and `/status`
-4. one public Docker Hub repository ready
+4. one container registry repository ready
 5. one clear browser validation path ready for `/`
 
 ## Why This Lab Matters
@@ -46,7 +46,7 @@ Use these pages in this order:
 2. [Standardized Assessment Setup](../docs/assessment/01-standardized-assessment-setup.md)
 3. [Prepare the Assessment VM](../docs/setup/04-prepare-assessment-vm.md)
 4. [Prepare the Ubuntu VM](../docs/assessment/02-prepare-ubuntu-vm.md)
-5. [Configure Docker Hub, SSH, and GitHub Secrets](../docs/assessment/03-configure-secrets-and-ssh.md)
+5. [Configure Registry, SSH, and GitHub Secrets](../docs/assessment/03-configure-secrets-and-ssh.md)
 
 You should already be comfortable with:
 
@@ -57,7 +57,7 @@ You should already be comfortable with:
 You should also already have:
 
 - one Ubuntu VM reachable on port `8000`
-- one public Docker Hub repository named `tiny-health-app`
+- one registry repository named `tiny-health-app`
 
 Important:
 
@@ -110,17 +110,18 @@ If you want one quick local support check, run:
 bash scripts/assessment/prepare-local-machine.sh
 ```
 
-## Step 4: Configure GitHub Secrets and Docker Hub
+## Step 4: Configure GitHub Secrets and Registry
 
 Create these GitHub secrets:
 
-- `VM_HOST`
-- `VM_USER`
-- `VM_SSH_KEY`
-- `DOCKERHUB_USERNAME`
-- `DOCKERHUB_TOKEN`
+- `DEPLOY_HOST`
+- `DEPLOY_USER`
+- `DEPLOY_SSH_KEY`
+- `REGISTRY_HOST`
+- `REGISTRY_USERNAME`
+- `REGISTRY_PASSWORD`
 
-Make sure the Docker Hub repository exists and stays public for this course:
+Make sure the registry repository exists for this course:
 
 - `tiny-health-app`
 
@@ -140,7 +141,7 @@ Confirm that:
 
 - `verify` passed
 - the VM was reached over SSH
-- Docker Hub login worked
+- registry login worked
 - Docker worked on the VM
 
 ## Step 7: Review the Validation Path
@@ -182,8 +183,8 @@ Check these things first:
 2. confirm port `8000` is reachable
 3. confirm the VM secrets are saved
 4. the VM has Docker installed
-5. the Docker Hub repository exists and is public
-6. all five GitHub secrets are saved
+5. the registry repository exists
+6. all six GitHub secrets are saved
 
 ## Success Check
 
@@ -192,7 +193,7 @@ You are done when:
 - the VM is ready
 - SSH works from your machine
 - the GitHub secrets are saved
-- the Docker Hub repository exists
+- the registry repository exists
 - the readiness workflow passes
 - you can explain what the final assessment workflow must do
 - you can explain how the app becomes reachable from outside the VM

@@ -141,8 +141,8 @@ After the main Day 2 path and the related exercises, your instructor may give yo
 It keeps the same story and asks you to build one fuller deployment workflow yourself:
 
 - build a Docker image
-- push it to Docker Hub
-- deploy that same image to an Ubuntu VM over SSH
+- push it to a container registry
+- deploy that same image to a Linux VM or EC2 host over SSH
 
 Open these files in order:
 
@@ -150,7 +150,7 @@ Open these files in order:
 2. [Standardized Assessment Setup](docs/assessment/01-standardized-assessment-setup.md)
 3. [Prepare the Assessment VM](docs/setup/04-prepare-assessment-vm.md)
 4. [Prepare the Ubuntu VM](docs/assessment/02-prepare-ubuntu-vm.md)
-5. [Configure Docker Hub, SSH, and GitHub Secrets](docs/assessment/03-configure-secrets-and-ssh.md)
+5. [Configure Registry, SSH, and GitHub Secrets](docs/assessment/03-configure-secrets-and-ssh.md)
 6. [How the Current Labs Prepare You](docs/assessment/04-how-current-labs-prepare-you.md)
 7. [LAB-07: Final Assessment Setup and Validation Prep](labs/LAB-07-docker-hub-vm-deploy.md)
 8. [Assessment Success Criteria, Validation, and Rubric](docs/assessment/05-success-criteria-and-rubric.md)
@@ -159,6 +159,8 @@ Open these files in order:
 `LAB-07` uses one preloaded readiness workflow to check the setup.
 
 `EX-12` is the build-it-yourself part.
+
+Start `EX-12` from the guided starter in `docs/assessment/starter-workflows/08-final-deployment-assessment-starter.yml`.
 
 You create the final assessment workflow file yourself, and the prepared solution lives only in the instructor repo.
 

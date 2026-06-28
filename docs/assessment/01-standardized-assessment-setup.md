@@ -19,18 +19,18 @@ For fairness, use one shared delivery model for the whole cohort.
 The course standard is:
 
 - build a Docker image
-- push it to Docker Hub
-- deploy it on an Ubuntu VM over SSH
-- run it as a Docker container on that VM
+- push it to a container registry
+- deploy it on a Linux host over SSH
+- run it as a Docker container on that host
 
 ## Why Docker Is The Standard
 
 This Docker setup balances simplicity and realism well:
 
-- simpler than ACR or ECR
-- more directly aligned with the current packaging labs
-- easier to trace with one exact image tag
-- easier to validate from the browser and from workflow logs
+- it stays close to the current packaging labs
+- it keeps one exact image tag for traceability
+- it is easy to validate from the browser and from workflow logs
+- it does not depend on one specific cloud provider
 
 ## What Makes It Beginner-Friendly
 
@@ -54,18 +54,19 @@ In this assessment, the answer is one clear Docker image tag:
 That same tagged image is:
 
 - built in GitHub Actions
-- pushed to Docker Hub
-- pulled onto the VM
+- pushed to the registry
+- pulled onto the remote Linux host
 - started as the deployed container
 
-## Docker Hub Repository Shape
+## Registry Shape
 
-For this course, keep the Docker Hub side simple:
+For this course, keep the registry side simple:
 
-- use your own Docker Hub account
-- create one public repository named `tiny-health-app`
+- use one registry host value
+- use one image name: `tiny-health-app`
+- use one credential set supplied for the assessment
 
-That public repository choice helps the VM pull the image without another Docker Hub login step.
+Your instructor will tell you what registry service is used in your cohort.
 
 ## What Stays the Same in the Assessment
 

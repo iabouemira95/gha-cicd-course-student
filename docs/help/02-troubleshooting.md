@@ -138,7 +138,7 @@ If it fails, also use:
 
 - [Final Assessment Support Overview](../assessment/README.md)
 - [Prepare the Ubuntu VM](../assessment/02-prepare-ubuntu-vm.md)
-- [Configure Docker Hub, SSH, and GitHub Secrets](../assessment/03-configure-secrets-and-ssh.md)
+- [Configure Registry, SSH, and GitHub Secrets](../assessment/03-configure-secrets-and-ssh.md)
 - [LAB-07: Final Assessment Setup and Validation Prep](../../labs/LAB-07-docker-hub-vm-deploy.md)
 - [Assessment Success Criteria, Validation, and Rubric](../assessment/05-success-criteria-and-rubric.md)
 
