@@ -1,0 +1,57 @@
+name: final_assessment
+
+on:
+  workflow_dispatch: 
+  pull_request: 
+    branches: 
+    - main
+    - master
+    types: 
+    - synchronize
+    - opened
+jobs:
+    ci_final_assessment:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v6
+
+        - name: Set up Python
+          uses: actions/setup-python@v6
+          with:
+            python-version: "3.12"
+
+        - name: Run tests
+          run: python -m unittest discover -s tests -v
+
+        - name: setup image tag
+          id: image_tag
+          run: |
+            echo "IMAGE_TAG=${{secrets.DOCKER_USERNAME}}/${{ secrets.DOCKER_REPO }}:$(date +'%Y-%m-%d')-${{ github.run_id }}" >> $GITHUB_OUTPUT
+
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v3
+
+        - name: Build and push
+          uses: docker/build-push-action@v5
+          with:
+            context: .
+            push: false
+            load: true
+            tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            
+        - name: Run Trivy image vulnerability scanner
+          uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
+          with:
+            image-ref: "${{ steps.image_tag.outputs.IMAGE_TAG  }}"
+            format: 'json'
+            exit-code: 0
+            output: trivy-image-report.json
+            vuln-type: 'os,library'
+
+        - name: Upload Trivy docker image report as artifact
+          uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+          if: ${{ !cancelled() }}
+          with:
+            name: trivy-image-report.json
+            path: trivy-image-report.json
