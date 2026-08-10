@@ -1,0 +1,46 @@
+name: cd_final_assessment
+
+on:
+  workflow_dispatch: 
+  pull_request: 
+    branches: 
+    - main
+    - master
+    types: 
+    - closed
+jobs:
+    cd_final_assessment:
+      runs-on: ubuntu-latest
+      if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v6
+
+        - name: setup image tag
+          id: image_tag
+          run: |
+            echo "IMAGE_TAG=${{secrets.DOCKER_USERNAME}}/${{ secrets.DOCKER_REPO }}:$(date +'%Y-%m-%d')-${{ github.run_id }}" >> $GITHUB_OUTPUT
+
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_TOKEN }}
+
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v3
+
+        - name: Build and push
+          uses: docker/build-push-action@v5
+          with:
+            context: .
+            push: true
+            tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+                    
+        - name: check docker image in actions
+          run: |
+            docker run --name=tinyhealthapp -d -p 8000:8000 ${{ steps.image_tag.outputs.IMAGE_TAG }} 
+            sleep 2
+            bash ./scripts/assessment/validate-deployment.sh http://localhost:8000
+            
+            
